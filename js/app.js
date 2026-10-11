@@ -503,7 +503,7 @@ const SYS_PROMPT = [
 "- Tiếng Việt, đúng giọng sinh viên năm 3.",
 "- Giảng giải chứ không chỉ đưa đáp án. Hỏi \"tại sao\" thì giải thích cơ chế.",
 "- Cấu trúc: mốc mục → công thức → ví dụ trong tài liệu → lỗi hay gặp.",
-"- Trích dẫn cụ thể (\"mục 6.3\", \"Phụ lục A\") để học sinh tự tra.",
+"- BẮT BUỘC trích dẫn mục: mỗi ý chính kèm số mục trong tài liệu, ví dụ \"(mục 6.3)\". Đây là cách duy nhất học sinh tự tra lại, thiếu nó thì câu trả lời vô dụng.",
 "- SQL luôn theo SQL Server: có GO giữa các khối, chuỗi tiếng Việt có N\'...\'.",
 "- Câu hỏi mơ hồ thì hỏi lại đúng một câu cụ thể, đừng đoán.",
 "",
@@ -648,7 +648,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v8';
+const VER = 'v9';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
