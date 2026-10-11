@@ -375,7 +375,7 @@ async function ask(question) {
   $('#ta').value = '';
   $('#ta').style.height = 'auto';
 
-  S.thread.push({ role: 'user', text: q });
+  S.thread.push({ role: 'user', text: q, doc: S.docId });
   S.thread.push({ role: 'thinking' });
   renderThread();
 
@@ -396,27 +396,37 @@ async function ask(question) {
   try {
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), 120000);
-    // Ben 'remote' goi thang 9Router: phai nhung tai lieu + prompt vao messages.
-  // Ben 'local' nho proxy.py: proxy tu dong dong goi tai lieu cho minh.
-  const sysPrompt = buildSystemPrompt();
-  const userTurn = buildUserTurn(q, sysPrompt);
-  let body;
-  if (ACTIVE.kind === 'remote') {
-    // stream: true de chunk ve dan dan. Non-stream de model nghi het toan bo
-    // reasoning roi moi tra content — nhin nhu treo may so voi cau hoi dai.
-    body = JSON.stringify({
-      model: CONFIG.model,
-      stream: true,
-      max_tokens: CONFIG.maxTokens,
-      temperature: 0.3,
-      messages: hist.length ? hist : [{ role: 'user', content: userTurn }],
-    });
-  } else {
-    body = JSON.stringify({
-      source: S.raw,
-      messages: hist.length ? hist : [{ role: 'user', content: q }],
-    });
-  }
+
+    /* LUÔN gửi system prompt + tài liệu, kể cả khi đã có lịch sử.
+       Trước đây dùng `hist.length ? hist : [...]` nên từ câu hỏi thứ hai trở
+       đi, cả prompt lẫn tài liệu biến mất khỏi request — model trả lời bằng
+       kiến thức chung và không trích mục nào. */
+    const sysPrompt = buildSystemPrompt();
+    const userTurn = buildUserTurn(q);
+    let body;
+
+    if (ACTIVE.kind === 'remote') {
+      // Lịch sử: các lượt hỏi trước, bỏ câu hỏi vừa rồi (đã gộp vào userTurn).
+      const past = hist.slice(0, -1).filter(m => (m.content || '').trim());
+      body = JSON.stringify({
+        model: CONFIG.model,
+        stream: true,
+        max_tokens: CONFIG.maxTokens,
+        temperature: 0.3,
+        messages: [
+          { role: 'system', content: sysPrompt },
+          ...past,
+          { role: 'user', content: userTurn },
+        ],
+      });
+    } else {
+      // Kênh local: proxy.py tự ghép tài liệu + system prompt, chỉ gửi câu hỏi.
+      const past = hist.slice(0, -1).filter(m => (m.content || '').trim());
+      body = JSON.stringify({
+        source: S.raw,
+        messages: [...past, { role: 'user', content: q }],
+      });
+    }
 
   const res = await fetch(chatUrl(), {
       method: 'POST',
@@ -440,7 +450,7 @@ async function ask(question) {
       S.thread.push({ role: 'error', text: 'Mô hình không trả lời được. Thử câu khác.' });
     } else {
       const j = matchSection(answer);
-      S.thread.push({ role: 'ai', text: answer, model: data.model || CONFIG.model, jump: j && j.id, jumpLabel: j && j.text });
+      S.thread.push({ role: 'ai', text: answer, model: data.model || CONFIG.model, doc: S.docId, jump: j && j.id, jumpLabel: j && j.text });
       S.aiOnline = true;
     }
     const secs = ((performance.now() - t0) / 1000).toFixed(1);
@@ -648,7 +658,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v9';
+const VER = 'v11';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
@@ -673,6 +683,9 @@ function init() {
     `<option value="${d.id}">${esc(d.label)}</option>`).join('');
   $('#docSel').value = DOCS[0].id;
   $('#docSel').onchange = e => {
+    // Xoá lịch sử của bài cũ: hai bài khác nhau, đem lịch sử bài trước sang bài
+    // sau sẽ khiến model trộn nội dung và trích nhầm mục.
+    S.thread = S.thread.filter(m => m.doc === e.target.value);
     loadDoc(e.target.value);
     renderThread();
     setTimeout(startSpy, 250);
