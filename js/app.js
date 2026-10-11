@@ -273,7 +273,13 @@ function fillSectionNav() {
 function gotoSection(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  /* Tính offset thủ công rồi scrollTo, KHÔNG dùng scrollIntoView({smooth}).
+     smooth trên một mục cách đỉnh hàng chục nghìn px làm main thread bận
+     hàng giây — thao tác chuột sau đó bị treo. Cuộn tức thì tới đúng vị trí,
+     rồi tô sáng để mắt bắt đầu từ đó. */
+  const box = $('#docScroll');
+  const top = el.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop - 12;
+  box.scrollTo({ top, behavior: 'auto' });
   el.classList.remove('sec-hl');
   void el.offsetWidth;
   el.classList.add('sec-hl');
@@ -477,17 +483,17 @@ function matchSection(answer) {
   const a = answer;
 
   // 1. so theo so muc: "muc 11.1" / "mục 8.2" / "mục 5"
-  const byNum = [];
+  // Chi lay dau tien theo THU TU xuat hien trong cau tra loi, dung tai dayo nhat
+  // — AI thuong mo ta bai bang muc chinh truoc, cac muc sau chi la trich dan.
   const reNum = /(?:muc|mục|phụ lục|phu luc|appendix|section)\s+(\d+(?:\.\d+)*)/gi;
   let m;
   while ((m = reNum.exec(a)) !== null) {
     const num = m[1].replace(/\.0+$/, '');
-    S.sections.forEach(sec => {
+    for (const sec of S.sections) {
       const secNum = (sec.text.match(/^(\d+(?:\.\d+)*)/) || [])[1];
-      if (secNum && secNum.replace(/\.0+$/, '') === num) byNum.push(sec);
-    });
+      if (secNum && secNum.replace(/\.0+$/, '') === num) return sec;
+    }
   }
-  if (byNum.length) return byNum[0];
 
   // 2. so theo tieu de (bỏ số mục ở đầu)
   const hits = [];
@@ -658,7 +664,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v11';
+const VER = 'v13';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
