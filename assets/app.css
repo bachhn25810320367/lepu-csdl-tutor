@@ -227,7 +227,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .doc-scroll {
   overflow-y: auto;
   padding: 30px 40px 120px;
-  scroll-behavior: smooth;
+  /* KHONG dat scroll-behavior: smooth ở đây. Thuộc tính này ghi đè cả
+     behavior:'auto' truyền vào scrollTo(), nên gotoSection() vẫn cuộn mượt
+     dài và test đọc scrollTop ngay sau đó luôn ra 0. */
 }
 .doc-scroll::-webkit-scrollbar { width: 10px; }
 .doc-scroll::-webkit-scrollbar-thumb { background: var(--surface-hover); border-radius: var(--radius-full); border: 3px solid var(--bg); }
