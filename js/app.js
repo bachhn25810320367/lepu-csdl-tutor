@@ -23,6 +23,10 @@ const CONFIG = {
   model: 'oc/space-bunny-free',
   maxHist: 10,
   probeMs: 4000,
+  // Model nay ton mot khoang 'reasoning' rat lon truoc khi tra loi that.
+  // max_tokens 1400 bi reasoning nuot het nen content rong. 6000 cho
+  // mot cau hoi co tai lieu day du; 12000 cho cau can giai chi tiet.
+  maxTokens: 6000,
 };
 
 // Ben chat dang dung: {kind:'local'|'remote', url}
@@ -398,10 +402,12 @@ async function ask(question) {
   const userTurn = buildUserTurn(q, sysPrompt);
   let body;
   if (ACTIVE.kind === 'remote') {
+    // stream: true de chunk ve dan dan. Non-stream de model nghi het toan bo
+    // reasoning roi moi tra content — nhin nhu treo may so voi cau hoi dai.
     body = JSON.stringify({
       model: CONFIG.model,
-      stream: false,
-      max_tokens: 1400,
+      stream: true,
+      max_tokens: CONFIG.maxTokens,
       temperature: 0.3,
       messages: hist.length ? hist : [{ role: 'user', content: userTurn }],
     });
@@ -418,11 +424,14 @@ async function ask(question) {
       body,
       signal: ctl.signal,
     });
+    const rawText = await readBody(res, res.headers.get('content-type') || '');
     clearTimeout(timer);
-    const rawText = await res.text();
     let data = {};
     try { data = JSON.parse(rawText); } catch (e) {}
-    const answer = data.answer || pickContent(data);
+    // SSE: noi cac chunk delta thanh mot chuoi
+    const streamed = rawText.trimStart().startsWith('data:')
+      ? joinStream(rawText) : '';
+    const answer = streamed || data.answer || pickContent(data);
     S.thread.splice(-1); // bo thinking
     if (!res.ok) {
       const msg = (data.error && data.error.message) || data.message || rawText.slice(0, 180) || ('Lỗi ' + res.status);
@@ -526,6 +535,37 @@ function pickContent(data) {
   return t;
 }
 
+/* Doc body cua fetch. 9Router/Cloudflare co the tra SSE ngay ca khi client
+   khong yeu cau stream, nen phai doc dua tren content-type chu khong do vao
+   res.text() roi hy vong no la JSON. */
+async function readBody(res, ct) {
+  try {
+    if ((ct || '').includes('text/event-stream')) return await res.text();
+    return await res.text();
+  } catch (e) {
+    return '';
+  }
+}
+
+/* Noi cac chunk SSE thanh mot chuoi hoan chinh. */
+function joinStream(raw) {
+  const parts = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t.startsWith('data:')) continue;
+    const b = t.slice(5).trim();
+    if (!b || b === '[DONE]') continue;
+    let o;
+    try { o = JSON.parse(b); } catch (e) { continue; }
+    for (const ch of (o.choices || [])) {
+      const d = ch.delta || {};
+      if (typeof d.content === 'string') parts.push(d.content);
+      else if (typeof ch.text === 'string') parts.push(ch.text);
+    }
+  }
+  return parts.join('');
+}
+
 /* Chon ben chat.
    'local'  -> proxy.py tren may (key giu o server). Tra /_config de xac nhan.
    'remote' -> 9Router public qua Cloudflare, key gui trong header Authorization.
@@ -608,7 +648,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v7';
+const VER = 'v8';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
