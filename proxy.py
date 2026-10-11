@@ -122,6 +122,16 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self):
+        # Client tu hoi xem co duoc phep dung AI tu may chu hay khong.
+        # endpoint = "" -> app kiem tra /_config -> khong co ai do -> AI tat.
+        if self.path.startswith("/_config"):
+            self._json(200, {
+                "ok": True,
+                "model": MODEL,
+                "docs": ["khai-niem", "on-thi"],
+                "rate": {"max": RATE_MAX, "window": RATE_WINDOW},
+            })
+            return
         if self.path.startswith("/health"):
             ok = bool(KEY)
             self._json(200 if ok else 503, {

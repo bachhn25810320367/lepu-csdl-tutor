@@ -6,12 +6,27 @@
 'use strict';
 
 /* ---------------------------------------------------------------- config */
+/* AI chay o hai che do, tu chon theo noi dang mo trang:
+   - 'remote': goi thang 9Router public qua Cloudflare. Key nam trong file nay
+     nen BAT KHOA cho ai mo DevTools — nhung key do CHI mo duoc model
+     'oc/space-bunny-free' (mien phi), khong len toi model tra phi.
+   - 'local' : goi proxy tren may (proxy.py), key giu o server, an toan hon.
+   'auto' thu local truoc, remote sau.
+   Doi sang 'off' de chi doc, khong hoi AI. */
+const KEY = 'sk-e32af99e3404486589650fc63db3ef0b9e629e57df0f6ca62bf99fcf0856d40b-3cw4wz-d8ff256b';
+const REMOTE = 'https://proxy.hoangngocbach.id.vn';
+const LOCAL = 'http://127.0.0.1:2020';
+
 const CONFIG = {
-  // Ban xem thu: dat endpoint proxy o day. Rong = AI offline (chi doc).
-  aiEndpoint: 'http://127.0.0.1:2020',
+  mode: 'auto',            // 'auto' | 'remote' | 'local' | 'off'
+  apiKey: KEY,
   model: 'oc/space-bunny-free',
   maxHist: 10,
+  probeMs: 4000,
 };
+
+// Ben chat dang dung: {kind:'local'|'remote', url}
+let ACTIVE = null;
 
 const DOCS = [
   { id: 'khai-niem', file: 'data/01-khai-niem.md', label: '01 · Tầng khái niệm' },
@@ -360,9 +375,10 @@ async function ask(question) {
   S.thread.push({ role: 'thinking' });
   renderThread();
 
-  if (!CONFIG.aiEndpoint) {
+  if (!ACTIVE) {
     S.thread.splice(-1);
-    S.thread.push({ role: 'error', text: 'AI đang tắt. Đặt CONFIG.aiEndpoint trong js/app.js để bật.' });
+    S.thread.push({ role: 'error', text:
+      'AI đang tắt vì không tìm thấy proxy. Nếu bạn mở trang này trên máy khác, hãy mở trên máy đang chạy proxy — hoặc chạy: python3 proxy.py' });
     renderThread(); S.busy = false; $('#btnSend').disabled = false;
     return;
   }
@@ -376,25 +392,46 @@ async function ask(question) {
   try {
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), 120000);
-    const res = await fetch(CONFIG.aiEndpoint + '/chat', {
+    // Ben 'remote' goi thang 9Router: phai nhung tai lieu + prompt vao messages.
+  // Ben 'local' nho proxy.py: proxy tu dong dong goi tai lieu cho minh.
+  const sysPrompt = buildSystemPrompt();
+  const userTurn = buildUserTurn(q, sysPrompt);
+  let body;
+  if (ACTIVE.kind === 'remote') {
+    body = JSON.stringify({
+      model: CONFIG.model,
+      stream: false,
+      max_tokens: 1400,
+      temperature: 0.3,
+      messages: hist.length ? hist : [{ role: 'user', content: userTurn }],
+    });
+  } else {
+    body = JSON.stringify({
+      source: S.raw,
+      messages: hist.length ? hist : [{ role: 'user', content: q }],
+    });
+  }
+
+  const res = await fetch(chatUrl(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        source: S.raw,
-        messages: hist.length ? hist : [{ role: 'user', content: q }],
-      }),
+      headers: chatHeaders(),
+      body,
       signal: ctl.signal,
     });
     clearTimeout(timer);
-    const data = await res.json().catch(() => ({}));
+    const rawText = await res.text();
+    let data = {};
+    try { data = JSON.parse(rawText); } catch (e) {}
+    const answer = data.answer || pickContent(data);
     S.thread.splice(-1); // bo thinking
     if (!res.ok) {
-      S.thread.push({ role: 'error', text: data.message || data.error || ('Lỗi ' + res.status) });
-    } else if (!data.answer) {
+      const msg = (data.error && data.error.message) || data.message || rawText.slice(0, 180) || ('Lỗi ' + res.status);
+      S.thread.push({ role: 'error', text: msg });
+    } else if (!answer) {
       S.thread.push({ role: 'error', text: 'Mô hình không trả lời được. Thử câu khác.' });
     } else {
-      const j = matchSection(data.answer);
-      S.thread.push({ role: 'ai', text: data.answer, model: data.model, jump: j && j.id, jumpLabel: j && j.text });
+      const j = matchSection(answer);
+      S.thread.push({ role: 'ai', text: answer, model: data.model || CONFIG.model, jump: j && j.id, jumpLabel: j && j.text });
       S.aiOnline = true;
     }
     const secs = ((performance.now() - t0) / 1000).toFixed(1);
@@ -444,26 +481,121 @@ function matchSection(answer) {
 }
 
 /* ================================================================ health */
-async function checkHealth() {
-  const chip = $('#statusChip');
-  const set = (state, text) => {
-    chip.dataset.state = state;
-    chip.querySelector('.txt').textContent = text;
-  };
-  if (!CONFIG.aiEndpoint) { set('', 'AI tắt'); return; }
-  set('checking', 'đang kiểm tra');
+async /* Prompt dung chung cho ca hai kenh. Proxy local tu them tai lieu vao
+   <tai_lieu>; kenh remote thi app phai lam phan dinh ngay. */
+const SYS_PROMPT = [
+"Bạn là Gia sư CSDL của sinh viên Đại học Điện lực (EPU), đang ôn môn Cơ sở dữ liệu.",
+"",
+"NGUỒN SỰ THẬT",
+"- Chỉ dựa vào TÀI LIỆU trong thẻ <tai_lieu> của tin nhắn người dùng.",
+"- Tài liệu là nguồn sự thật duy nhất cho nội dung môn học.",
+"- Tài liệu không đủ để trả lời thì nói rõ: \"Tài liệu hiện tại chưa đề cập phần này\", rồi gợi ý nên xem mục nào.",
+"",
+"CÁCH TRẢ LỜI",
+"- Tiếng Việt, đúng giọng sinh viên năm 3.",
+"- Giảng giải chứ không chỉ đưa đáp án. Hỏi \"tại sao\" thì giải thích cơ chế.",
+"- Cấu trúc: mốc mục → công thức → ví dụ trong tài liệu → lỗi hay gặp.",
+"- Trích dẫn cụ thể (\"mục 6.3\", \"Phụ lục A\") để học sinh tự tra.",
+"- SQL luôn theo SQL Server: có GO giữa các khối, chuỗi tiếng Việt có N\'...\'.",
+"- Câu hỏi mơ hồ thì hỏi lại đúng một câu cụ thể, đừng đoán.",
+"",
+"KHONG ĐƯỢC",
+"- Không bịa số liệu, không tự tạo ví dụ rồi gọi là kết quả trong tài liệu.",
+"- Không nói \"đã kiểm chứng\" nếu chưa chạy kiểm tra.",
+].join("\n");
+
+function buildSystemPrompt() { return SYS_PROMPT; }
+
+function buildUserTurn(question) {
+  return "<tai_lieu>\n" + S.raw.trim() + "\n</tai_lieu>\n\n" +
+         "<cau_hoi>\n" + question.trim() + "\n</cau_hoi>";
+}
+
+/* Doc noi dung tu response cua 9Router (chat.completion) va tu phong proxy
+   ({"answer": "..."}). Chuyen chat/completion sang phoi hien thi. */
+function pickContent(data) {
+  if (!data) return "";
+  if (typeof data.answer === 'string') return data.answer;
+  const choice = (data.choices || [])[0];
+  if (!choice) return "";
+  const m = choice.message || {};
+  let t = typeof m.content === 'string' ? m.content : '';
+  if (!t && typeof choice.text === 'string') t = choice.text;
+  if (Array.isArray(m.content)) {
+    t = m.content.map(c => (typeof c === 'string' ? c : (c && c.text) || '')).join('');
+  }
+  return t;
+}
+
+/* Chon ben chat.
+   'local'  -> proxy.py tren may (key giu o server). Tra /_config de xac nhan.
+   'remote' -> 9Router public qua Cloudflare, key gui trong header Authorization.
+   'auto'   -> thu local truoc, remote sau.
+   Endpoint nao tra 401/403 co nghia la proxy dang bat -> thu tiep muc sau. */
+async function pingLocal() {
   try {
     const ctl = new AbortController();
-    const t = setTimeout(() => ctl.abort(), 4000);
-    const r = await fetch(CONFIG.aiEndpoint + '/health', { signal: ctl.signal });
+    const t = setTimeout(() => ctl.abort(), CONFIG.probeMs);
+    const r = await fetch(LOCAL + '/_config', { signal: ctl.signal, cache: 'no-store' });
     clearTimeout(t);
-    const d = await r.json();
-    if (r.ok && d.ok) { S.aiOnline = true; set('ok', 'AI sẵn sàng'); }
-    else set('bad', 'AI lỗi');
-  } catch (e) {
-    S.aiOnline = false;
-    set('bad', 'AI offline');
+    if (!r.ok) return false;
+    const d = await r.json().catch(() => ({}));
+    return !!(d && d.ok);
+  } catch (e) { return false; }
+}
+
+async function pingRemote() {
+  try {
+    const ctl = new AbortController();
+    const t = setTimeout(() => ctl.abort(), CONFIG.probeMs);
+    const r = await fetch(REMOTE + '/v1/models', {
+      signal: ctl.signal, cache: 'no-store',
+      headers: { 'Authorization': 'Bearer ' + CONFIG.apiKey },
+    });
+    clearTimeout(t);
+    return r.ok;
+  } catch (e) { return false; }
+}
+
+async function resolveEndpoint() {
+  if (CONFIG.mode === 'off') return null;
+  if (CONFIG.mode === 'local')  return (await pingLocal())  ? { kind: 'local',  url: LOCAL }  : null;
+  if (CONFIG.mode === 'remote') return (await pingRemote()) ? { kind: 'remote', url: REMOTE } : null;
+  if (await pingLocal())  return { kind: 'local',  url: LOCAL };
+  if (await pingRemote()) return { kind: 'remote', url: REMOTE };
+  return null;
+}
+
+function chatUrl() {
+  return ACTIVE.kind === 'remote' ? ACTIVE.url + '/v1/chat/completions'
+                                   : ACTIVE.url + '/chat';
+}
+
+function chatHeaders() {
+  if (ACTIVE.kind === 'remote') {
+    return { 'Content-Type': 'application/json',
+             'Authorization': 'Bearer ' + CONFIG.apiKey };
   }
+  return { 'Content-Type': 'application/json' };
+}
+
+async function checkHealth() {
+  const chip = $('#statusChip');
+  const set = (state, text, title) => {
+    chip.dataset.state = state;
+    chip.querySelector('.txt').textContent = text;
+    chip.title = title || '';
+  };
+  if (CONFIG.mode === 'off') { set('', 'AI tắt', 'Đặt CONFIG.mode để bật'); return; }
+  set('checking', 'đang kiểm tra');
+  ACTIVE = await resolveEndpoint();
+  if (!ACTIVE) {
+    S.aiOnline = false;
+    set('bad', 'AI offline', 'Không gọi được 9Router. Kiểm tra mạng hoặc key.');
+    return;
+  }
+  S.aiOnline = true;
+  set('ok', 'AI sẵn sàng', 'Kênh: ' + ACTIVE.kind + ' · ' + ACTIVE.url);
 }
 
 /* ================================================================ toast */
@@ -477,7 +609,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v5';
+const VER = 'v7';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
