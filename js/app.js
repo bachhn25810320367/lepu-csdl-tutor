@@ -480,8 +480,7 @@ function matchSection(answer) {
   return hits.length ? hits[0] : null;
 }
 
-/* ================================================================ health */
-async /* Prompt dung chung cho ca hai kenh. Proxy local tu them tai lieu vao
+/* Prompt dung chung cho ca hai kenh. Proxy local tu them tai lieu vao
    <tai_lieu>; kenh remote thi app phai lam phan dinh ngay. */
 const SYS_PROMPT = [
 "Bạn là Gia sư CSDL của sinh viên Đại học Điện lực (EPU), đang ôn môn Cơ sở dữ liệu.",
