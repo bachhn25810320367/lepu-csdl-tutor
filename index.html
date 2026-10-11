@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LEPU · Gia sư CSDL — Ôn thi Cơ sở dữ liệu EPU</title>
+  <meta name="description" content="Hệ thống học Cơ sở dữ liệu EPU: đọc bài bên trái, hỏi gia sư AI bên phải. Mô hình trả lời chỉ dựa trên bài học đang mở.">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:title" content="LEPU · Gia sư CSDL">
+  <meta property="og:description" content="Đọc bài bên trái, hỏi gia sư AI bên phải — trả lời chỉ dựa trên bài học.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/app.css?v=5">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141316'/%3E%3Crect x='9' y='13' width='14' height='2' fill='%23f5f2eb'/%3E%3Crect x='9' y='18' width='14' height='2' fill='%23f5f2eb'/%3E%3Crect x='9' y='23' width='9' height='2' fill='%23f5f2eb'/%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      LEPU
+      <small>GIA SƯ CSDL</small>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="status-chip" id="statusChip" data-state="" title="Trạng thái kết nối AI">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="txt">đang kiểm tra</span>
+    </div>
+
+    <button class="icon-btn" id="btnTheme" type="button" title="Đổi nền sáng/tối" aria-label="Đổi nền sáng hoặc tối">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="shell">
+    <!-- ================= doc pane: 2/3 ================= -->
+    <section class="doc-pane" aria-label="Nội dung bài học">
+      <div class="doc-bar">
+        <select class="doc-select" id="docSel" aria-label="Chọn bài học"></select>
+        <select class="sec-nav" id="secNav" aria-label="Điều hướng theo mục"></select>
+        <div class="spacer"></div>
+        <span class="doc-meta" id="docMeta">…</span>
+      </div>
+      <div class="doc-scroll" id="docScroll">
+        <article class="md" id="docBody"></article>
+      </div>
+    </section>
+
+    <!-- ================= AI pane: 1/3 ================= -->
+    <aside class="ai-pane" aria-label="Gia sư AI">
+      <div class="ai-head">
+        <span class="tag">Gia sư AI</span>
+        <span class="model" id="aiModel">—</span>
+      </div>
+
+      <div class="ai-thread" id="aiThread"></div>
+
+      <div class="ai-composer">
+        <textarea id="ta" rows="2" placeholder="Hỏi về bài đang mở…  (Enter để gửi, Shift+Enter xuống dòng)"></textarea>
+        <div class="ai-actions">
+          <span class="hint">Ctrl+K · vào ô hỏi</span>
+          <button class="btn-clear" id="btnClear" type="button">Xoá</button>
+          <button class="btn-send" id="btnSend" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+            Hỏi
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js?v=5"></script>
+</body>
+</html>
