@@ -25,6 +25,8 @@
 
 ## 1. Vì sao cần CSDL
 
+
+![Bảng tính và CSDL khác nhau ở chỗ nào](assets/media/a0-bang-tinh-vs-csdl.jpg)
 Cùng một việc — lưu danh sách điểm — có ba cách làm.
 
 **Cách 1: ghi giấy.** Mất khi cháy, mất khi mưa, mỗi lần cộng điểm phải viết lại từ đầu. Không có cách nào tìm nhanh "ai điểm cao nhất" trong 40 tờ giấy.
@@ -36,6 +38,8 @@ Cùng một việc — lưu danh sách điểm — có ba cách làm.
 Khác biệt không phải ở chỗ "nhiều dữ liệu hơn" mà ở chỗ **có quy tắc bắt buộc**. Không có CSDL, quy tắc nằm trong đầu từng người. Có CSDL, quy tắc nằm trong hệ thống và ai cũng phải tuân.
 
 ### Ưu và nhược điểm so với bảng tính
+
+![Một câu SQL đi qua ba bước: trình phân tích cú pháp, bộ tối ưu, bộ thực thi](assets/media/a8-ba-buoc-truy-van.jpg)
 
 | Ưu điểm | Giải thích |
 |---|---|
@@ -50,6 +54,8 @@ Nhược điểm: tốn chi phí cài đặt, tốn thời gian thiết kế, c�
 
 ## 2. Bốn từ phải phân biệt: dữ liệu, CSDL, DBMS, hệ quản trị
 
+
+![Bốn từ dễ nhầm: dữ liệu, CSDL, DBMS, ứng dụng](assets/media/a2-bon-tu-de-nham.jpg)
 Bốn từ này hay bị dùng lẫn lộn. Xếp từ nhỏ đến lớn:
 
 | Từ | Nghĩa | Ví dụ cụ thể |
@@ -74,6 +80,8 @@ Cách trả lời an toàn khi đề hỏi *"phân biệt CSDL với hệ quản
 
 ## 3. Kiến trúc 3 mức
 
+
+![Kiến trúc 3 mức: ngoại, ý niệm, vật lý](assets/media/a1-kien-truc-3-muc.jpg)
 ![Kiến trúc 3 mức: ngoại – ý niệm – vật lý](assets/media/s3-kien-truc.png)
 
 ```
@@ -107,6 +115,10 @@ Nếu đề hỏi *"độc lập dữ liệu ở mức nào"*:
 
 ### 4.1. Những tên gọi chuẩn
 
+
+
+![Sáu tên gọi chuẩn trong bảng quan hệ](assets/media/a6-sau-ten-goi.jpg)
+![Kiểu dữ liệu: dùng sai thì hỏng](assets/media/a3-kieu-du-lieu.jpg)
 | Hình chữ nhật | Tên gọi chuẩn | Ví dụ trong bảng `SINHVIEN` |
 |---|---|---|
 | Cả bảng | **Quan hệ** (relation) | `SINHVIEN` |
@@ -119,6 +131,8 @@ Ba từ này hay bị đảo trong đề thi. Mẹo nhớ: **quan hệ chứa b�
 
 ### 4.2. Đọc một lược đồ quan hệ
 
+
+![PRIMARY KEY khác UNIQUE ở chỗ nào](assets/media/a5-pk-vs-unique.jpg)
 Khi đề viết dòng:
 
 ```
@@ -165,6 +179,8 @@ KETQUA   (MASV + MAMH ← PK gộp, DIEM)
 
 ## 5. Bốn tính chất của bảng quan hệ
 
+
+![Bốn tính chất của bảng quan hệ](assets/media/a5-bon-tinh-chat.jpg)
 ### 5.1. Mỗi dòng là duy nhất
 
 Hai dòng giống hệt nhau trong một bảng là điều không được phép — không có cách nào phân biệt dòng nào là "dòng thật".
@@ -209,6 +225,8 @@ Cần chú ý: **khác nhau với khóa ngoại.** Hai bảng khác nhau đượ
 
 ## 6. Khóa: từ siêu khóa đến khóa ngoại
 
+
+![Thang khóa: siêu khóa, ứng viên, chính, ngoại](assets/media/a3-thang-khoa.jpg)
 Bốn từ này xếp tầng từ rộng đến hẹp. Nhớ theo vòng thu hẹp:
 
 ```
@@ -284,6 +302,8 @@ Không tìm được một cột đơn nào làm khóa thì ghép nhiều cột 
 
 ## 7. Quan hệ 1-N và N-N: vì sao có bảng cầu nối
 
+
+![Quan hệ 1-N và N-N, bảng cầu nối](assets/media/b4-quan-he-1n-nn.jpg)
 ### 7.1. Quan hệ 1-N
 
 Một `KHOA` có nhiều `LOP`. Trong quan hệ này, khóa ngoại nằm ở phía nhiều: `LOP.MAKHOA` trỏ về `KHOA.MAKHOA`.
@@ -329,6 +349,8 @@ Ngược lại, bảng `KETQUA` là bảng cầu nối — nó không phải dan
 
 ## 8. Ba loại ràng buộc toàn vẹn
 
+
+![Ba loại ràng buộc toàn vẹn](assets/media/d11-rang-buoc-toan-ven.jpg)
 ### 8.1. Ràng buộc khóa
 
 - Giá trị khóa chính phải duy nhất
@@ -369,6 +391,8 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 
 ### 8.4. Sáu ràng buộc trong câu `CREATE TABLE`
 
+
+![Sáu ràng buộc trong câu CREATE TABLE](assets/media/a4-sau-rang-buoc.jpg)
 | Ràng buộc | Cú pháp | Tác dụng |
 |---|---|---|
 | Khóa chính | `PRIMARY KEY` | Duy nhất + không NULL |
@@ -390,6 +414,8 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 
 ### 9.1. NULL không phải là một giá trị
 
+
+![Bốn cách so sánh với NULL](assets/media/c3-bon-cach-so-sanh-null.jpg)
 `NULL` nghĩa là **chưa biết** hoặc **không có**. Nó không phải số 0, không phải chuỗi rỗng `''`, cũng không phải giá trị `FALSE`.
 
 Hệ quả trực tiếp: so sánh với `NULL` bằng `=` hoặc `<>` **không bao giờ cho kết quả đúng.**
@@ -404,6 +430,8 @@ Phải dùng `IS NULL` / `IS NOT NULL`.
 
 ### 9.2. Ba logic thay vì hai
 
+
+![NULL tạo ra ba logic, không phải hai](assets/media/c2-ba-logic.jpg)
 Với dữ liệu không NULL, kết quả của một điều kiện là **Đúng** hoặc **Sai**. Có NULL thì xuất hiện thêm trạng thái thứ ba: **Không xác định**.
 
 Ba kiểm tra trên dữ liệu mẫu, hai sinh viên — một có địa chỉ, một không:
@@ -423,6 +451,8 @@ Câu trả lời trung thực là **"chưa biết"**. Và "chưa biết có ch�
 
 ### 9.3. NULL ảnh hưởng đến hàm tổng hợp
 
+
+![NULL ảnh hưởng đến COUNT và AVG](assets/media/c4-null-va-ham-tong-hop.jpg)
 `COUNT` bỏ qua NULL — đó là lý do `COUNT(*)` và `COUNT(cột)` cho hai kết quả khác nhau khi cột đó có NULL.
 
 `SUM`, `AVG` cũng bỏ qua NULL. Cần phân biệt "tổng bằng 0 vì không có dòng nào" với "tổng bằng 0 vì tất cả các giá trị đều NULL" thì phải dùng `COUNT(cột)` bên cạnh.
@@ -497,5 +527,7 @@ Trong đề thi bảng thư viện, cột `DOCGIA.DIACHI` có thể NULL — đ�
 
 ## Ghi chú
 
+
+![Phụ thuộc hàm và chuẩn hóa 1NF đến 3NF](assets/media/c2-chuan-hoa-1nf-3nf.jpg)
 - Các ví dụ ở mục 6.1, 8.2, 9.2 chạy trên bảng minh hoạ 4 dòng và bảng 3 dòng dựng riêng, không phải dữ liệu đề — để khái niệm hiện ra rõ.
 - Bảng dữ liệu thật của đề nằm ở [CSDL_ON_THI_MAY.md](CSDL_ON_THI_MAY.md) mục 2.

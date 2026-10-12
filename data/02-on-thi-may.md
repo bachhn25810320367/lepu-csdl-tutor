@@ -62,6 +62,8 @@ Kiến trúc 3 mức, chỉ cần nhớ khi đề hỏi "mức nào chịu trác
 
 ## 2. Bộ dữ liệu mẫu (dùng cho mọi ví dụ)
 
+
+![Bộ dữ liệu mẫu của đề thi](assets/media/f0-bo-du-lieu-mau.jpg)
 Không có dữ liệu vào và kết quả ra thì không hình dung được `GROUP BY`, `HAVING`, `LEFT JOIN`, `>= ALL` đang làm gì. Bộ dữ liệu dưới đây nhỏ đủ để tính tay nhưng đủ các bẫy để luyện.
 
 **Các bẫy được cài sẵn có chủ ý:**
@@ -79,6 +81,8 @@ Không có dữ liệu vào và kết quả ra thì không hình dung được `
 ### 2.1. Script tạo (chạy trên SQL Server)
 
 ```sql
+
+![Bốn cái bẫn có sẵn trong dữ liệu mẫu](assets/media/f3-bon-cai-ban.jpg)
 /* ============ BẢNG SINH VIÊN (đề 1 và đề 2) ============ */
 CREATE TABLE KHOA (
     MAKHOA  CHAR(4)       NOT NULL,
@@ -284,6 +288,8 @@ Lưu ý: đây là hành vi **của SQL Server**. MySQL và PostgreSQL cho phép
 
 ## 3. Bảng đọc đề: từ khóa trong đề → SQL
 
+
+![Bảng đọc đề: từ khóa tiếng Việt → SQL](assets/media/b7-bang-doc-de.jpg)
 Dùng bảng này trước khi viết bất kỳ câu nào. Đọc câu hỏi, tìm từ khóa, áp công thức.
 
 | Từ khóa trong đề | Công thức SQL | Lỗi phải tránh |
@@ -303,6 +309,10 @@ Dùng bảng này trước khi viết bất kỳ câu nào. Đọc câu hỏi, t
 
 ## 4. Dạng 1 — Lọc một bảng
 
+
+
+![Dạng 1 — Lọc một bảng](assets/media/video-dang-1-loc-mot-bang.mp4)
+![Bốn toán tử lọc trên cùng một bảng](assets/media/d1-bon-toan-tu-loc.jpg)
 **Bảng vào:** `MONHOC`
 
 ```
@@ -365,6 +375,8 @@ Cần tìm một giá trị cụ thể thì đừng dùng `LIKE` — dùng `=`. 
 
 ## 5. Dạng 2 — Nối bảng
 
+
+![Dạng 2 — Nối bảng: ON khác WHERE](assets/media/video-dang-2-noi-bang.mp4)
 **Bản đồ khóa của đề:**
 
 ```
@@ -482,6 +494,8 @@ Hai điểm bắt buộc khi dùng `LEFT JOIN` để đếm:
 
 ### 5.4. `WHERE` và `ON` không phải chỗ nào cũng giống nhau
 
+
+![ON khác WHERE: cùng SQL, kết quả khác](assets/media/d6-on-khac-where.jpg)
 Đây là chỗ sai âm thầm, không báo lỗi mà ra sai kết quả.
 
 | Đặt điều kiện ở | Thực tế xảy ra | Kết quả |
@@ -511,6 +525,8 @@ Quy tắc rút gọn: **muốn giữ dòng trống thì lọc ở `ON`; không q
 
 ### 5.5. Bẫy cú pháp: đếm trong `WHERE`
 
+
+![Bẫy cú pháp: đếm trong WHERE](assets/media/d7-dem-trong-where.jpg)
 Câu hỏi: lớp nào không có sinh viên nào, đếm số sinh viên.
 
 ```sql
@@ -544,6 +560,8 @@ HAVING COUNT(s.MASV) = 0;
 
 ## 6. Dạng 3 — Gom nhóm và đếm
 
+
+![Dạng 3 — Gom nhóm và đếm](assets/media/video-dang-3-gom-nhom-dem.mp4)
 ### 6.1. `GROUP BY` cơ bản
 
 **Câu hỏi:** sinh viên học trên 3 môn.
@@ -565,6 +583,8 @@ ORDER BY s.MASV;
 
 ### 6.2. `WHERE` lọc trước, `HAVING` lọc sau
 
+
+![WHERE lọc trước, HAVING lọc sau](assets/media/d8-where-having.jpg)
 | Mệnh đề | Chạy khi nào | Lọc cái gì |
 |---|---|---|
 | `WHERE` | Trước khi gom nhóm | Từng **dòng** |
@@ -593,6 +613,8 @@ ORDER BY m.TENMH;
 
 ### 6.3. Nhóm theo khóa, không nhóm theo tên
 
+
+![Gom nhóm theo mã môn, không theo tên](assets/media/d9-gom-theo-ma.jpg)
 Dữ liệu mẫu có `MH03` và `MH07` **cùng tên** "Lập trình C". Hai môn này khác nhau.
 
 Cách viết sai — gộp hai môn làm một:
@@ -669,6 +691,8 @@ Ba điều chú ý:
 
 ### 6.4. `COUNT(*)`, `COUNT(cột)`, `COUNT(DISTINCT cột)`
 
+
+![Ba hàm COUNT, ba kết quả khác nhau](assets/media/d10-ba-ham-count.jpg)
 | Hàm | Đếm gì | Ví dụ trong dữ liệu mẫu |
 |---|---|---|
 | `COUNT(*)` | Số **dòng** của nhóm | `DG01` mượn 3 cuốn ở 3 dòng → 3 |
@@ -690,6 +714,8 @@ Hai con số này khác nhau và đề không phân định. **Ghi rõ cách hi�
 
 ### 6.6. Lỗi nguy hiểm nhất của đề gốc: subquery tự biến
 
+
+![Subquery tự biến — lỗi nguy hiểm nhất](assets/media/d11-subquery-tu-bien.jpg)
 Đáp án gốc câu 14 đề 2 viết thế này:
 
 ```sql
@@ -737,11 +763,17 @@ Nếu cần một subquery cố ý tự biến (ví dụ "lấy tất cả sách
 
 ## 7. Dạng 4 — So sánh với giá trị lớn nhất
 
+
+![Dạng 4 — So sánh với giá trị lớn nhất](assets/media/video-dang-4-gia-tri-lon-nhat.mp4)
 Câu hỏi: "độc giả mượn nhiều sách nhất", "môn có số tiết lớn nhất", "sinh viên học nhiều môn nhất".
 
 ### 7.1. `>= ALL` — trả về cả những ai bằng nhau
 
 ```sql
+
+![Ba cách tìm giá trị lớn nhất: >= ALL, NOT EXISTS, ORDER BY LIMIT 1](assets/media/f2-bang-luu-do.jpg)
+
+![>= ALL trả về cả những ai bằng nhau](assets/media/e2-ge-all-bang-nhau.jpg)
 SELECT m.MAMH, m.TENMH, m.SOTIET
 FROM MONHOC m
 WHERE m.SOTIET >= ALL (SELECT SOTIET FROM MONHOC)
@@ -774,6 +806,8 @@ WHERE t.TONGSOSACH = (SELECT MAX(TONGSOSACH) FROM (
 ### 7.2. `TOP 1 WITH TIES` — cách viết ngắn hơn, chỉ SQL Server
 
 ```sql
+
+![So sánh >= ALL và > ALL](assets/media/e2-ge-all-chi-tiet.jpg)
 SELECT TOP 1 WITH TIES d.MADG, d.HOTEN, SUM(c.SOLUONG) AS TONGSOSACH
 FROM DOCGIA d
 JOIN PHIEUMUON  p ON p.MADG = d.MADG
@@ -799,6 +833,8 @@ ORDER BY SUM(c.SOLUONG) DESC;
 
 ### 7.3. `ORDER BY ... LIMIT 1` — không dùng cho câu "nhiều nhất"
 
+
+![TOP 1 mất người bằng điểm](assets/media/e1-top-1-mat-nguoi.jpg)
 | Cách viết | Trả về | Đúng ý đề? |
 |---|---|---|
 | `ORDER BY ... LIMIT 1` | Đúng 1 dòng duy nhất | Không — mất người bằng điểm |
@@ -819,6 +855,8 @@ Số `1` trong `LIMIT` / `TOP` chỉ có nghĩa khi đề thật sự hỏi "m�
 
 ## 8. Dạng 5 — Loại trừ
 
+
+![Dạng 5 — Loại trừ: NOT EXISTS và NOT IN](assets/media/video-dang-5-loai-tru.mp4)
 ### 8.1. `NOT EXISTS` — cách an toàn
 
 ```sql
@@ -834,6 +872,8 @@ ORDER BY s.MASACH;
 
 ### 8.2. Bẫy `NOT IN` — chỉ hỏng khi subquery có NULL
 
+
+![NOT EXISTS an toàn, NOT IN bẫy NULL](assets/media/c6-not-in-bay.jpg)
 Câu hỏi này **không phải** "NOT IN khi không có kết quả thì ra NULL":
 
 ```sql
@@ -867,6 +907,8 @@ WHERE NOT EXISTS (SELECT 1 FROM LOP l WHERE l.MAKHOA = k.MAKHOA);
 
 ### 8.3. `NOT LIKE` không trả về dòng NULL
 
+
+![Bẫy NOT LIKE làm dòng NULL biến mất](assets/media/c5-bay-not-like.jpg)
 Câu 15 đề 3: độc giả không ở Hà Nội.
 
 ```sql
@@ -908,6 +950,8 @@ Cách quyết định khi nào dùng bản nào: đọc kỹ câu hỏi. "Độc
 
 ## 9. Đề 3 — Lời giải đầy đủ
 
+
+![Lược đồ quan hệ của bài quản lý thư viện](assets/media/f1-luoc-do-thu-vien.jpg)
 Lược đồ:
 
 ```
@@ -1010,6 +1054,8 @@ ORDER BY s.MASACH;
 ### 9.5. Câu 5 — Tổng số sách mượn ngày 20/11/2023
 
 ```sql
+
+![Một câu hỏi, ba cách đếm, ba con số](assets/media/f2-ba-cach-dem.jpg)
 SELECT p.NGAYMUON, SUM(c.SOLUONG) AS TONGSOSACH
 FROM PHIEUMUON p JOIN CTPHIEUMUON c ON c.MAPM = p.MAPM
 WHERE p.NGAYMUON = '20231120'
@@ -1212,6 +1258,10 @@ ORDER BY MASACH;
 
 ## 10. Bản đồ 43 câu của 3 đề → dạng đã học
 
+
+
+![Bản đồ 43 câu của 3 đề rơi vào 5 dạng](assets/media/f5-ban-do-43-cau.jpg)
+![Đề 3 dùng đúng 5 dạng câu hỏi đã học](assets/media/f4-de-3-dung-5-dang.jpg)
 Mục này để tự kiểm tra xem đã phủ đề chưa. Mỗi câu đề ánh xạ về đúng một dạng đã dạy ở mục 4–8.
 
 | Đề | Câu | Nội dung | Dạng đã học | Đủ? |
@@ -1266,6 +1316,10 @@ Muốn tự kiểm tra: đổi cột "Đủ?" thành phần trả lời của b�
 
 ## 11. Đọc câu hỏi như thế nào — bốn bước tách SQL ra khỏi câu tiếng Việt
 
+
+
+![Đếm cái gì — đó là điều bài hỏi](assets/media/g2-dem-cai-gi.jpg)
+![Bốn bước tách SQL khỏi câu tiếng Việt](assets/media/c4-bon-buoc-doc-de.jpg)
 Mục 4–8 dạng công thức. Mục này dạy **làm sao biết dùng công thức nào** khi câu hỏi viết bằng tiếng Việt.
 
 ### 11.1. Bốn bước, luôn theo thứ tự này
@@ -1746,6 +1800,8 @@ Trước khi chạy lệnh xóa/sửa trong kỳ thi, chạy `SELECT` với đú
 
 ## Phụ lục A — 8 lỗi thật trong đề gốc
 
+
+![Tám lỗi trong đáp án đề gốc](assets/media/c1-8-loi-de-goc.jpg)
 Tám lỗi dưới đây có thật trong file đáp án chính thức của Đề 2 (Bài thực hành SQL số 1). Không phải lỗi "có thể có" — đã đối chiếu với đề và kiểm chạy lại trên dữ liệu mẫu.
 
 ### Lỗi 1 — Câu 3 và 4 thiếu `DISTINCT`
@@ -1883,6 +1939,8 @@ Lưu ý thêm: đề 2 câu 4 hỏi môn tên `'HEQTCSDL'` — đây là sai ch�
 
 ## Phụ lục B — Phụ thuộc hàm và chuẩn hóa
 
+
+![Bảng từ khóa đề ánh xạ sang hàm SQL](assets/media/g1-dem-cai-gi-2.jpg)
 Không nằm trong 3 đề đã đọc. Giữ ở phụ lục để khi nào có đề cương mà thấy hỏi thì lấy ra dùng.
 
 ### B.1. Phụ thuộc hàm (FD)
@@ -1980,6 +2038,8 @@ Mỗi bảng chỉ còn một phụ thuộc hàm với vế phải là khóa →
 
 ## Phụ lục C — Sai khác SQL Server so với MySQL/PostgreSQL
 
+
+![SQL Server khác MySQL và PostgreSQL](assets/media/c3-sqlserver-vs-mysql.jpg)
 Thi bằng SQL Server thì dùng cột bên trái. Biết cột bên phải để tránh viết SQL của công cụ khác rồi nộp.
 
 | Việc | MySQL / PostgreSQL | **SQL Server** |
