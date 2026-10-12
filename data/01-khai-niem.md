@@ -74,6 +74,8 @@ Cách trả lời an toàn khi đề hỏi *"phân biệt CSDL với hệ quản
 
 ## 3. Kiến trúc 3 mức
 
+![Kiến trúc 3 mức: ngoại – ý niệm – vật lý](assets/media/s3-kien-truc.png)
+
 ```
 ┌──────────────────────────────────────────────────┐
 │  MỨC NGOẠI — người dùng, ứng dụng                │
@@ -131,6 +133,8 @@ Từ đó suy ra được:
 - `MALOP` là **khóa ngoại** — nó chứa giá trị lấy từ `LOP.MALOP`
 
 ### 4.3. Bản đồ quan hệ của đề thi
+
+![Bản đồ quan hệ: KHOA → LOP → SINHVIEN, MONHOC → KETQUA](assets/media/s43-ban-do-quan-he.png)
 
 ```
 KHOA     (MAKHOA ← PK)
