@@ -1,0 +1,566 @@
+{
+  "id": "de4",
+  "title": "Đề 4: lập trình CSDL",
+  "mcq": [
+    {
+      "q": "Ba đề trước (đề 1, 2, 3) hỏi truy vấn. Đề 4 khác ở chỗ nào?",
+      "o": [
+        "Hỏi nhiều câu hơn",
+        "Hỏi lập trình CSDL: ràng buộc, stored procedure, trigger, backup",
+        "Dùng bảng khác nhau",
+        "Thi trên máy khác"
+      ],
+      "a": 1,
+      "w": "Đề 1-3 chỉ hỏi truy vấn SELECT/JOIN/GROUP BY. Đề 4 hỏi ALTER TABLE CHECK, CREATE PROCEDURE, CREATE TRIGGER, BACKUP — dạng đề mới, bỏ qua là mất trọn điểm.",
+      "s": "13"
+    },
+    {
+      "q": "Vì sao CTHOADON phải dùng khóa chính gộp (MaHD, MaHang)?",
+      "o": [
+        "Vì kiểu dữ liệu khác nhau",
+        "Vì MaHD lặp khi một đơn có nhiều dòng, MaHang lặp khi một mặt hàng bán trong nhiều đơn",
+        "Vì SQL Server không cho khóa chính một cột ở bảng này",
+        "Vì cột MaHang không có NOT NULL"
+      ],
+      "a": 1,
+      "w": "CTHOADON là bảng cầu nối N-N giữa HOADON và HANGHOA, y hệt KETQUA ở mục 6.4. Mỗi cặp chỉ xuất hiện một lần nên cặp mới xác định duy nhất một dòng.",
+      "s": "13.1"
+    },
+    {
+      "q": "Mỗi dòng trong CTHOADON là gì?",
+      "o": [
+        "Một mặt hàng trong một đơn",
+        "Một hoá đơn",
+        "Một khách hàng",
+        "Một kho hàng"
+      ],
+      "a": 0,
+      "w": "Vì vậy khi đề hỏi \"số mặt hàng\" thì đếm COUNT, không phải SUM(SoLuong). Sum là tổng số LƯỢNG bán.",
+      "s": "13.1"
+    },
+    {
+      "q": "Câu \"hiển thị mặt hàng có số lượng tồn lớn hơn 20\". Điều kiện nào đúng?",
+      "o": [
+        "WHERE SoLuongTon >= 20",
+        "WHERE SoLuongTon > 20",
+        "WHERE SoLuongTon = 20",
+        "HAVING SoLuongTon > 20"
+      ],
+      "a": 1,
+      "w": "Đề ghi \"lớn hơn 20\" nên là > 20. Viết >= 20 thì lấy thừa hàng có đúng 20 — đây là một trong sáu điểm dễ mất của đề.",
+      "s": "13.8"
+    },
+    {
+      "q": "Khi thêm ràng buộc CHECK (SoLuongTon > 0) vào bảng đã có dữ liệu, SQL Server làm gì?",
+      "o": [
+        "Chấp nhận ràng buộc vô điều kiện",
+        "Kiểm tra dữ liệu đang có trước; nếu có dòng vi phạm thì báo lỗi và không tạo ràng buộc",
+        "Xoá các dòng vi phạm rồi tạo ràng buộc",
+        "Tạo ràng buộc nhưng không kiểm tra"
+      ],
+      "a": 1,
+      "w": "Muốn kiểm tra dữ liệu sẵn có mà không đụng tới bảng: SELECT MaHang, SoLuongTon FROM HANGHOA WHERE SoLuongTon <= 0. Chạy câu đó trước rồi hãy thêm ràng buộc.",
+      "s": "13.3"
+    },
+    {
+      "q": "Cú pháp đúng để thêm ràng buộc CHECK vào cột SoLuongTon là gì?",
+      "o": [
+        "ALTER TABLE HANGHOA ADD CONSTRAINT CK_HANGHOA_TON CHECK (SoLuongTon > 0)",
+        "ALTER TABLE HANGHOA ADD CHECK (SoLuongTon > 0) CONSTRAINT CK_HANGHOA_TON",
+        "UPDATE HANGHOA CHECK (SoLuongTon > 0)",
+        "CREATE CHECK CK_HANGHOA_TON ON HANGHOA"
+      ],
+      "a": 0,
+      "w": "Sau khi thêm, nhập SoLuongTon = -1 sẽ bị chặn với Msg 547: The INSERT statement conflicted with the CHECK constraint.",
+      "s": "13.3"
+    },
+    {
+      "q": "Trong SSMS, vì sao CREATE PROCEDURE phải là câu lệnh đầu tiên của một lô?",
+      "o": [
+        "Vì SQL Server không hiểu CREATE ở giữa lô",
+        "Vì không có GO ở giữa thì SQL Server báo Incorrect syntax near 'GO'",
+        "Vì phải khai báo biến trước",
+        "Vì GO là từ khoá SQL"
+      ],
+      "a": 1,
+      "w": "GO không phải SQL — đó là lệnh của SSMS để tách các lô. Chạy file .sql thì bắt buộc có GO, không có thì báo Msg 102.",
+      "s": "13.4"
+    },
+    {
+      "q": "Trong stored procedure, cách viết tham số đúng là gì?",
+      "o": [
+        "WHERE MaHang = CHAR(10)",
+        "WHERE MaHang = @MaHang",
+        "WHERE MaHang = :MaHang",
+        "WHERE MaHang = ?"
+      ],
+      "a": 1,
+      "w": "Tham số viết @TenBien, không viết kiểu trước. Viết CHAR(10) là sai cả kiểu dữ liệu lẫn ý nghĩa — đây là bẫy thứ sáu của đề.",
+      "s": "13.4"
+    },
+    {
+      "q": "Vì sao stored procedure không nên dùng SELECT * ?",
+      "o": [
+        "Vì SELECT * chậm hơn",
+        "Vì kết quả phụ thuộc vào thứ tự cột trong bảng, và đề muốn đúng 3 cột",
+        "Vì SQL Server không cho SELECT * trong procedure",
+        "Vì SELECT * trả về cột NULL"
+      ],
+      "a": 1,
+      "w": "Đề muốn \"mã hàng, tên hàng, số lượng tồn\" thì liệt kê đúng 3 cột đó. Thêm cột vào bảng sau này thì SELECT * đổi kết quả mà không đổi câu lệnh.",
+      "s": "13.4"
+    },
+    {
+      "q": "Trong trigger, bảng inserted và deleted chứa gì?",
+      "o": [
+        "inserted = dòng trước, deleted = dòng sau",
+        "inserted = dòng sau thay đổi, deleted = dòng trước thay đổi",
+        "inserted và deleted giống nhau",
+        "Chỉ có trong stored procedure"
+      ],
+      "a": 1,
+      "w": "Đây là điểm học được quan trọng nhất của cả đề. INSERT thì inserted có, deleted rỗng. DELETE thì ngược lại. UPDATE thì có cả hai.",
+      "s": "13.5"
+    },
+    {
+      "q": "Với AFTER INSERT, UPDATE, DELETE, mỗi trường hợp phải tính lại TienBan cho MaHD nào?",
+      "o": [
+        "Luôn chỉ MaHD trong inserted",
+        "INSERT: inserted · DELETE: deleted · UPDATE: cả inserted lẫn deleted",
+        "Luôn chỉ MaHD trong deleted",
+        "Tất cả các hoá đơn trong bảng"
+      ],
+      "a": 1,
+      "w": "Nếu viết một khối UPDATE chung chỉ lọc theo inserted thì khi xoá dòng, inserted rỗng nên không khớp dòng nào — tổng tiền hoá đơn đó không bao giờ được cập nhật và vẫn giữ số tiền cũ.",
+      "s": "13.5"
+    },
+    {
+      "q": "Vì sao nhánh UPDATE phải tính lại cả hoá đơn cũ lẫn hoá đơn mới?",
+      "o": [
+        "Vì SQL Server yêu cầu",
+        "Vì khi sửa MaHD của một dòng chi tiết, dòng đó chuyển từ HD001 sang HD002 nên HD001 mất một dòng mà tổng tiền của nó không được sửa",
+        "Vì để tránh lỗi cú pháp",
+        "Vì để tăng tốc độ"
+      ],
+      "a": 1,
+      "w": "Bẫy thứ hai, ít ai để ý. Nếu chỉ tính theo inserted thì hoá đơn cũ giữ tổng tiền cũ, sai dữ liệu mà không ai báo lỗi.",
+      "s": "13.5"
+    },
+    {
+      "q": "Xoá hết dòng chi tiết của một hoá đơn thì SUM(SoLuong * Dongia) trả về gì?",
+      "o": [
+        "0",
+        "NULL, vì hàm tổng hợp trên tập r��ng trả NULL chứ không phải 0",
+        "Báo lỗi",
+        "Giá trị cũ"
+      ],
+      "a": 1,
+      "w": "Đây là lý do phải bọc ISNULL(..., 0) hoặc COALESCE(..., 0). Không bọc thì TienBan bị ghi đè bằng NULL và mọi câu WHERE TienBan > 0 sau đó sẽ bỏ sót hoá đơn đó.",
+      "s": "13.5"
+    },
+    {
+      "q": "ISNULL và COALESCE khác nhau thế nào?",
+      "o": [
+        "Không khác nhau",
+        "ISNULL chỉ 2 tham số và là hàm riêng của SQL Server; COALESCE dùng được từ 2 tham số trở lên và là cách viết chuẩn SQL",
+        "COALESCE không dùng được trong trigger",
+        "ISNULL nhanh hơn luôn"
+      ],
+      "a": 1,
+      "w": "Ở đây hai t��i cho cùng kết quả. Đề thi dùng SQL Server nên cả hai đều được.",
+      "s": "13.5"
+    },
+    {
+      "q": "Vì sao cột TienBan lưu trong HOADON là việc không chuẩn, nhưng đề vẫn yêu cầu?",
+      "o": [
+        "Vì đề thi sai",
+        "Vì TienBan là dữ liệu tính được bằng SUM(SoLuong * Dongia), lưu vào bảng cha là dữ liệu dư thừa — nhưng đề cố ý yêu cầu và câu 5 buộc phải giữ nó luôn đúng, đó là lý do đề hỏi trigger",
+        "Vì SQL Server không tính được",
+        "Vì không có lựa chọn nào khác"
+      ],
+      "a": 1,
+      "w": "Nếu giảng viên chấp nhận bỏ cột TienBan và tính mỗi khi cần thì không cần trigger và không có nguy cơ dữ liệu sai. Nhưng đề đã yêu cầu tạo trigger và cột đã có trong lược đồ nên khi làm bài phải theo đề.",
+      "s": "13.5"
+    },
+    {
+      "q": "Sau khi tạo trigger, UPDATE CTHOADON SET SoLuong = 5 WHERE MaHD='HD001' AND MaHang='H01' cho kết quả TienBan của HD001 là bao nhiêu?",
+      "o": [
+        "3450000.00",
+        "7950000.00",
+        "450000.00",
+        "Không đổi"
+      ],
+      "a": 1,
+      "w": "Trước là 3450000.00, sau là 7950000.00. Kiểm tra tay: 5 × 1.500.000 + 450.000 = 7.950.000. Đã chạy thật.",
+      "s": "13.5"
+    },
+    {
+      "q": "Sau khi DELETE dòng chi tiết (HD001, H01), TienBan của HD001 còn lại bao nhiêu?",
+      "o": [
+        "7950000.00",
+        "450000.00",
+        "NULL",
+        "3450000.00"
+      ],
+      "a": 1,
+      "w": "Còn đúng một dòng H02: 1 × 450.000 = 450.000. Đã chạy thật. Nếu không bọc ISNULL thì khi xoá hết dòng sẽ ra NULL chứ không phải 0.",
+      "s": "13.5"
+    },
+    {
+      "q": "Khi BACKUP DATABASE, đường dẫn phải nằm ở đâu?",
+      "o": [
+        "Máy đang mở SSMS",
+        "Máy chạy SQL Server",
+        "Máy nào cũng được vì SQL Server tự hiểu",
+        "Thư mục Downloads của người dùng"
+      ],
+      "a": 1,
+      "w": "Nếu SQL Server chạy ở máy khác qua mạng thì chọn đường dẫn UNC trên máy đó, không phải D:\\backup trên máy bạn. Ba chỗ dễ sai: đường dẫn, đuôi .bak, và quyền sysadmin.",
+      "s": "13.6"
+    },
+    {
+      "q": "Vì sao sao lưu bằng BACKUP DATABASE mà không copy tay file .mdf?",
+      "o": [
+        "Vì .mdf nặng quá",
+        "Vì file .mdf đang bị SQL Server giữ khoá nên copy tay sẽ sai",
+        "Vì .mdf không chứa dữ liệu",
+        "Vì phải nén trước"
+      ],
+      "a": 1,
+      "w": "Chỉ BACKUP DATABASE mới tạo được bản sao lưu đúng. Kiểm tra bản sao lưu đã đủ bằng: RESTORE FILELISTONLY FROM DISK = '...'.",
+      "s": "13.6"
+    },
+    {
+      "q": "Khi kiểm tra bản sao lưu, câu nào đúng?",
+      "o": [
+        "SELECT * FROM .mdf",
+        "RESTORE FILELISTONLY FROM DISK = 'D:\\backup\\QuanLyBanHang.bak'",
+        "DROP DATABASE",
+        "BACKUP DATABASE ... WITH STATS"
+      ],
+      "a": 1,
+      "w": "FileListOnly đọc phần header của file sao lưu mà không cần khôi phục thật — cách kiểm tra nhanh và an toàn nhất.",
+      "s": "13.6"
+    },
+    {
+      "q": "Với câu 2 đề 4, kết quả chạy thật gồm những mặt hàng nào?",
+      "o": [
+        "H06, H04, H01, H02, H05",
+        "H06, H04, H01",
+        "H01, H02",
+        "Chỉ H06"
+      ],
+      "a": 0,
+      "w": "USB 128G (200), Tai nghe (120), Bàn phím cơ (50), Chuột không dây (30), Ổ cứng SSD 1TB (22). Tất cả đều lớn hơn 20.",
+      "s": "13.2"
+    },
+    {
+      "q": "Câu \"hiển thị các hoá đơn bán trên 3 mặt hàng, hiện mã hoá đơn, ngày, tổng số mặt hàng\". Hàm nào đúng cho cột Tổng số mặt hàng?",
+      "o": [
+        "SUM(ct.SoLuong)",
+        "COUNT(ct.MaHang)",
+        "COUNT(*)",
+        "MAX(ct.Dongia)"
+      ],
+      "a": 1,
+      "w": "Đề nói MẶT HÀNG (dòng chi tiết), không phải số lượng bán. SUM(SoLuong) sẽ lấy thêm hoá đơn chỉ có 2 mặt hàng nhưng số lượng lớn. Vì khóa gộp (MaHD, MaHang) nên COUNT(ct.MaHang) và COUNT(DISTINCT ct.MaHang) cho kết quả giống nhau.",
+      "s": "13.1"
+    },
+    {
+      "q": "Điều kiện HAVING COUNT(ct.MaHang) > 3 có thể đặt trong WHERE không?",
+      "o": [
+        "Có, kết quả giống nhau",
+        "Không — SQL Server báo WHERE clause cannot contain aggregates",
+        "Có, nếu thêm GROUP BY",
+        "Có, nếu dùng DISTINCT"
+      ],
+      "a": 1,
+      "w": "WHERE lọc từng dòng trước khi gom nhóm, hàm tổng hợp chỉ có ý nghĩa sau khi gom nhóm. Đây là bẫy cú pháp phổ biến nhất của đề.",
+      "s": "5.5"
+    },
+    {
+      "q": "Sau khi thêm CHECK (SoLuongTon > 0), nếu chèn MaHang = 'H99' với SoLuongTon = -1 thì SQL Server báo gì?",
+      "o": [
+        "Msg 547: The INSERT statement conflicted with the CHECK constraint",
+        "Msg 2627: Violates PRIMARY KEY",
+        "Msg 547: Violates FOREIGN KEY",
+        "Không báo lỗi"
+      ],
+      "a": 0,
+      "w": "Đây là kiểm tra đã chạy thật. Nhập mã trùng khóa chính thì báo 2627, nhập sai miền giá trị thì báo 547 — đùng một mã lỗi cho hai nguyên nhân khác nhau.",
+      "s": "13.3"
+    },
+    {
+      "q": "Sáu điểm dễ mất trong đề 4 gồm những gì?",
+      "o": [
+        "GO thiếu, trigger viết khối chung, sửa MaHD không tính lại, không bọc ISNULL, > 20 viết thành >= 20, tham số procedure viết CHAR(10)",
+        "Sai tên bảng, sai tên cột, sai kiểu dữ liệu",
+        "Thiếu N'...', bọc nháy số, thiếu DISTINCT",
+        "Thiếu GO, thiếu GO, thiếu GO"
+      ],
+      "a": 0,
+      "w": "Sáu lỗi này đều là lỗi âm thầm hoặc báo lỗi giữa chừng — cần đọc lại trước khi nộp.",
+      "s": "13.8"
+    },
+    {
+      "q": "Vì sao lưu TienBan trong HOADON là dữ liệu không chuẩn?",
+      "o": [
+        "Vì kiểu DECIMAL không phù hợp",
+        "Vì TienBan là dữ liệu tính được từ SUM(SoLuong * Dongia) của các dòng trong CTHOADON, lưu vào bảng cha là lưu dữ liệu dư thừa có thể lệch",
+        "Vì HOADON không có khóa chính",
+        "Vì TienBan không phải số"
+      ],
+      "a": 1,
+      "w": "Chính vì vậy mà dữ liệu có thể lệch — cần trigger giữ cho nó luôn đúng. Đây là bài học thiết kế CSDL, không chỉ là bài viết trigger.",
+      "s": "13.1"
+    },
+    {
+      "q": "Câu hỏi \"hoá đơn bán trên 3 mặt hàng\" cần những bảng nào?",
+      "o": [
+        "Chỉ HOADON",
+        "HOADON và CTHOADON",
+        "HOADON, CTHOADON và HANGHOA",
+        "Chỉ CTHOADON"
+      ],
+      "a": 1,
+      "w": "Cần MaHD, NgayHD từ HOADON và đếm dòng chi tiết trong CTHOADON. HANGHOA không cần vì không hiện thông tin hàng.",
+      "s": "13.1"
+    }
+  ],
+  "cards": [
+    {
+      "f": "Đề 4 hỏi gì — khác đề 1-3 ở đâu",
+      "b": "Đề 1, 2, 3 hỏi truy vấn: SELECT, JOIN, GROUP BY, HAVING, NOT EXISTS. Đề 4 hỏi LẬP TRÌNH CSDL: ALTER TABLE ... CHECK, CREATE PROCEDURE, CREATE TRIGGER, BACKUP. Hai kỹ năng mới phải học: stored procedure (bẫy cú pháp GO và @ThamSo) và trigger (bẫy ba nhánh inserted/deleted)."
+    },
+    {
+      "f": "Lược đồ QuanLyBanHang",
+      "b": "HANGHOA(MaHang PK, TenHang, DonViTinh, SoLuongTon) · HOADON(MaHD PK, NgayHD, TienBan, GiamGia, ThanhToan) · CTHOADON(MaHD, MaHang, SoLuong, Dongia) với PK gộp (MaHD, MaHang) và hai khóa ngoại trỏ về HOADON, HANGHOA."
+    },
+    {
+      "f": "CTHOADON là bảng cầu nối",
+      "b": "Mỗi dòng là một MẶT HÀNG trong một đơn. MaHD lặp (một đơn nhiều dòng), MaHang lặp (một mặt hàng bán trong nhiều đơn), cặp thì mỗi cặp chỉ xuất hiện một lần → khóa chính gộp. Hệt KETQUA ở mục 6.4."
+    },
+    {
+      "f": "Vì sao \"số mặt hàng\" là COUNT chứ không phải SUM",
+      "b": "Mặt hàng = dòng chi tiết trong CTHOADON, nên đếm COUNT(ct.MaHang). SUM(SoLuong) là tổng số LƯỢNG bán, sẽ lấy thêm hoá đơn chỉ có 2 mặt hàng nhưng số lượng lớn. Vì khóa gộp không trùng nên COUNT(ct.MaHang) và COUNT(DISTINCT ct.MaHang) cho kết quả giống nhau."
+    },
+    {
+      "f": "TienBan là dữ liệu tính được",
+      "b": "TienBan bằng SUM(SoLuong * Dongia) của các dòng trong CTHOADON. Lưu giá trị tính được vào bảng cha là việc không chuẩn — chính vì vậy dữ liệu có thể lệch và cần trigger giữ cho luôn đúng. Đây là lý do đề hỏi trigger."
+    },
+    {
+      "f": "Ba bảng tạm trong trigger",
+      "b": "inserted = dòng SAU thay đổi. deleted = dòng TRƯỚC thay đổi. INSERT → inserted có, deleted rỗng. DELETE → inserted rỗng, deleted có. UPDATE → có cả hai, và MaHD có thể bị đổi nên phải tính lại cả hoá đơn cũ lẫn hoá đơn mới."
+    },
+    {
+      "f": "Bẫy chết người của trigger",
+      "b": "Viết một khối UPDATE chung cho cả 3 trường hợp, lọc WHERE MaHD IN (SELECT MaHD FROM inserted). Khi xoá dòng, inserted rỗng nên không khớp dòng nào — tổng tiền hoá đơn đó KHÔNG BAO GIỜ được cập nhật và vẫn giữ số tiền cũ."
+    },
+    {
+      "f": "Vì sao phải bọc ISNULL(..., 0)",
+      "b": "Xoá hết dòng chi tiết của một hoá đơn thì SUM trên tập r��ng trả NULL, không phải 0. Không bọc thì TienBan bị ghi đè bằng NULL và mọi câu WHERE TienBan > 0 sau đó sẽ bỏ sót hoá đơn đó. ISNULL chỉ 2 tham số và là h��i riêng SQL Server; COALESCE dùng được từ 2 tham số trở lên."
+    },
+    {
+      "f": "Bẫy cú pháp của stored procedure",
+      "b": "1) GO không phải SQL, phải là câu lệnh đầu tiên của một lô — không có GO ở giữa thì báo Incorrect syntax near 'GO'. 2) Tham số viết @TenBien chứ không viết kiểu trước — WHERE MaHang = CHAR(10) là sai. 3) Không nên SELECT * vì kết quả phụ thuộc thứ tự cột trong bảng."
+    },
+    {
+      "f": "Ràng buộc CHECK thêm vào bảng đã có dữ liệu",
+      "b": "SQL Server kiểm tra dữ liệu đang có trước khi thêm. Nếu có dòng vi phạm thì lệnh báo lỗi và ràng buộc KHÔNG được tạo. Kiểm tra trước không đụng tới bảng: SELECT MaHang, SoLuongTon FROM HANGHOA WHERE SoLuongTon <= 0. Nhập vi phạm sau đó thì báo Msg 547."
+    },
+    {
+      "f": "Sao lưu CSDL — ba chỗ dễ sai",
+      "b": "1) Đường dẫn phải nằm trên máy CHẠY SQL Server, không phải máy đang mở SSMS — nếu SQL Server ở máy khác qua mạng thì dùng đường dẫn UNC. 2) Đuôi file phải là .bak. 3) Ph��i có quyền sysadmin hoặc quyền ghi vào thư mục đích. Không copy tay file .mdf vì nó đang bị SQL Server giữ khoá."
+    },
+    {
+      "f": "Kiểm tra bản sao lưu",
+      "b": "RESTORE FILELISTONLY FROM DISK = 'D:\\backup\\QuanLyBanHang.bak'. Đọc phần header của file sao lưu mà không cần khôi phục thật — nhanh và an toàn."
+    },
+    {
+      "f": "Sáu điểm dễ mất trong đề 4",
+      "b": "1) GO thiếu sau CREATE PROCEDURE và CREATE TRIGGER. 2) Trigger viết khối chung cho cả 3 trường hợp. 3) Sửa MaHD của dòng chi tiết mà không tính lại hoá đơn cũ. 4) Không bọc ISNULL(..., 0). 5) > 20 viết thành >= 20. 6) Tham số procedure viết CHAR(10) thay vì @MaHang."
+    },
+    {
+      "f": "Câu hỏi bắt buộc ghi rõ khi làm bài",
+      "b": "\"Tổng số sách\" là tổng CUỐN (SUM(SOLUONG) = 11) hay số LƯỢT mượn (COUNT(*) = 7)? Đề không phân định, hai cách hiểu cho hai kết quả khác nhau. Ghi rõ cách hiểu ngay đầu bài làm."
+    }
+  ],
+  "fill": [
+    {
+      "b": "Mỗi dòng trong CTHOADON là một ______ hàng trong một đơn, nên \"số mặt hàng\" dùng ______ chứ không phải SUM(SoLuong).",
+      "a": [
+        "mặt",
+        "count"
+      ],
+      "s": "13.1",
+      "w": "Mặt hàng = dòng chi tiết. SUM(SoLuong) là tổng số lượng bán, sẽ lấy thêm hoá đơn chỉ có 2 mặt hàng nhưng số lượng lớn."
+    },
+    {
+      "b": "CTHOADON là bảng ______ nên khóa chính gộp là (MaHD, ______).",
+      "a": [
+        "cầu nối",
+        "mahang"
+      ],
+      "s": "13.1",
+      "w": "MaHD lặp khi một đơn nhiều dòng, MaHang lặp khi một mặt hàng bán trong nhiều đơn. Cặp thì mỗi cặp chỉ xuất hiện một lần."
+    },
+    {
+      "b": "Đề hỏi \"số lượng tồn lớn hơn 20\" nên điều kiện là WHERE SoLuongTon ______ 20, viết ______ 20 là lấy thừa.",
+      "a": [
+        ">",
+        ">="
+      ],
+      "s": "13.8",
+      "w": "Đề ghi \"lớn hơn\" nên là >. >= 20 lấy thừa hàng có đúng 20 — một trong sáu điểm dễ mất."
+    },
+    {
+      "b": "Thêm ràng buộc CHECK vào bảng đã có dữ liệu thì SQL Server ______ dữ liệu đang có trước, và nếu có dòng vi phạm thì ràng buộc ______ được tạo.",
+      "a": [
+        "kiểm tra",
+        "không"
+      ],
+      "s": "13.3",
+      "w": "Kiểm tra trước: SELECT MaHang, SoLuongTon FROM HANGHOA WHERE SoLuongTon <= 0."
+    },
+    {
+      "b": "Trong SSMS, GO không phải SQL, nó phải là câu lệnh ______ tiên của một lô.",
+      "a": [
+        "đầu"
+      ],
+      "s": "13.4",
+      "w": "Không có GO ở giữa thì SQL Server báo Incorrect syntax near 'GO'."
+    },
+    {
+      "b": "Tham số stored procedure viết ______ TenBien, không viết kiểu trước.",
+      "a": [
+        "@"
+      ],
+      "s": "13.4",
+      "w": "WHERE MaHang = CHAR(10) là sai cả kiểu dữ liệu lẫn ý nghĩa."
+    },
+    {
+      "b": "Trong trigger, inserted chứa dòng ______ thay đổi, deleted chứa dòng ______ thay đổi.",
+      "a": [
+        "sau",
+        "trước"
+      ],
+      "s": "13.5",
+      "w": "INSERT: inserted có, deleted rỗng. DELETE: ngược lại. UPDATE: có cả hai."
+    },
+    {
+      "b": "Khi xoá dòng chi tiết, inserted r��ng nên lọc WHERE MaHD IN (SELECT MaHD FROM ______) sẽ không khớp dòng nào.",
+      "a": [
+        "inserted"
+      ],
+      "s": "13.5",
+      "w": "Đó là bẫy chết người: tổng tiền hoá đơn không bao giờ được cập nhật và vẫn giữ số tiền cũ. Phải chia 3 nhánh."
+    },
+    {
+      "b": "Sửa MaHD của một d��ng chi tiết thì nhánh UPDATE phải tính lại cả MaHD trong ______ lẫn MaHD trong deleted.",
+      "a": [
+        "inserted"
+      ],
+      "s": "13.5",
+      "w": "Dòng chuyển từ HD001 sang HD002 thì HD001 mất một dòng mà tổng tiền của nó không được sửa."
+    },
+    {
+      "b": "Xoá hết d��ng chi tiết thì SUM trả về ______, nên phải bọc ______(..., 0) khi ghi TienBan.",
+      "a": [
+        "null",
+        "isnull"
+      ],
+      "s": "13.5",
+      "w": "Hàm tổng hợp trên tập rỗng trả NULL. Không bọc thì TienBan thành NULL và các câu WHERE TienBan > 0 sẽ bỏ sót."
+    },
+    {
+      "b": "Đường dẫn khi BACKUP DATABASE phải nằm trên máy ______ SQL Server, không phải máy đang mở SSMS.",
+      "a": [
+        "chạy"
+      ],
+      "s": "13.6",
+      "w": "Nếu SQL Server ở máy khác qua mạng thì dùng đường dẫn UNC trên máy đó. Còn phải có quyền sysadmin."
+    },
+    {
+      "b": "Kiểm tra bản sao lưu đã đủ bằng câu ______ FILELISTONLY FROM DISK = '...'.",
+      "a": [
+        "restore"
+      ],
+      "s": "13.6",
+      "w": "Đọc header của file sao lưu m��ng không cần khôi phục thật."
+    },
+    {
+      "b": "TienBan trong HOADON là dữ liệu ______ được, lưu vào bảng cha là việc không chuẩn.",
+      "a": [
+        "tính"
+      ],
+      "s": "13.1",
+      "w": "Tính được từ SUM(SoLuong * Dongia). Chính vì vậy dữ liệu có thể lệch và cần trigger giữ cho luôn đúng."
+    },
+    {
+      "b": "Sau khi UPDATE SoLuong = 5 cho (HD001, H01) thì TienBan của HD001 là ______.",
+      "a": [
+        "7950000"
+      ],
+      "s": "13.5",
+      "w": "5 × 1.500.000 + 450.000 = 7.950.000. Trước đó là 3.450.000. Đã chạy thật."
+    },
+    {
+      "b": "Sau khi DELETE dòng (HD001, H01) thì TienBan của HD001 còn ______.",
+      "a": [
+        "450000"
+      ],
+      "s": "13.5",
+      "w": "Còn đúng một dòng H02: 1 × 450.000. Đã chạy thật."
+    },
+    {
+      "b": "Không copy tay file .mdf vì file đó đang bị SQL Server ______ khoá.",
+      "a": [
+        "giữ"
+      ],
+      "s": "13.6",
+      "w": "Chỉ BACKUP DATABASE mới tạo được bản sao lưu đúng."
+    }
+  ],
+  "written": [
+    {
+      "q": "Giải thích vì sao trigger phải chia ba nhánh, và việc gì xảy ra nếu viết một khối UPDATE chung.",
+      "m": "Một trigger AFTER INSERT, UPDATE, DELETE nhìn vào hai bảng tạm: inserted là dòng sau thay đổi, deleted là dòng trước thay đổi. INSERT thì inserted có, deleted r��ng → tính lại cho MaHD trong inserted. DELETE thì ngược lại → tính lại cho MaHD trong deleted. UPDATE thì có cả hai → phải tính lại cho cả hai vì MaHD có thể bị đổi. Nếu viết một khối UPDATE chung lọc WHERE MaHD IN (SELECT MaHD FROM inserted) thì khi xoá dòng, inserted r��ng nên không khớp dòng nào, tổng tiền hoá đơn đó không bao giờ được cập nhật và vẫn giữ số tiền cũ. Lỗi này không báo góc, chỉ cho kết quả sai.",
+      "s": "13.5"
+    },
+    {
+      "q": "Viết trigger cập nhật TienBan cho CTHOADON, giải thích từng nhánh và vì sao phải bọc ISNULL.",
+      "m": "Ba nhánh theo tình trạng inserted/deleted: xoá thì chỉ có deleted nên tính lại cho MaHD trong deleted rồi RETURN; thêm mới thì chỉ có inserted nên tính lại cho MaHD trong inserted rồi RETURN; sửa thì có cả hai nên tính lại cho MaHD IN (SELECT MaHD FROM inserted) OR MaHD IN (SELECT MaHD FROM deleted). Mỗi nhánh chạy UPDATE h.TienBan = ISNULL((SELECT SUM(ct.SoLuong * ct.Dongia) FROM CTHOADON ct WHERE ct.MaHD = h.MaHD), 0). Bọc ISNULL vì xoá hết d��ng chi tiết thì SUM trên tập r��ng trả NULL chứ không phải 0; không bọc thì TienBan bị ghi NULL và mọi câu WHERE TienBan > 0 sau đó sẽ bỏ sót hoá đơn đó.",
+      "s": "13.5"
+    },
+    {
+      "q": "Viết stored procedure hiển thị thông tin một mặt hàng theo mã, và nêu các bẫy cú pháp.",
+      "m": "CREATE PROCEDURE dbo.HienThiHangHoa @MaHang CHAR(10) AS BEGIN SELECT MaHang, TenHang, SoLuongTon FROM HANGHOA WHERE MaHang = @MaHang; END GO. Bẫy: một, GO không phải SQL và phải là câu lệnh đầu tiên của một lô, không có GO ở giữa thì báo Incorrect syntax near 'GO'. Hai, tham số viết @TenBien chứ không viết kiểu trước — WHERE MaHang = CHAR(10) là sai cả kiểu lẫn ý nghĩa. Ba, không nên SELECT * vì kết quả phụ thuộc vào thứ tự cột trong bảng, đề muốn 3 cột thì liệt kê đúng 3 cột. Bốn, CREATE PROCEDURE không nằm trong CREATE TABLE — câu 1 tạo CSDL và bảng, câu 4 tạo procedure, hai việc tách biệt.",
+      "s": "13.4"
+    },
+    {
+      "q": "Vì sao cột TienBan lưu trong HOADON là việc không chuẩn, và lựa chọn thiết kế thay thế là gì?",
+      "m": "TienBan là dữ liệu tính được — nó bằng SUM(SoLuong * Dongia) của các dòng trong CTHOADON. Lưu giá trị tính được vào bảng cha là việc không chuẩn và dữ liệu có thể lệch. Chính vì thế đề cố ý yêu cầu trigger để giữ nó luôn đúng. Lựa chọn thay thế đúng về thiết kế: bỏ cột TienBan khỏi HOADON và tính mỗi khi cần bằng SELECT hd.MaHD, SUM(ct.SoLuong * ct.Dongia) AS TienBan FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD GROUP BY hd.MaHD — không cần trigger và không có nguy cơ dữ liệu sai. Nhưng đề đã yêu cầu tạo trigger và cột đã có trong lược đ�� nên khi làm bài phải theo đề. Biết cả hai cách để trả lời khi giảng viên hỏi thêm là đủ.",
+      "s": "13.5"
+    },
+    {
+      "q": "Khi sao lưu CSDL, ba chỗ dễ sai là gì? Vì sao không copy tay file .mdf?",
+      "m": "Một, đường dẫn phải nằm trên máy chạy SQL Server chứ không phải máy đang mở SSMS — nếu SQL Server chạy ở máy khác qua mạng thì chọn đường dẫn UNC trên máy đó chứ không phải D:\\backup trên máy bạn. Hai, đuôi file phải là .bak, SQL Server tự thêm nếu thiếu. Ba, phải có quyền sysadmin hoặc quyền ghi vào thư mục đích. Không copy tay file .mdf vì nó đang được SQL Server giữ khoá nên bản copy sẽ sai. Kiểm tra bản sao lưu đã đủ bằng RESTORE FILELISTONLY FROM DISK.",
+      "s": "13.6"
+    },
+    {
+      "q": "Viết câu lọc mặt hàng có số lượng tồn lớn hơn 20 và giải thích vì sao không dùng >= 20.",
+      "m": "SELECT MaHang, TenHang, SoLuongTon FROM HANGHOA WHERE SoLuongTon > 20 ORDER BY SoLuongTon DESC. Đề ghi \"lớn hơn 20\" nên là > chứ không phải >=. Viết >= 20 sẽ lấy thừa mặt hàng có đúng 20 — đây là một trong sáu điểm dễ mất trong đề. Kết quả chạy thật: H06 USB 128G (200), H04 Tai nghe (120), H01 Bàn phím cơ (50), H02 Chuột không dây (30), H05 Ổ cứng SSD 1TB (22).",
+      "s": "13.2"
+    },
+    {
+      "q": "Câu \"hiển thị các hoá đơn bán trên 3 mặt hàng, gồm mã hoá đơn, ngày, tổng số mặt hàng\". Viết SQL và giải thích vì sao dùng COUNT chứ không phải SUM.",
+      "m": "SELECT hd.MaHD, hd.NgayHD, COUNT(ct.MaHang) AS TongSoMatHang FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD GROUP BY hd.MaHD, hd.NgayHD HAVING COUNT(ct.MaHang) > 3 ORDER BY hd.MaHD. Đề nói MẶT HÀNG nghĩa là dòng chi tiết trong CTHOADON, nên đếm COUNT. SUM(SoLuong) là tổng số lượng bán và sẽ lấy thêm hoá đơn chỉ có 2 mặt hàng nhưng số lượng lớn. Vì khóa gộp của CTHOADON là (MaHD, MaHang) nên COUNT(ct.MaHang) và COUNT(DISTINCT ct.MaHang) cho kết quả giống nhau. Điều kiện > 3 phải nằm trong HAVING vì WHERE không được chứa hàm tổng hợp. Đã chạy và xác minh trên DuckDB.",
+      "s": "13.1"
+    },
+    {
+      "q": "Nêu sáu điểm dễ mất trong đề 4.",
+      "m": "1) GO thiếu sau CREATE PROCEDURE và CREATE TRIGGER nên SQL Server báo lỗi cú pháp. 2) Trigger viết một khối UPDATE chung cho cả INSERT/UPDATE/DELETE nên khi xoá dòng không cập nhật tổng tiền. 3) Sửa MaHD của dòng chi tiết mà không tính lại hoá đơn cũ. 4) Không bọc ISNULL(..., 0) nên xoá hết dòng thì TienBan thành NULL. 5) > 20 viết thành >= 20 nên lấy thừa hàng có đúng 20. 6) Tham số procedure viết WHERE MaHang = CHAR(10) thay vì @MaHang.",
+      "s": "13.8"
+    }
+  ]
+}

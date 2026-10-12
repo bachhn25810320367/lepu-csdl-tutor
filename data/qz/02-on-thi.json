@@ -1,0 +1,763 @@
+{
+  "id": "on-thi",
+  "title": "Ôn thi máy",
+  "mcq": [
+    {
+      "q": "Đề hỏi \"có số tiết từ 30 đến 90\". Câu nào đúng?",
+      "o": [
+        "WHERE SOTIET >= 30 AND SOTIET <= 90",
+        "WHERE SOTIET BETWEEN 30 AND 90",
+        "WHERE SOTIET > 30 AND SOTIET < 90",
+        "WHERE SOTIET IN (30, 90)"
+      ],
+      "a": 1,
+      "w": "BETWEEN đã bao gồm cả hai đầu mốc. Câu C loại mất hai môn có đúng 30 và 90 tiết.",
+      "s": "4"
+    },
+    {
+      "q": "Đề hỏi \"môn có số tiết lớn nhất\". Cách viết nào trả về đúng cả hai môn nếu có hai môn cùng 90 tiết?",
+      "o": [
+        "ORDER BY SOTIET DESC LIMIT 1",
+        "SELECT TOP 1 ... ORDER BY SOTIET DESC",
+        "WHERE SOTIET >= ALL (SELECT SOTIET FROM MONHOC)",
+        "HAVING MAX(SOTIET) = 90"
+      ],
+      "a": 2,
+      "w": ">= ALL trả về tất cả dòng bằng giá trị lớn nhất, và chạy được trên mọi DBMS. TOP 1 và LIMIT 1 chỉ trả 1 dòng nên mất người bằng điểm. Trên SQL Server dùng TOP 1 WITH TIES cũng đúng.",
+      "s": "7.1"
+    },
+    {
+      "q": "Vì sao ORDER BY ... LIMIT 1 không dùng được cho câu \"nhiều nhất\"?",
+      "o": [
+        "Vì nó chậm hơn >= ALL",
+        "Vì nó luôn trả về đúng 1 dòng, mất người bằng giá trị lớn nhất",
+        "Vì SQL Server không có cú pháp LIMIT",
+        "Vì nó không dùng được cùng GROUP BY"
+      ],
+      "a": 1,
+      "w": "Số 1 trong LIMIT/TOP chỉ có nghĩa khi đề thật sự hỏi \"một người duy nhất\" và bạn chắc không có ai bằng. Với câu \"nhiều nhất\" thì mất người bằng điểm là sai ý đề.",
+      "s": "7.3"
+    },
+    {
+      "q": "TOP 1 khác TOP 1 WITH TIES ở điểm nào?",
+      "o": [
+        "WITH TIES trả về cả dòng bằng giá trị lớn nhất",
+        "TOP 1 không hỗ trợ ORDER BY",
+        "WITH TIES chỉ dùng được với GROUP BY",
+        "Hai từ này giống nhau"
+      ],
+      "a": 0,
+      "w": "WITH TIES là phần bắt buộc cho câu \"nhiều nhất\". TOP 1 trần khi có hai người bằng nhau thì chỉ một người được trả về — sai ý đề. Trên MySQL/PostgreSQL dùng RANK() cho kết quả tương đương.",
+      "s": "7.2"
+    },
+    {
+      "q": "Đề hỏi \"trong từng khoa\" (kể cả khoa không có lớp nào). Nối bảng bằng gì?",
+      "o": [
+        "JOIN (INNER JOIN) và COUNT(*)",
+        "LEFT JOIN và COUNT(l.MALOP)",
+        "LEFT JOIN và COUNT(*)",
+        "INNER JOIN và COUNT(l.MALOP)"
+      ],
+      "a": 1,
+      "w": "Hai điều bắt buộc khi dùng LEFT JOIN để đếm: đếm cột của bảng bên phải chứ không phải COUNT(*), và gom nhóm theo khóa. Đếm COUNT(*) thì khoa rỗng vẫn ra 1.",
+      "s": "5.3"
+    },
+    {
+      "q": "Vì sao COUNT(*) ở đây cho kết quả sai?",
+      "o": [
+        "Vì COUNT(*) không hoạt động với LEFT JOIN",
+        "Vì COUNT(*) đếm cả dòng không khớp nên khoa rỗng vẫn ra 1",
+        "Vì COUNT(*) đếm giá trị NULL",
+        "Vì phải dùng COUNT(DISTINCT) trong mọi trường hợp"
+      ],
+      "a": 1,
+      "w": "Sau LEFT JOIN, dòng không khớp vẫn tồn tại với các cột bên phải bằng NULL. COUNT(*) đếm dòng nên khoa không lớp ra 1 thay vì 0. COUNT(l.MALOP) mới bỏ qua NULL.",
+      "s": "5.3"
+    },
+    {
+      "q": "Đặt điều kiện lọc của bảng bên phải trong WHERE sau LEFT JOIN thì xảy ra gì?",
+      "o": [
+        "Giữ nguyên hành vi LEFT JOIN",
+        "LEFT JOIN biến thành INNER JOIN, dòng không khớp biến mất",
+        "SQL Server báo lỗi cú pháp",
+        "Chỉ áp dụng với HAVING"
+      ],
+      "a": 1,
+      "w": "WHERE lọc SAU khi đã ghép. Dòng không khớp có cột bên phải NULL nên điều kiện về cột đó không đúng, bị loại — biến LEFT JOIN thành INNER JOIN. Muốn giữ dòng trống thì lọc ở ON.",
+      "s": "5.4"
+    },
+    {
+      "q": "Dữ liệu mẫu có MH03 và MH07 cùng tên \"Lập trình C\". Gom nhóm theo TENMH sẽ ra gì?",
+      "o": [
+        "Hai dòng, một cho mỗi môn",
+        "Một dòng gộp hai môn, số đếm là tổng của cả hai",
+        "Báo lỗi vì tên trùng",
+        "Không có kết quả"
+      ],
+      "a": 1,
+      "w": "Gom nhóm theo tên gộp hai môn thành một, số đếm cộng dồn. Môn là MAMH không phải TENMH. Luôn gom nhóm theo mã, kèm tên để hiển thị. Cùng quy tắc cho TENKHOA và TENLOP.",
+      "s": "6.3"
+    },
+    {
+      "q": "Đề hỏi \"môn học có số tiết trên 30 và có ít nhất 2 sinh viên học\". Điều kiện SOTIET > 30 nên đặt ở đâu?",
+      "o": [
+        "Trong HAVING",
+        "Trong WHERE",
+        "Trong ON",
+        "Đặt ở đâu cũng cho cùng kết quả, nhưng WHERE lọc sớm hơn"
+      ],
+      "a": 3,
+      "w": "Đặt ở HAVING cũng ra cùng kết quả vì trong mỗi nhóm SOTIET đều bằng nhau. Nhưng WHERE đúng hơn: lọc sớm, ít dòng phải gom nhóm, và đúng ý nghĩa \"môn nào đủ điều kiện để xét\".",
+      "s": "6.2"
+    },
+    {
+      "q": "Câu hỏi: lớp nào không có sinh viên nào, đếm số sinh viên. Vì sao WHERE COUNT(s.MASV) = 0 là lỗi?",
+      "o": [
+        "Vì COUNT cần đặt tên alias",
+        "Vì WHERE không được chứa hàm tổng hợp — SQL Server báo WHERE clause cannot contain aggregates",
+        "Vì phải dùng INNER JOIN",
+        "Vì COUNT chỉ dùng được trong HAVING"
+      ],
+      "a": 1,
+      "w": "WHERE lọc từng DÒNG trước khi gom nhóm. Hàm tổng hợp chỉ có ý nghĩa sau khi gom nhóm nên phải chuyển điều kiện xuống HAVING.",
+      "s": "5.5"
+    },
+    {
+      "q": "Với SQL Server, đề hỏi \"sinh viên học trên 3 môn\". Hàm nào an toàn hơn?",
+      "o": [
+        "COUNT(*)",
+        "COUNT(k.MAMH)",
+        "COUNT(DISTINCT k.MAMH)",
+        "SUM(k.MAMH)"
+      ],
+      "a": 2,
+      "w": "COUNT(DISTINCT ...) an toàn hơn COUNT(*) vì nếu dữ liệu KETQUA có trùng khóa gộp thì COUNT(*) đếm số dòng chứ không phải số môn.",
+      "s": "6.1"
+    },
+    {
+      "q": "Đề hỏi \"tên sinh viên lớp D13TMDT có điểm từ 6 đến 8\". Vì sao cần SELECT DISTINCT?",
+      "o": [
+        "Vì KETQUA có thể trùng MASV",
+        "Vì một sinh viên học nhiều môn nên mỗi môn ra một dòng, không DISTINCT thì Vũ Thị Hồng ra 2 dòng",
+        "Vì JOIN sinh ra dòng lặp",
+        "Vì đề yêu cầu không trùng lặp"
+      ],
+      "a": 1,
+      "w": "Đã chạy thật: bỏ DISTINCT thì ra 4 dòng, Vũ Thị Hồng và Đặng Văn Kiên mỗi người 2 lần vì học 2 môn. Nguyên tắc: khi SELECT ra cột mà bảng kết quả có thể lặp giá trị, dùng DISTINCT.",
+      "s": "5.1"
+    },
+    {
+      "q": "Nối N bảng thì cần bao nhiêu điều kiện khớp?",
+      "o": [
+        "N điều kiện",
+        "N−1 điều kiện",
+        "N+1 điều kiện",
+        "Không quy định"
+      ],
+      "a": 1,
+      "w": "Nối N bảng thì cần N−1 điều kiện khớp. Thiếu một điều kiện thì số dòng ra bằng tích số dòng của các bảng — đó là lệch dữ liệu, không phải lệch số liệu.",
+      "s": "5.2"
+    },
+    {
+      "q": "Vì sao không dùng LIKE để tìm một giá trị cụ thể?",
+      "o": [
+        "Vì LIKE chậm hơn",
+        "Vì mẫu LIKE N'D_6' khớp cả D126",
+        "Vì LIKE không phân biệt hoa thường",
+        "Vì LIKE chỉ dùng với số"
+      ],
+      "a": 1,
+      "w": "Cần tìm một giá trị cụ thể thì dùng =. Ví dụ WHERE TENMH = N'HQTCSDL' không tìm thấy MH08 vì MH08 ghi HEQTCSDL — sai chính tả ở đề là sai ở dữ liệu.",
+      "s": "4"
+    },
+    {
+      "q": "Nhập NAMXB = '2022' để tìm sách xuất bản năm 2022. Vì sao không tìm thấy?",
+      "o": [
+        "Vì phải dùng kiểu DATE",
+        "Vì bọc nháy '2022' thành chuỗi rồi so sánh với số",
+        "Vì phải dùng phép so sánh khác",
+        "Vì phải dùng IN"
+      ],
+      "a": 1,
+      "w": "Bọc nháy số biến số thành chuỗi. Phải là NAMXB = 2022. Đây là một trong ba lỗi thường gặp ở dạng lọc một bảng.",
+      "s": "4"
+    },
+    {
+      "q": "Ba lỗi thường gặp ở dạng lọc một bảng là gì?",
+      "o": [
+        "Thiếu GROUP BY, thiếu HAVING, thiếu ORDER BY",
+        "Bọc nháy số, thiếu N trước chuỗi tiếng Việt, chọn cột không nằm trong bảng đang nối",
+        "Thiếu JOIN, thiếu ON, thiếu WHERE",
+        "Sai tên bảng, sai tên cột, sai thứ tự"
+      ],
+      "a": 1,
+      "w": "Trong đó SELECT HOTEN, DIEM FROM KETQUA JOIN MONHOC là lỗi: HOTEN nằm ở SINHVIEN, không nằm trong KETQUA lẫn MONHOC.",
+      "s": "4"
+    },
+    {
+      "q": "Trong LIKE, ký tự _ nghĩa là gì?",
+      "o": [
+        "0 hoặc nhiều ký tự",
+        "Đúng 1 ký tự bất kỳ",
+        "Một chữ số",
+        "Ký tự đặc biệt bất kỳ"
+      ],
+      "a": 1,
+      "w": "% là 0 hoặc nhiều ký tự bất kỳ. _ là đúng 1 ký tự bất kỳ — N'D_6' khớp D16 nhưng không khớp D126.",
+      "s": "4"
+    },
+    {
+      "q": "Đề hỏi \"độc giả không ở Hà Nội\". Bản viết DIACHI NOT LIKE N'%Hà Nội%' cho kết quả nào?",
+      "o": [
+        "3 dòng (cả dòng NULL)",
+        "2 dòng, dòng NULL biến mất",
+        "Báo lỗi",
+        "4 dòng"
+      ],
+      "a": 1,
+      "w": "DG05 có DIACHI là NULL nên không xuất hiện. NULL không thỏa điều kiện \"không chứa Hà Nội\" theo logic ba giá trị. Bản thứ hai thêm DIACHI IS NULL OR ... mới lấy được nó.",
+      "s": "8.3"
+    },
+    {
+      "q": "Subquery trong câu NOT IN hỏng chỉ xảy ra khi nào?",
+      "o": [
+        "Khi subquery không có dòng nào",
+        "Khi subquery chứa giá trị NULL",
+        "Khi cột trong subquery không phải khóa chính",
+        "Khi dùng INNER JOIN"
+      ],
+      "a": 1,
+      "w": "NOT IN không hỏng khi subquery rỗng — khi đó trả về toàn bộ, đúng. Nó chỉ hỏng khi subquery chứa NULL vì X NOT IN (..., NULL) không thể là ĐÚNG với bất kỳ giá trị nào.",
+      "s": "8.2"
+    },
+    {
+      "q": "Đề hỏi \"sách chưa bao giờ có khách mượn\". Nên dùng NOT IN hay NOT EXISTS?",
+      "o": [
+        "NOT IN — ngắn hơn",
+        "NOT EXISTS — an toàn với NULL",
+        "Cả hai luôn hỏng",
+        "Tuỳ dữ liệu, không có quy tắc"
+      ],
+      "a": 1,
+      "w": "Cột khóa ngoại có thể NULL thì dùng NOT EXISTS, không cần suy nghĩ. NOT IN chỉ dùng được khi cột trong subquery là khóa chính vì thế nó không bao giờ NULL.",
+      "s": "8.2"
+    },
+    {
+      "q": "Lỗi \"subquery tự biến\" ở câu 14 đề 2 gây ra kết quả gì?",
+      "o": [
+        "Trả về 1 dòng duy nhất",
+        "Trả về toàn bộ sinh viên nữ, không phải người có điểm cao nhất",
+        "Báo lỗi cú pháp",
+        "Trả về 0 dòng"
+      ],
+      "a": 1,
+      "w": "Khi subquery không alias riêng, tên bảng bên trong bị gánh chúi về bảng ngoài nên nó chạy lại cho từng dòng ngoài. Với subquery tự biến chỉ trả 1 giá trị thì >= ALL luôn đúng vì so sánh một giá trị với chính nó.",
+      "s": "6.6"
+    },
+    {
+      "q": "Vì sao điều kiện GIOITINH = N'Nữ' phải lặp lại trong subquery?",
+      "o": [
+        "Vì SQL Server tự bỏ điều kiện trong subquery",
+        "Vì GIOITINH nằm ở SINHVIEN nên thiếu ở subquery thì trung bình tính cho cả nam lẫn nữ",
+        "Vì N'...' bắt buộc phải viết hai lần",
+        "Vì alias trong subquery phải khác"
+      ],
+      "a": 1,
+      "w": "GIOITINH nằm ở SINHVIEN, không phải KETQUA. Lặp lại điều kiện trong cả hai vế thì trung bình mới tính cho sinh viên nữ.",
+      "s": "6.5"
+    },
+    {
+      "q": "\"Tổng số sách mượn ngày 20/11/2023\" — SUM(SOLUONG) và COUNT(*) cho 11 và 7. Hai con số này khác nhau ở chỗ nào?",
+      "o": [
+        "SUM đếm số dòng, COUNT đếm số cuốn",
+        "SUM là tổng số cuốn sách, COUNT là tổng số lượt mượn (số dòng chi tiết)",
+        "Hai từ này giống nhau",
+        "SUM đếm số phiếu mượn"
+      ],
+      "a": 1,
+      "w": "SUM(SOLUONG) là tổng số cuốn, COUNT(*) là tổng số lượt mượn = số dòng chi tiết phiếu mượn. Đề không phân định — ghi rõ cách hiểu của bạn ngay đầu bài làm.",
+      "s": "6.4"
+    },
+    {
+      "q": "Đề 2 câu 4 lọc makhoa='cntt' trong khi đề ghi mã khoa là K01. Hậu quả?",
+      "o": [
+        "Trả về toàn bộ sinh viên",
+        "Trả về 0 dòng vì không khớp",
+        "Báo lỗi cú pháp",
+        "Trả về từng nhóm"
+      ],
+      "a": 1,
+      "w": "Sai chính tả ở đề là sai ở dữ liệu. Đề ghi K01 nhưng đáp án lọc 'cntt' thì không khớp — trả về 0 dòng, và người thi cũng không hiểu vì sao mình sai.",
+      "s": "A"
+    },
+    {
+      "q": "Đề 1 câu 7 hỏi \"khoa có ít nhất 3 lớp\" nhưng đáp án ghi >= 2. Vì sao sai?",
+      "o": [
+        "Vì phải dùng > 3",
+        "Vì lấy thừa khoa chỉ có 2 lớp, đề hỏi ít nhất 3",
+        "Vì >= 2 sai cú pháp",
+        "Vì phải dùng COUNT(DISTINCT)"
+      ],
+      "a": 1,
+      "w": "\"Ít nhất 3\" = >= 3. Dùng >= 2 thì lấy thêm khoa có đúng 2 lớp. Khoa có đúng 3 lớp vẫn vào, nên lỗi ở đây là LẤY THỪA chứ không phải thiếu.",
+      "s": "A"
+    },
+    {
+      "q": "Vì sao câu 3 và 4 của đề gốc thiếu DISTINCT là lỗi?",
+      "o": [
+        "Vì SQL Server tự thêm DISTINCT",
+        "Vì một sinh viên học nhiều môn nên tên lặp ở nhiều dòng",
+        "Vì phải dùng GROUP BY",
+        "Vì DISTINCT chỉ dùng với ORDER BY"
+      ],
+      "a": 1,
+      "w": "Đề hỏi \"tên sinh viên\" mà dữ liệu có trùng tên nên một SV học 2 môn ra 2 dòng, tên lặp. Không DISTINCT thì một người ra nhiều dòng.",
+      "s": "A"
+    },
+    {
+      "q": "Vì sao câu 5 \"trong từng khoa\" dùng INNER JOIN là lỗi?",
+      "o": [
+        "Vì INNER JOIN chậm hơn",
+        "Vì khoa không có lớp nào biến mất, đề nói \"trong từng khoa\" — thiếu một khoa là sai",
+        "Vì phải dùng RIGHT JOIN",
+        "Vì INNER JOIN không đếm được"
+      ],
+      "a": 1,
+      "w": "K04 - Điện tử không có lớp nào nên bị loại mất. Đề nói \"trong từng khoa\" nên phải dùng LEFT JOIN kèm COUNT(cột bên phải).",
+      "s": "A"
+    },
+    {
+      "q": "Câu 6 đề gốc hỏi \"học trên 5 môn\" nhưng đáp án dùng >= 5. Vì sao sai?",
+      "o": [
+        "Vì phải dùng > 5",
+        "Vì lấy thêm sinh viên học đúng 5 môn",
+        "Vì >= 5 sai cú pháp",
+        "Vì phải dùng DISTINCT"
+      ],
+      "a": 1,
+      "w": "\"Trên 5\" là > 5. Dùng >= 5 thì người học đúng 5 môn cũng vào. Cùng loại lỗi với câu 7: nhầm ranh giới khiến lấy thừa.",
+      "s": "A"
+    },
+    {
+      "q": "Thiếu N'...' trong toàn bộ phần INSERT của đề gốc gây hậu quả gì?",
+      "o": [
+        "SQL Server báo lỗi cú pháp ngay",
+        "Chuỗi tiếng Việt lưu vào sai kiểu, so sánh về sau không khớp",
+        "Không ảnh hưởng gì",
+        "Chỉ ảnh hưởng câu 1"
+      ],
+      "a": 1,
+      "w": "SQL Server không báo lỗi — nó lưu vào kiểu không phải Unicode và điều đó âm thầm làm các câu truy vấn về sau không khớp. Loại lỗi này nguy hiểm vì không báo lỗi ngay.",
+      "s": "A"
+    },
+    {
+      "q": "Thứ tự tạo bảng trong đề 3 nên là gì?",
+      "o": [
+        "PHIEUMUON → SACH → DOCGIA → CTPHIEUMUON",
+        "SACH → DOCGIA → PHIEUMUON → CTPHIEUMUON",
+        "CTPHIEUMUON → PHIEUMUON → SACH → DOCGIA",
+        "Không quan trọng thứ tự"
+      ],
+      "a": 1,
+      "w": "Bảng cha trước, bảng con sau. Tạo bảng con trước sẽ báo lỗi vì bảng cha chưa tồn tại.",
+      "s": "9"
+    },
+    {
+      "q": "Vì sao cột DIACHI của độc giả nên để trống được, không nên đặt NOT NULL?",
+      "o": [
+        "Vì NOT NULL làm hỏng câu truy vấn",
+        "Vì dữ liệu thực tế có độc giả chưa cung cấp địa chỉ; NOT NULL là ràng buộc về dữ liệu, không phải về câu truy vấn",
+        "Vì SQL Server không cho NOT NULL với chuỗi tiếng Việt",
+        "Vì cột đó thuộc khóa chính"
+      ],
+      "a": 1,
+      "w": "Nếu đặt NOT NULL thì DG05 không tồn tại và bẫy ở câu 15 biến mất, nhưng dữ liệu thực tế vẫn có độc giả chưa cung cấp địa chỉ. Giữ được bẫy là điều tốt cho việc học.",
+      "s": "8.3"
+    },
+    {
+      "q": "RANK() OVER (ORDER BY ... DESC) dùng để làm gì?",
+      "o": [
+        "Xếp hạng mọi dòng theo một cột",
+        "Lấy các dòng bằng giá trị lớn nhất (rk = 1) trên MySQL/PostgreSQL",
+        "Đếm số thứ hạng",
+        "Thay thế GROUP BY"
+      ],
+      "a": 1,
+      "w": "TOP 1 WITH TIES chỉ chạy trên SQL Server. Trên MySQL/PostgreSQL dùng RANK() rồi lọc rk = 1 cho kết quả tương đương — chạy thật, đã kiểm.",
+      "s": "7.2"
+    },
+    {
+      "q": "Câu \"môn chưa có sinh viên nào học\" nên viết thế nào cho an toàn?",
+      "o": [
+        "WHERE MAMH NOT IN (SELECT MAMH FROM KETQUA)",
+        "WHERE NOT EXISTS (SELECT 1 FROM KETQUA k WHERE k.MAMH = MONHOC.MAMH)",
+        "WHERE COUNT(MAMH) = 0",
+        "LEFT JOIN và đếm rồi lọc"
+      ],
+      "a": 1,
+      "w": "NOT EXISTS an toàn với NULL. Với MAMH — khóa chính gộp của KETQUA nên thực tế NOT IN cũng được, nhưng quy tắc là cột khóa ngoại có thể NULL thì dùng NOT EXISTS.",
+      "s": "8.1"
+    },
+    {
+      "q": "\"Môn học có số tiết lớn nhất\" — vì sao nên tách bước tính thành hai: tính tổng theo từng nhóm rồi so sánh với giá trị lớn nhất trong chính tập kết quả đó?",
+      "o": [
+        "Vì nhanh hơn",
+        "Vì tránh phải viết lại logic ở hai nơi, dễ sai chỗ khác nhau",
+        "Vì SQL Server không cho >= ALL",
+        "Vì bắt buộc phải có subquery"
+      ],
+      "a": 1,
+      "w": "Kinh nghiệm trong tài liệu: tách bước tính thành hai. Tính tổng theo từng nhóm ở một subquery có alias, rồi so sánh với MAX của chính tập đó.",
+      "s": "7.1"
+    }
+  ],
+  "cards": [
+    {
+      "f": "Bảng đọc đề: từ khóa → SQL",
+      "b": "từ 30 đến 90 → BETWEEN 30 AND 90 (đã gồm 2 đầu mốc) · lớn nhất/nhiều nhất → >= ALL (subquery) hoặc TOP 1 WITH TIES · trên 3 → > 3 · ít nhất 3 → >= 3 · trong từng khoa → LEFT JOIN + COUNT(cột bên phải) · chưa ai học → NOT EXISTS · tổng số sách → SUM(SOLUONG) · điểm TB cao nhất → HAVING AVG(cột) >= ALL (subquery có alias riêng) · số lượt mượn → COUNT(*) · chỉ xuất họ tên mà có trùng tên → SELECT DISTINCT."
+    },
+    {
+      "f": "WHERE và HAVING khác nhau",
+      "b": "WHERE chạy TRƯỚC khi gom nhóm, lọc từng DÒNG. HAVING chạy SAU khi gom nhóm, lọc từng NHÓM. WHERE không được chứa hàm tổng hợp — SQL Server báo \"WHERE clause cannot contain aggregates\"."
+    },
+    {
+      "f": "Quy tắc đếm khi dùng LEFT JOIN",
+      "b": "Đếm cột của bảng BÊN PHẢI (COUNT(l.MALOP)), không phải COUNT(*). COUNT(*) đếm cả dòng không khớp nên khoa không lớp vẫn ra 1 thay vì 0. Và luôn gom nhóm theo khóa chứ không chỉ theo tên."
+    },
+    {
+      "f": "ON khác WHERE sau LEFT JOIN",
+      "b": "ON lọc TRƯỚC khi ghép, giữ nguyên dòng không khớp (cột bên phải thành NULL). WHERE lọc SAU khi ghép, nên dòng không khớp bị loại và LEFT JOIN biến thành INNER JOIN. Quy tắc: muốn giữ dòng trống thì lọc ở ON."
+    },
+    {
+      "f": "Ba hàm COUNT",
+      "b": "COUNT(*) đếm SỐ DÒNG của nhóm. COUNT(cột) đếm ô khác NULL nên nhỏ hơn. COUNT(DISTINCT cột) đếm giá trị khác nhau — an toàn hơn COUNT(*) khi dữ liệu có thể trùng khóa gộp."
+    },
+    {
+      "f": "Gom nhóm theo khóa, không theo tên",
+      "b": "Dữ liệu mẫu có MH03 và MH07 cùng tên \"Lập trình C\" nhưng là hai môn khác. Gom theo TENMH sẽ gộp làm một và cộng dồn số đếm. Luôn GROUP BY theo mã, kèm tên để hiển thị. Cùng quy tắc cho TENKHOA, TENLOP."
+    },
+    {
+      "f": "Tìm giá trị lớn nhất",
+      "b": ">= ALL (subquery) — trả về cả những ai bằng nhau, chạy mọi DBMS. TOP 1 WITH TIES — SQL Server, ngắn hơn. RANK() rồi lọc rk = 1 — MySQL/PostgreSQL. KHÔNG dùng ORDER BY ... LIMIT 1 hay TOP 1 trần vì mất người bằng điểm."
+    },
+    {
+      "f": "NOT EXISTS an toàn, NOT IN bẫy NULL",
+      "b": "NOT IN không hỏng khi subquery rỗng (trả về toàn bộ, đúng). Nó chỉ hỏng khi subquery chứa NULL: X NOT IN ('K01', NULL) không thể là ĐÚNG với bất kỳ giá trị nào nên ra 0 dòng. Cột khóa ngoại có thể NULL thì dùng NOT EXISTS, không cần suy nghĩ."
+    },
+    {
+      "f": "Subquery tự biến — lỗi nguy hiểm nhất",
+      "b": "Khi subquery không alias riêng, tên bảng bên trong bị gánh chúi về bảng ở câu lệnh ngoài → subquery chạy lại cho TỪNG DÒNG ngoài. Với subquery tự biến chỉ trả 1 giá trị thì >= ALL luôn Đúng, nên mọi dòng ngoài đều lọt qua. Cách tránh: cho mọi bảng trong subquery một alias riêng, viết rõ điều kiện nối bằng alias đó, lặp lại điều kiện lọc ở cả hai vế."
+    },
+    {
+      "f": "\"Tổng sách\" hay \"số lượt mượn\"",
+      "b": "SUM(CTPHIEUMUON.SOLUONG) = tổng số CUỐN. COUNT(*) = sổ số LƯỢT mượn = số dòng chi tiết. Ngày 20/11/2023: SUM ra 11, COUNT ra 7. Đề không phân định — ghi rõ cách hiểu của bạn ngay đầu bài làm."
+    },
+    {
+      "f": "Nối N bảng cần N−1 điều kiện",
+      "b": "Nối 4 bảng cần 3 điều kiện khớp. Thiếu một điều kiện thì số dòng ra bằng TÍCH số dòng của các bảng. Ví dụ đề 1 câu 3 và đề 2 câu 3 cần nối MONHOC → KETQUA → SINHVIEN → LOP với 3 điều kiện."
+    },
+    {
+      "f": "SELECT DISTINCT khi nào",
+      "b": "Khi SELECT ra một cột mà bảng kết quả có thể lặp giá trị. Đã chạy thật: \"tên sinh viên lớp D13TMDT có điểm 6-8\" bỏ DISTINCT ra 4 dòng thay vì 2, vì mỗi người học 2 môn. Rẻ hơn nhiều so với viết thêm một lớp GROUP BY."
+    },
+    {
+      "f": "Ba lỗi thường gặp khi lọc một bảng",
+      "b": "1) Bọc nháy số: NAMXB = '2022' phải là NAMXB = 2022. 2) Thiếu N trước chuỗi tiếng Việt: phải là N'Nhà xuất bản...'. 3) Chọn cột không nằm trong bảng đang nối: SELECT HOTEN FROM KETQUA JOIN MONHOC là sai vì HOTEN ở SINHVIEN."
+    },
+    {
+      "f": "Ký tự đại diện trong LIKE",
+      "b": "% = 0 hoặc nhiều ký tự bất kỳ. _ = ĐÚNG 1 ký tự bất kỳ — N'D_6' khớp D16 nhưng không khớp D126. Cần tìm một giá trị cụ thể thì đừng dùng LIKE, dùng =."
+    },
+    {
+      "f": "Bẫy NOT ở đâu, không bẫy ở đâu",
+      "b": "NOT LIKE mất dòng NULL. NOT IN mất toàn bộ kết quả NẾU subquery có NULL, nhưng vẫn đúng nếu subquery rỗng. Đọc câu hỏi để quyết định: \"độc giả không ở Hà Nội\" theo nghĩa thông thường thì bao gồm cả người chưa cung cấp địa chỉ."
+    },
+    {
+      "f": "Thứ tự tạo bảng",
+      "b": "Bảng cha trước, bảng con sau. Đề 3: SACH → DOCGIA → PHIEUMUON → CTPHIEUMUON. Tạo bảng con trước sẽ báo lỗi vì bảng cha chưa tồn tại."
+    },
+    {
+      "f": "Lược đồ đề 3 — quản lý thư viện",
+      "b": "SACH(MASACH, TENSACH, NXB, NAMXB, THELOAI, SOLUONG) · DOCGIA(MADG, HOTEN, DT, DIACHI) · PHIEUMUON(MAPM, MADG, NGAYMUON) · CTPHIEUMUON(MAPM, MASACH, SOLUONG, NGAYHENTRA). CTPHIEUMUON là bảng cầu nối N-N nên khóa chính gộp (MAPM, MASACH)."
+    },
+    {
+      "f": "Tám lỗi thật trong đề gốc",
+      "b": "1) Câu 3, 4 thiếu DISTINCT. 2) Câu 5 \"trong từng khoa\" dùng INNER JOIN làm mất khoa rỗng. 3) Câu 7 \"ít nhất 3 lớp\" nhưng đáp án ghi >= 2. 4) Câu 9 đếm nhầm số lượt thay vì số học sinh. 5) Câu 13 nhóm theo tên môn, subquery nhóm theo mã. 6) Câu 6 \"trên 5 môn\" nhưng đáp án dùng >= 5. 7) Thiếu N'...' trong toàn bộ phần INSERT. 8) Câu 4 đề 2 lọc makhoa='cntt' trong khi đề ghi K01."
+    },
+    {
+      "f": "Sai khác SQL Server so với MySQL/PostgreSQL",
+      "b": "TOP 1 WITH TIES chỉ có ở SQL Server (MySQL/PostgreSQL dùng RANK()). UNIQUE ở SQL Server cho phép một NULL, còn MySQL/PostgreSQL cho phép nhiều dòng NULL. Ngoài ra khác về cú pháp tạo procedure, đổi tên bảng, v.v."
+    },
+    {
+      "f": "Bốn bước tách SQL khỏi câu tiếng Việt",
+      "b": "1) Chốt cột đầu ra → khóa bảng cần dùng. 2) Lần theo quan hệ khóa ngoại → dựng JOIN. 3) Thấy từ tổng hợp (bao nhiêu, mỗi, nhất) → quyết định GROUP BY. 4) Xác định phạm vi lọc: dòng thì WHERE, nhóm thì HAVING, giữ dòng rỗng thì ON. 5) Kiểm tra cột đầu có bị lặp không → quyết định DISTINCT."
+    },
+    {
+      "f": "Câu trả về 0 dòng không phải lúc nào cũng sai",
+      "b": "Câu trả 0 dòng có thể đúng — ví dụ lọc makhoa='cntt' trong khi đề ghi K01, hoặc dữ liệu đúng là không có ai thỏa. Trước khi kết luận sai, kiểm tra dữ liệu có đúng như mình nghĩ không."
+    },
+    {
+      "f": "Kiểu dữ liệu — bốn loại chỉ cần biết",
+      "b": "CHAR/VARCHAR: chuỗi không dấu, dùng cho số điện thoại. NVARCHAR: chuỗi có dấu, thiếu N'...' là lỗi. INT: số nguyên, bọc nháy thành chuỗi là sai. DATE: ngày, định dạng yyyymmdd. DECIMAL(p,s): số thập phân, KHÔNG dùng cho điện thoại vì mất số 0 đầu."
+    },
+    {
+      "f": "Ba câu SQL nguy hiểm nhất",
+      "b": "1) Đếm trong WHERE — SQL Server báo lỗi. 2) Lọc điều kiện của bảng bên phải trong WHERE sau LEFT JOIN — biến thành INNER JOIN. 3) NOT IN với subquery có NULL — trả 0 dòng. Cả ba đều sai âm thầm hoặc báo lỗi giữa chừng."
+    }
+  ],
+  "fill": [
+    {
+      "b": "\"Có số tiết từ 30 đến 90\" viết bằng ______, vì toán tử này đã gồm cả hai đầu mốc.",
+      "a": [
+        "between"
+      ],
+      "s": "4",
+      "w": "WHERE SOTIET BETWEEN 30 AND 90. Viết > 30 AND < 90 thì loại mất hai môn có đúng 30 và 90 tiết."
+    },
+    {
+      "b": "\"Trên 3\" dùng ______, còn \"ít nhất 3\" dùng ______.",
+      "a": [
+        "> 3",
+        ">= 3"
+      ],
+      "s": "3",
+      "w": "Nhầm ranh giới là lỗi hay gặp nhất: dùng >= 3 cho câu \"trên 3\" thì người đúng 3 cũng vào. Có cả hai lỗi này trong đề gốc."
+    },
+    {
+      "b": "Tìm giá trị lớn nhất mà vẫn giữ được người bằng điểm thì dùng ______ ALL, không dùng ORDER BY ... LIMIT 1.",
+      "a": [
+        ">="
+      ],
+      "s": "7.1",
+      "w": "TOP 1 và LIMIT 1 chỉ trả 1 dòng nên mất người bằng giá trị lớn nhất. TOP 1 WITH TIES hoặc RANK() cũng đúng."
+    },
+    {
+      "b": "Đếm trong LEFT JOIN phải đếm cột của bảng bên ______, không phải COUNT(*).",
+      "a": [
+        "phải"
+      ],
+      "s": "5.3",
+      "w": "COUNT(*) đếm cả dòng không khớp nên khoa không lớp ra 1 thay vì 0."
+    },
+    {
+      "b": "WHERE lọc trước khi gom nhóm, ______ lọc sau khi gom nhóm.",
+      "a": [
+        "having"
+      ],
+      "s": "6.2",
+      "w": "Hàm tổng hợp trong WHERE sẽ khiến SQL Server báo \"WHERE clause cannot contain aggregates\"."
+    },
+    {
+      "b": "Gom nhóm phải theo ______ (mã), không theo tên, vì MH03 và MH07 trùng tên nhưng là hai môn.",
+      "a": [
+        "mã"
+      ],
+      "s": "6.3",
+      "w": "Gom theo tên gộp hai môn thành một và cộng dồn số đếm. Luôn GROUP BY theo mã kèm tên để hiển thị."
+    },
+    {
+      "b": "Cột khóa ngoại có thể NULL thì dùng ______ thay vì NOT IN.",
+      "a": [
+        "not exists"
+      ],
+      "s": "8.2",
+      "w": "NOT IN chỉ hỏng khi subquery chứa NULL. Không cần suy nghĩ cứ dùng NOT EXISTS."
+    },
+    {
+      "b": "Để lấy cả dòng NULL trong câu \"không chứa Hà Nội\", thêm ______ IS NULL OR ... vào đầu điều kiện.",
+      "a": [
+        "dchi"
+      ],
+      "s": "8.3",
+      "w": "NULL ở một ô không trả TRUE cũng không trả FALSE nên dòng đó không thoát ra được điều kiện NOT LIKE."
+    },
+    {
+      "b": "Nối ______ bảng thì cần ______ điều kiện khớp.",
+      "a": [
+        "4",
+        "3"
+      ],
+      "s": "5.2",
+      "w": "N bảng cần N−1 điều kiện. Thiếu một điều kiện thì số dòng ra bằng tích số dòng của các bảng."
+    },
+    {
+      "b": "\"Tổng số sách\" dùng SUM(SOLUONG) cho ______ cuốn, còn \"số lượt mượn\" dùng ______ cho số dòng chi tiết.",
+      "a": [
+        "11",
+        "7"
+      ],
+      "s": "6.4",
+      "w": "Hai con số khác nhau và đề không phân định. Ghi rõ cách hiểu của bạn ngay đầu bài làm."
+    },
+    {
+      "b": "Trong LIKE, ký tự ______ nghĩa là đúng 1 ký tự bất kỳ, còn ______ nghĩa là 0 hoặc nhiều.",
+      "a": [
+        "_",
+        "%"
+      ],
+      "s": "4",
+      "w": "N'D_6' khớp D16 nhưng không khớp D126. N'%Giáo dục%' khớp cả \"Nhà xuất bản Giáo dục\"."
+    },
+    {
+      "b": "Điều kiện GIOITINH = N'Nữ' phải lặp lại ở cả vế ngoài và ______, vì GIOITINH nằm ở bảng ______.",
+      "a": [
+        "subquery",
+        "sinh vien"
+      ],
+      "s": "6.5",
+      "w": "Thiếu ở subquery thì trung bình tính cho cả nam lẫn nữ, ra kết quả sai."
+    },
+    {
+      "b": "Mọi bảng trong subquery phải có ______ riêng, khác alias ở câu lệnh ngoài, để tránh subquery tự biến.",
+      "a": [
+        "alias"
+      ],
+      "s": "6.6",
+      "w": "Không alias thì tên bảng bên trong bị gánh chúi về bảng ngoài, subquery chạy lại cho từng dòng và >= ALL luôn đúng, ra toàn bộ sinh viên nữ."
+    },
+    {
+      "b": "Dữ liệu mẫu: SUM(SOLUONG) = ______, COUNT(*) = ______ cho ngày 20/11/2023.",
+      "a": [
+        "11",
+        "7"
+      ],
+      "s": "6.4",
+      "w": "11 là số cuốn, 7 là số lượt mượn. Đây là chỗ hỏi người đã thi khóa trước."
+    },
+    {
+      "b": "Nếu dùng SQL Server, muốn lấy cả những dòng bằng giá trị lớn nhất bằng TOP thì phải thêm ______.",
+      "a": [
+        "with ties"
+      ],
+      "s": "7.2",
+      "w": "TOP 1 trần chỉ trả 1 dòng. Trên MySQL/PostgreSQL không có WITH TIES, dùng RANK() rồi lọc rk = 1."
+    },
+    {
+      "b": "Thứ tự tạo bảng trong đề 3: ______ → ______ → ______ → ______.",
+      "a": [
+        "sach",
+        "docgia",
+        "phieumuon",
+        "ctphieumuon"
+      ],
+      "s": "9",
+      "w": "Bảng cha trước, bảng con sau. Tạo bảng con trước sẽ báo lỗi vì bảng cha chưa tồn tại."
+    },
+    {
+      "b": "CTPHIEUMUON là bảng ______ nên khóa chính gộp là (MAPM, ______).",
+      "a": [
+        "cầu nối",
+        "masach"
+      ],
+      "s": "9",
+      "w": "Một độc giả mượn nhiều cuốn trong nhiều phiếu, một cuốn được nhiều độc giả mượn — y hệt KETQUA ở đề 1."
+    },
+    {
+      "b": "\"Độc giả không ở Hà Nội\" bản đầu trả về ______ dòng, bản thêm IS NULL trả về ______ dòng.",
+      "a": [
+        "2",
+        "3"
+      ],
+      "s": "8.3",
+      "w": "DG05 có DIACHI NULL nên không xuất hiện ở bản đầu. Hai cách viết cho hai kết quả khác nhau — đọc kỹ câu hỏi để chọn."
+    },
+    {
+      "b": "Đề 2 câu 4 lọc makhoa = 'cntt' trong khi đề ghi ______, nên truy vấn trả về ______ dòng.",
+      "a": [
+        "k01",
+        "0"
+      ],
+      "s": "A",
+      "w": "Sai chính tả ở đề là sai ở dữ liệu. Đây là một trong 8 lỗi thật trong đề gốc."
+    },
+    {
+      "b": "Số điện thoại không dùng DECIMAL vì bắt đầu bằng số ______ và chữ số đó sẽ bị mất.",
+      "a": [
+        "0"
+      ],
+      "s": "2.2",
+      "w": "0912345678 lưu kiểu số thành 912345678."
+    },
+    {
+      "b": "Tạo bảng mà dùng LEFT JOIN để đếm phải kèm hai điều: đếm cột của bảng bên ______, và gom nhóm theo ______.",
+      "a": [
+        "phải",
+        "khóa"
+      ],
+      "s": "5.3",
+      "w": "Bỏ một trong hai điều này là kết quả sai dù không báo lỗi."
+    },
+    {
+      "b": "Ba lỗi ở dạng lọc một bảng: bọc nháy ______, thiếu ______ trước chuỗi tiếng Việt, chọn cột không nằm trong bảng đang ______.",
+      "a": [
+        "số",
+        "n",
+        "nối"
+      ],
+      "s": "4",
+      "w": "NAMXB = '2022' phải là NAMXB = 2022. Chuỗi tiếng Việt phải có N'...'. HOTEN không nằm trong KETQUA lẫn MONHOC."
+    }
+  ],
+  "written": [
+    {
+      "q": "Đề hỏi \"tên khoa và số lượng lớp trong từng khoa\". Vì sao INNER JOIN bị loại và LEFT JOIN lại đúng?",
+      "m": "INNER JOIN loại khoa không có lớp nào — K04 - Điện tử biến mất khỏi kết quả, mà đề nói \"trong từng khoa\" nên thiếu một khoa là sai. LEFT JOIN giữ khoa rỗng, nhưng phải đếm COUNT(l.MALOP) chứ không phải COUNT(*), vì COUNT(*) đếm cả dòng không khớp nên khoa rỗng ra 1 thay vì 0. Và gom nhóm theo k.MAKHOA kèm k.TENKHOA, không chỉ theo tên.",
+      "s": "5.3"
+    },
+    {
+      "q": "Vì sao WHERE COUNT(s.MASV) = 0 báo lỗi, và cách sửa là gì?",
+      "m": "WHERE lọc từng dòng trước khi gom nhóm, nên không được chứa hàm tổng hợp — SQL Server báo \"WHERE clause cannot contain aggregates\". Sửa bằng cách chuyển điều kiện xuống HAVING: GROUP BY l.MALOP HAVING COUNT(s.MASV) = 0. Kết quả trả về D16CNPM3 với N = 0.",
+      "s": "5.5"
+    },
+    {
+      "q": "Giải thích lỗi subquery tự biến ở câu 14 đề 2 và cách tránh.",
+      "m": "Đáp án gốc viết subquery không alias riêng, nên các tên bảng sinhvien và ketqua bên trong bị gánh chúi về bảng ở câu lệnh ngoài. Subquery trở thành subquery tự biến, chạy lại cho từng dòng ngoài rồi so sánh giá trị của chính dòng đó. Vì nó chỉ trả về một giá trị nên phép >= ALL luôn đúng — so sánh một giá trị với chính nó thì bằng bao nhiêu cũng thỏa. Kết quả: trả về toàn bộ sinh viên nữ (5 dòng) thay vì 1 người có điểm cao nhất (SV004 Lê Thị Dung). Cách tránh: cho mọi bảng trong subquery một alias riêng khác bên ngoài, viết rõ điều kiện nối bằng alias đó, và lặp lại điều kiện lọc GIOITINH = N'Nữ' ở cả hai vế.",
+      "s": "6.6"
+    },
+    {
+      "q": "Đề hỏi \"môn có số tiết lớn nhất\". So sánh ba cách viết: ORDER BY...LIMIT 1, TOP 1, và >= ALL.",
+      "m": "Cả ba đều chạy, nhưng LIMIT 1 và TOP 1 chỉ trả về đúng một dòng nên mất người bằng giá trị lớn nhất — sai ý đề. >= ALL trả về tất cả dòng bằng giá trị lớn nhất, mới đúng nghĩa \"nhiều nhất\", và chạy được trên mọi DBMS. Trên SQL Server có thể dùng TOP 1 WITH TIES cho kết quả tương đương; trên MySQL/PostgreSQL dùng RANK() rồi lọc rk = 1. Số 1 trong LIMIT/TOP chỉ có nghĩa khi đề thật sự hỏi một người duy nhất và bạn chắc không có ai bằng.",
+      "s": "7.1"
+    },
+    {
+      "q": "\"Tổng sách mượn ngày 20/11/2023\" dùng SUM hay COUNT? Vì sao phải nói rõ cách hiểu?",
+      "m": "SUM(CTPHIEUMUON.SOLUONG) = 11 là tổng số cuốn sách. COUNT(*) = 7 là tổng số lượt mượn, tức số dòng chi tiết phiếu mượn. Hai con số khác nhau và đề không phân định \"sách\" là cuốn hay là lượt. Đây là chỗ hỏi người đã thi khóa trước, nên phải ghi rõ cách hiểu ngay đầu bài làm và viết truy vấn theo cách hiểu đó.",
+      "s": "6.4"
+    },
+    {
+      "q": "Giải thích bẫy NOT IN với NULL, và khi nào NOT IN vẫn dùng được?",
+      "m": "Bẫy chỉ xảy ra khi subquery chứa giá trị NULL, không phải khi subquery rỗng. Ví dụ LOP có một lớp chưa gán khoa nên LOP.MAKHOA = NULL, khi đó MAKHOA NOT IN ('K01','K02','K03', NULL) không thể là ĐÚNG với bất kỳ giá trị nào, nên trả về 0 dòng — sai. NOT EXISTS cùng câu hỏi trả về đúng K04 - Điện tử. NOT IN vẫn dùng được khi cột trong subquery là khóa chính vì thế nó không bao giờ NULL, ví dụ MASACH thuộc khóa chính gộp của CTPHIEUMUON. Quy tắc: cột khóa ngoại có thể NULL thì dùng NOT EXISTS.",
+      "s": "8.2"
+    },
+    {
+      "q": "Đề hỏi \"độc giả không ở Hà Nội\". Vì sao NOT LIKE làm mất DG05, và khi nào nên dùng bản nào?",
+      "m": "DG05 có DIACHI là NULL. Theo logic ba giá trị, NULL ở một ô không trả TRUE cũng không trả FALSE nên dòng đó không thoát ra được điều kiện. Câu hỏi \"DG05 có ở Hà Nội không?\" thì không ai biết — và \"chưa biết có chứa Hà Nội không\" không phải \"không chứa Hà Nội\". Bản đầu cho 2 dòng, bản thêm DIACHI IS NULL OR ... cho 3 dòng. Chọn bản nào tùy câu hỏi: \"không ở Hà Nội\" theo nghĩa thông thường thì bao gồm cả người chưa cung cấp địa chỉ; nếu đề ghi rõ \"có địa chỉ khác Hà Nội\" thì mới loại NULL.",
+      "s": "8.3"
+    },
+    {
+      "q": "Nêu tám lỗi thật trong đề gốc mà tài liệu đã chỉ ra.",
+      "m": "1) Câu 3 và 4 thiếu DISTINCT nên một sinh viên học nhiều môn ra nhiều dòng. 2) Câu 5 \"trong từng khoa\" dùng INNER JOIN làm mất khoa không có lớp. 3) Câu 7 \"ít nhất 3 lớp\" nhưng đáp án ghi >= 2, lấy thừa. 4) Câu 9 đếm nhầm số lượt thay vì số học sinh. 5) Câu 13 nhóm theo tên môn nhưng subquery nhóm theo mã. 6) Câu 6 \"trên 5 môn\" nhưng đáp án dùng >= 5. 7) Thiếu N'...' trong toàn bộ phần INSERT — lưu sai kiểu mà không báo lỗi. 8) Câu 4 đề 2 lọc makhoa='cntt' trong khi đề ghi K01 nên trả 0 dòng.",
+      "s": "A"
+    },
+    {
+      "q": "Áp dụng bốn bước tách SQL cho câu \"tên môn học có số tiết dưới 60, do sinh viên thuộc khoa K01 học\".",
+      "m": "Bước 1, chốt cột đầu ra: chỉ cần TENMH. Bước 2, lần theo khóa ngoại: MONHOC → KETQUA (qua MAMH) → SINHVIEN (qua MASV) → LOP (qua MALOP), cần 3 điều kiện khớp cho 4 bảng. Bước 3, không có từ tổng hợp nên không GROUP BY — nhưng phải SELECT DISTINCT vì một môn có thể do nhiều sinh viên khoa K01 học, tên môn sẽ lặp. Bước 4, SOTIET < 60 và MAKHOA = N'K01' đều lọc ở WHERE. Kết quả chạy thật: Giải tích 1, HEQTCSDL, HQTCSDL, Lập trình C, Trí tuệ nhân tạo.",
+      "s": "5.2"
+    },
+    {
+      "q": "Viết truy vấn \"sinh viên học trên 3 môn\" và giải thích vì sao chọn COUNT(DISTINCT k.MAMH).",
+      "m": "SELECT s.MASV, s.HOTEN, COUNT(DISTINCT k.MAMH) AS SOMON FROM SINHVIEN s JOIN KETQUA k ON k.MASV = s.MASV GROUP BY s.MASV, s.HOTEN HAVING COUNT(DISTINCT k.MAMH) > 3. Chọn COUNT(DISTINCT) vì nếu dữ liệu KETQUA có trùng khóa gộp thì COUNT(*) đếm số dòng chứ không phải số môn. Điều kiện > 3 phải nằm trong HAVING vì nó lọc sau khi gom nhóm. Kết quả chạy thật: SV001 Nguyễn Văn An, 5 môn.",
+      "s": "6.1"
+    },
+    {
+      "q": "Vì sao không nên đặt DIACHI là NOT NULL, dù điều đó làm bẫy ở câu 15 biến mất?",
+      "m": "NOT NULL là ràng buộc về dữ liệu, bảo đảm mỗi độc giả có một địa chỉ xác định — nó không liên quan đến câu truy vấn. Dữ liệu thực tế vẫn có độc giả chưa cung cấp địa chỉ. Nếu đặt NOT NULL thì DG05 không tồn tại và bẫy biến mất, nhưng ta mất đi tình huống thật. Giữ cột cho trống được là đúng; giữ lại bẫy để học là càng đúng.",
+      "s": "8.3"
+    },
+    {
+      "q": "Ba câu SQL nguy hiểm nhất trong đề và cách tránh.",
+      "m": "1) Đếm trong WHERE — SQL Server báo lỗi ngay, chuyển xuống HAVING. 2) Lọc điều kiện của bảng bên phải trong WHERE sau LEFT JOIN — sai âm thầm, biến thành INNER JOIN và mất dòng rỗng; muốn giữ dòng trống thì lọc ở ON. 3) NOT IN với subquery có NULL — trả 0 dòng, dùng NOT EXISTS. Ngoài ra còn một lỗi nữa là gom nhóm theo tên thay vì theo mã, cũng cho kết quả sai mà không báo lỗi.",
+      "s": "12"
+    }
+  ]
+}

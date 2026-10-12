@@ -1,0 +1,627 @@
+{
+  "id": "giai",
+  "title": "Giải chi tiết 43 câu",
+  "mcq": [
+    {
+      "q": "Đề 1 câu 1: \"môn có số tiết từ 30 đến 90\". Vì sao có cả MH04 (30 tiết) lẫn MH03 (90 tiết) trong kết quả?",
+      "o": [
+        "Vì đề yêu cầu sắp xếp tăng dần",
+        "Vì BETWEEN gồm cả hai đầu mốc",
+        "Vì SOTIET kiểu sai",
+        "Vì MH06 không thuộc khoảng"
+      ],
+      "a": 1,
+      "w": "BETWEEN 30 AND 90 đã bao gồm 30 và 90. MH06 bị loại vì chỉ 20 tiết, nằm ngo�ài khoảng.",
+      "s": "1"
+    },
+    {
+      "q": "Đề 1 câu 2: \"sinh viên lớp D16CNPM2 có điểm từ 6 đến 8\". Vì sao cần DISTINCT?",
+      "o": [
+        "Vì KETQUA trùng MASV",
+        "Vì một sinh viên học nhiều môn thì ra nhiều dòng mà đề chỉ hỏi danh sách sinh viên",
+        "Vì JOIN sinh dòng lặp",
+        "Vì đề yêu cầu không trùng"
+      ],
+      "a": 1,
+      "w": "Kết quả có SV001 và SV003 cùng tên Nguyễn Văn An. Thiếu DISTINCT là lỗi hay gặp nhất ở dạng này.",
+      "s": "2"
+    },
+    {
+      "q": "Đề 1 câu 3 nối 4 bảng, cần bao nhiêu điều kiện khớp?",
+      "o": [
+        "4",
+        "3",
+        "2",
+        "Không quy định"
+      ],
+      "a": 1,
+      "w": "Quy tắc N−1: nối 4 bảng cần 3 điều kiện (k.MAMH = m.MAMH, sv.MASV = k.MASV, l.MALOP = sv.MALOP). Thiếu một thì số dòng nhân lên.",
+      "s": "3"
+    },
+    {
+      "q": "Đề 1 câu 3: tên \"Lập trình C\" xuất hiện một lần dù có hai mã MH03 và MH07. Vì sao?",
+      "o": [
+        "Vì dữ liệu chỉ có một môn tên đó",
+        "Vì SELECT DISTINCT m.TENMH gộp theo tên, không theo mã",
+        "Vì hai môn có cùng TENMH được coi là một",
+        "Vì ORDER BY gộp dòng"
+      ],
+      "a": 1,
+      "w": "Đề hỏi tên môn nên DISTINCT gộp theo TENMH. Nếu đề hỏi mã môn thì phải SELECT DISTINCT m.MAMH và sẽ ra hai dòng.",
+      "s": "3"
+    },
+    {
+      "q": "Đề 1 câu 4 trả về 0 dòng. Kết luận đúng là gì?",
+      "o": [
+        "Câu lệnh sai, phải sửa lại",
+        "Kết quả rỗng là đúng: SV007 có điểm 4.5 nhưng học lớp thuộc khoa K03, không phải K01",
+        "Phải thêm LEFT JOIN",
+        "Phải bỏ điều kiện điểm"
+      ],
+      "a": 1,
+      "w": "Đây không phải lỗi. Khi gặp 0 dòng, đừng vội sửa câu lệnh — chạy từng điều kiện riêng: SELECT MASV, DIEM FROM KETQUA WHERE MAMH='MH01' AND DIEM < 5; rồi tra MASV → MALOP → MAKHOA.",
+      "s": "4"
+    },
+    {
+      "q": "Đề 1 câu 5 \"tên khoa và số lớp trong từng khoa\". Ba điều kiện phải cùng đúng là gì?",
+      "o": [
+        "INNER JOIN, COUNT(*), GROUP BY TENKHOA",
+        "LEFT JOIN, COUNT(l.MALOP), GROUP BY k.MAKHOA kèm TENKHOA",
+        "LEFT JOIN, COUNT(*), GROUP BY TENKHOA",
+        "RIGHT JOIN, COUNT(l.MALOP), GROUP BY MAKHOA"
+      ],
+      "a": 1,
+      "w": "LEFT JOIN giữ khoa Điện tử có 0 lớp. COUNT(l.MALOP) đếm cột bên phải vì COUNT(*) sau LEFT JOIN luôn ≥ 1. Gom nhóm theo mã khoa kèm tên để hiển thị.",
+      "s": "5"
+    },
+    {
+      "q": "Đề 1 câu 6 \"sinh viên học trên 3 môn\". Đáp án đề gốc dùng >= 3 thì sai ở chỗ nào?",
+      "o": [
+        "Dùng COUNT(*) sai",
+        "Phải là > 3, vì >= 3 lấy cả những người học đúng 3 môn",
+        "Phải dùng DISTINCT",
+        "Phải dùng LEFT JOIN"
+      ],
+      "a": 1,
+      "w": "\"Trên 3\" là > 3, tức từ 4 môn trở lên. Trong dữ liệu mẫu chỉ SV001 học 5 môn nên hai cách ra cùng kết quả — dễ bị chấp nhận nhầm.",
+      "s": "6"
+    },
+    {
+      "q": "Đề 1 câu 7 \"khoa có ít nhất 3 lớp\". Đáp án gốc ghi >= 2, chạy thật ra gì?",
+      "o": [
+        "1 khoa",
+        "3 khoa: Cơ khí, Kế toán, Công nghệ thông tin",
+        "4 khoa",
+        "0 khoa"
+      ],
+      "a": 1,
+      "w": "Đề hỏi ít nhất 3 nên phải >= 3, khi đó chỉ Công nghệ thông tin. Đây là lỗi số 3 trong Phụ lục A — lấy thừa chứ không thiếu.",
+      "s": "7"
+    },
+    {
+      "q": "Chữ \"thực\" trong câu 8 đề 1 \"lớp có sĩ số thực ít nhất 3\" là gợi ý gì?",
+      "o": [
+        "Dùng LEFT JOIN để không bỏ lớp rỗng, rồi chặn ở HAVING",
+        "Dùng INNER JOIN",
+        "Dùng COUNT(*)",
+        "Tính sĩ số khai trong bảng LOP"
+      ],
+      "a": 0,
+      "w": "Cách này cho cùng kết quả nhưng đúng ý \"sĩ số thực\" và trả lời được câu biến thể \"liệt kê lớp kèm sĩ số\".",
+      "s": "8"
+    },
+    {
+      "q": "Đề 1 câu 9 \"khoa có nhiều nhất sinh viên\". Vì sao phải dùng >= ALL thay vì NOT EXISTS hay MAX = COUNT?",
+      "o": [
+        "Vì >= ALL nhanh hơn",
+        "Vì khoa Điện tử có 0 sinh viên, nếu dùng MAX(...) = COUNT(...) thì giá trị 0 có thể khớp nhầm; >= ALL so sánh với mọi nhóm nên loại được nhóm 0",
+        "Vì NOT EXISTS không dùng được với LEFT JOIN",
+        "Vì SQL Server không cho MAX"
+      ],
+      "a": 1,
+      "w": "Đếm bằng COUNT(sv.MASV) chứ không COUNT(*): sau LEFT JOIN x2, một khoa không có sinh viên vẫn ra đúng 1 dòng và COUNT(*) sẽ đếm dòng đó thành 1.",
+      "s": "9"
+    },
+    {
+      "q": "Đề 1 câu 10: vì sao dùng COUNT(DISTINCT k.MASV) thay vì COUNT(*)?",
+      "o": [
+        "Vì MASV có thể NULL",
+        "Vì COUNT(DISTINCT) đếm số NGƯỜI chứ không phải số lượt",
+        "Vì COUNT(*) không dùng được cùng GROUP BY",
+        "Vì DISTINCT bắt buộc với JOIN"
+      ],
+      "a": 1,
+      "w": "Trong dữ liệu mẫu mỗi SV học mỗi môn một lần nên hai cách ra cùng kết quả, nhưng khi cấu trúc bảng khác thì khác.",
+      "s": "10"
+    },
+    {
+      "q": "Đề 1 câu 11: vì sao ORDER BY SOTIET DESC LIMIT 1 dễ bị chấp nhận nhầm?",
+      "o": [
+        "Vì viết sai cú pháp",
+        "Vì trên dữ liệu mẫu nó cũng ra MH03, nhưng khi có hai môn bằng nhau thì chỉ lấy một và bỏ mất người còn lại",
+        "Vì không có ORDER BY",
+        "Vì chạy lâu hơn"
+      ],
+      "a": 1,
+      "w": ">= ALL trả về mọi môn có số tiết lớn nhất. Trong dữ liệu mẫu cả hai cách cho cùng kết quả nên lỗi này rất dễ lọt.",
+      "s": "11"
+    },
+    {
+      "q": "Đề 2 câu 4: đề ghi môn HEQTCSDL, dữ liệu có cả HQTCSDL lẫn HEQTCSDL. Vấn đề gì?",
+      "o": [
+        "Không có vấn đề",
+        "Lọc TENMH = 'HEQTCSDL' khớp MH08 chứ không phải MH01; còn đáp án gốc dùng makhoa='cntt' sai mã (đề dùng K01) nên ra 0 dòng",
+        "HEQTCSDL không tồn tại",
+        "Phải dùng LIKE"
+      ],
+      "a": 1,
+      "w": "MH08 tên HEQTCSDL là bản viết sai chính tả cố ý trong dữ liệu mẫu. Đây là lỗi số 8 trong Phụ lục A: lỗi của đề, không phải của đáp án.",
+      "s": "4"
+    },
+    {
+      "q": "Đề 2 câu 6 \"sinh viên học trên 5 môn\". Đáp án gốc dùng >= 5 thì ra SV001. Vì sao sai?",
+      "o": [
+        "Vì phải dùng COUNT(DISTINCT)",
+        "Vì \"trên 5\" là > 5, và SV001 học đúng 5 môn nên >= 5 lấy cả người không thỏa",
+        "Vì SV001 không học môn nào",
+        "Vì phải dùng LEFT JOIN"
+      ],
+      "a": 1,
+      "w": "Đúng ra câu này trả về 0 dòng vì không ai học trên 5 môn. Cùng loại lỗi nhầm ranh giới với câu 7 đề 1.",
+      "s": "6"
+    },
+    {
+      "q": "Đề 2 câu 12 \"sinh viên học nhiều môn nhất\". Vì sao subquery bắt buộc phải có GROUP BY MASV?",
+      "o": [
+        "Vì SQL Server yêu cầu",
+        "Vì không có nó thì subquery chỉ trả một số duy nhất và >= ALL trở thành so sánh với chính mình — luôn đúng, mọi sinh viên đều lọt",
+        "Vì phải có ORDER BY",
+        "Vì phải có DISTINCT"
+      ],
+      "a": 1,
+      "w": "So sánh một giá trị với chính nó thì bằng bao nhiêu cũng thỏa. Đây là lỗi số 5 trong Phụ lục A.",
+      "s": "12"
+    },
+    {
+      "q": "Đề 2 câu 13 \"môn có nhiều sinh viên học nhất\". Lỗi ở đáp án gốc là gì?",
+      "o": [
+        "Thiếu DISTINCT",
+        "Gom nhóm ngoài theo tên môn, trong theo mã môn — hai bộ khác nhau nên kết quả sai",
+        "Dùng COUNT(*) sai",
+        "Thiếu WHERE"
+      ],
+      "a": 1,
+      "w": "Phải gom theo MAMH ở cả hai vế. Đề gốc gom ngoài theo tên, trong theo mã — so sánh hai bộ dữ liệu khác nhau.",
+      "s": "13"
+    },
+    {
+      "q": "Đề 2 câu 14 trên dữ liệu mẫu trả về 0 dòng. Vì sao?",
+      "o": [
+        "Dữ liệu không có sinh viên nữ",
+        "Dữ liệu ghi giới tính là 'Nữ' có dấu, còn đáp án so sánh 'nu' không dấu nên không khớp",
+        "AVG không dùng được",
+        "Phải dùng TOP 1"
+      ],
+      "a": 1,
+      "w": "Sửa cả hai lỗi (dấu và alias) thì câu này trả về đúng SV004 Lê Thị Dung, điểm TB 9.75. Bài học: khi so sánh chuỗi tiếng Việt phải dùng N'...' và đúng chính tả trong dữ liệu.",
+      "s": "14"
+    },
+    {
+      "q": "Đề 2 câu 15 \"môn chưa có sinh viên học\". Kết quả 0 dòng có nghĩa là gì?",
+      "o": [
+        "Câu lệnh sai",
+        "Cả 8 môn đều có ít nhất một sinh viên học — đáp án rỗng là hợp lệ",
+        "Phải dùng LEFT JOIN",
+        "Phải bỏ điều kiện NOT EXISTS"
+      ],
+      "a": 1,
+      "w": "Câu hỏi hỏi \"chưa có\" nên đáp án rỗng là hợp lệ. Muốn kiểm chứng câu hỏi có đúng không thì chạy ngược lại: LEFT JOIN rồi đếm số sinh viên từng môn.",
+      "s": "15"
+    },
+    {
+      "q": "Đề 2 câu 16 \"đếm sinh viên theo lớp\". Vì sao lớp D16CNPM3 vẫn ra với số đếm 0?",
+      "o": [
+        "Vì SISODK bằng 0",
+        "Vì dùng LEFT JOIN + COUNT(sv.MASV) nên lớp không có sinh viên vẫn được giữ",
+        "Vì không có ORDER BY",
+        "Vì phải dùng HAVING"
+      ],
+      "a": 1,
+      "w": "Dùng INNER JOIN thì lớp này biến mất. Ba lỗi phải tránh trong mọi trường hợp tương tự: đếm COUNT(*) chứ không COUNT(cột), và gom nhóm theo mã lớp kèm tên.",
+      "s": "16"
+    },
+    {
+      "q": "Đề 3 câu 10 \"độc giả mượn nhiều sách nhất\". Vì sao phải nối 3 bảng?",
+      "o": [
+        "Vì cần ORDER BY",
+        "Vì CTPHIEUMUON không có cột MADG, chỉ có MAPM, nên muốn biết ai mượn phải đi qua PHIEUMUON",
+        "Vì cần LEFT JOIN",
+        "Vì phải có DOCGIA"
+      ],
+      "a": 1,
+      "w": "Kết quả là DG01 Nguyễn Văn An với 9 cuốn. Muốn hiện tên độc giả thì nối thêm DOCGIA; chỉ cần mã thì 2 bảng là đủ.",
+      "s": "10"
+    },
+    {
+      "q": "Đề 3 câu 15 \"độc giả không ở Hà Nội\". Ba cách viết cho kết quả nào?",
+      "o": [
+        "Cả ba ra 3 dòng",
+        "NOT LIKE ra 2 dòng, thêm OR IS NULL ra 3 dòng, NOT EXISTS ra 3 dòng",
+        "NOT LIKE ra 3 dòng",
+        "Cả ba ra 2 dòng"
+      ],
+      "a": 1,
+      "w": "DG05 có DIACHI = NULL nên không xuất hiện ở bản NOT LIKE — không có báo lỗi nào. Đây là bằng chứng cụ thể cho bẫy NOT LIKE.",
+      "s": "15"
+    },
+    {
+      "q": "Đề 3 câu 16 \"sách không do NXB Giáo dục xuất bản\". Lỗi hay gặp nhất ở câu này là gì?",
+      "o": [
+        "Quên DISTINCT",
+        "Thiếu chữ N ở N'Nhà xuất bản Giáo dục'",
+        "Dùng sai toán tử",
+        "Quên ORDER BY"
+      ],
+      "a": 1,
+      "w": "Kết quả gồm 4 cuốn: S04, S05 (Kim Đồng), S06 (Tổng hợp), S07 (Bách khoa). Thiếu N là lỗi xuất hiện ở cả câu hỏi lẫn phần INSERT của đề gốc.",
+      "s": "16"
+    },
+    {
+      "q": "Trong 43 câu, câu nào trả về 0 dòng vì dữ liệu ghi 'Nữ' có dấu còn đáp án so sánh không dấu?",
+      "o": [
+        "Đề 1 câu 4",
+        "Đề 2 câu 14",
+        "Đề 2 câu 15",
+        "Đề 1 câu 7"
+      ],
+      "a": 1,
+      "w": "Đề 2 câu 14. Sửa cả lỗi dấu và lỗi alias thì ra SV004 Lê Thị Dung với điểm TB 9.75.",
+      "s": "14"
+    },
+    {
+      "q": "Bài học chung từ các câu trả về 0 dòng là gì?",
+      "o": [
+        "Kết quả 0 d��ng luôn là sai",
+        "Kết quả 0 dòng không phải tín hiệu làm sai — trước khi sửa câu lệnh, chạy từng điều kiện riêng để xem dữ liệu thật; nếu đúng là phải rỗng thì ghi rõ lý do vào bài, có khi đó là điểm cộng",
+        "Phải thêm LEFT JOIN",
+        "Phải bỏ điều kiện WHERE"
+      ],
+      "a": 1,
+      "w": "Có 7 câu trong 43 câu cho kết quả rỗng hoặc bất ngờ. Hiểu dữ liệu là một phần của kỹ năng làm bài.",
+      "s": "Tổng kết"
+    },
+    {
+      "q": "Đề 1 câu 9 dùng LEFT JOIN x2 (KHOA → LOP → SINHVIEN). Vì sao phải đếm COUNT(sv.MASV) chứ không COUNT(*)?",
+      "o": [
+        "Vì MASV là khóa chính",
+        "Vì sau LEFT JOIN x2 một khoa không có sinh viên vẫn ra đúng 1 dòng, và COUNT(*) sẽ đếm dòng đó thành 1",
+        "Vì COUNT(*) chậm hơn",
+        "Vì không có cột nào khác"
+      ],
+      "a": 1,
+      "w": "Nếu đếm COUNT(*) thì khoa Điện tử vốn có 0 sinh viên sẽ ra 1, và có thể khớp nhầm giá trị lớn nhất — đó là lý sao phải dùng >= ALL thay vì MAX = COUNT.",
+      "s": "9"
+    },
+    {
+      "q": "Đề 2 câu 12: subquery (SELECT COUNT(*) FROM KETQUA GROUP BY MASV) mà thiếu GROUP BY thì lỗi gì xảy ra?",
+      "o": [
+        "Báo lỗi cú pháp",
+        "Trả một số duy nhất, >= ALL so sánh với chính mình nên luôn đúng và mọi sinh viên đều lọt",
+        "Trả về 0 dòng",
+        "Không có tác dụng"
+      ],
+      "a": 1,
+      "w": "Đây là biểu hiện cụ thể của lỗi subquery tự biến / subquery thiếu GROUP BY — cùng loại với lỗi ở câu 14 đề 2.",
+      "s": "12"
+    },
+    {
+      "q": "\"Số lượt mượn\" tính bằng gì, và ngày 20/11/2023 ra bao nhiêu?",
+      "o": [
+        "SUM(SOLUONG) = 11",
+        "COUNT(*) = 3 phiếu mượn, hoặc 7 dòng chi tiết nếu đếm ở CTPHIEUMUON",
+        "COUNT(DISTINCT) = 11",
+        "SUM(SOLUONG) = 7"
+      ],
+      "a": 1,
+      "w": "Tài liệu ghi: COUNT(*) trên PHIEUMUON ra 3 phiếu, còn đếm số dòng chi tiết CTPHIEUMUON ra 7 lượt, và SUM(SOLUONG) ra 11 cuốn. Đề ghi \"tổng số sách\" nên lấy 11.",
+      "s": "5"
+    },
+    {
+      "q": "Vì sao đề 1 câu 5 cho kết quả 4 khoa (Điện tử có 0 lớp) còn INNER JOIN chỉ ra 3?",
+      "o": [
+        "Vì INNER JOIN bị lỗi cú pháp",
+        "Vì LEFT JOIN giữ khoa rỗng còn INNER JOIN loại bỏ dòng không khớp",
+        "Vì dữ liệu khác nhau",
+        "Vì thiếu ORDER BY"
+      ],
+      "a": 1,
+      "w": "Đề nói \"trong từng khoa\" nên thiếu một khoa là sai. Đây cũng là lỗi số 2 trong Phụ lục A với câu 5 đề 2.",
+      "s": "5"
+    },
+    {
+      "q": "Đề 3 câu 4 \"sách được mượn ngày 20/11/2023\". Vì sao cần DISTINCT?",
+      "o": [
+        "Vì NGAYMUON trùng",
+        "Vì một phiếu mượn có thể chứa nhiều cuốn, và cùng một cuốn có thể được mượn ở nhiều phiếu cùng ngày",
+        "Vì phải dùng LEFT JOIN",
+        "Vì MASACH không phải khóa chính"
+      ],
+      "a": 1,
+      "w": "Kết quả 6 cuốn: S01, S02, S03, S04, S05, S08. Không DISTINCT thì một cuốn có thể ra nhiều dòng.",
+      "s": "4"
+    },
+    {
+      "q": "Dữ liệu mẫu gồm bao nhiêu bảng và bao nhiêu dòng chính?",
+      "o": [
+        "5 bảng, 4 khoa, 7 lớp, 10 sinh viên, 8 môn, 26 dòng điểm",
+        "7 bảng, 20 sinh viên",
+        "4 bảng, 6 sinh viên",
+        "Không ai biết"
+      ],
+      "a": 0,
+      "w": "Đề 1-2 dùng 5 bảng KHOA/LOP/SINHVIEN/MONHOC/KETQUA; đề 3 dùng 4 bảng SACH/DOCGIA/PHIEUMUON/CTPHIEUMUON. Mọi bảng kết quả trong tài liệu đều chạy thật trên dữ liệu này.",
+      "s": "1"
+    }
+  ],
+  "cards": [
+    {
+      "f": "Dữ liệu mẫu của đề",
+      "b": "Đề 1-2: 4 khoa, 7 lớp, 10 sinh viên, 8 môn, 26 dòng điểm. Đề 3: 8 sách, 5 độc giả, 6 phiếu mượn. MH03 và MH07 cùng tên \"Lập trình C\". MH01 là HQTCSDL, MH08 là HEQTCSDL (bản viết sai chính tả cố ý). DG05 có DIACHI = NULL."
+    },
+    {
+      "f": "Đề 1 — 11 câu, trọng tâm",
+      "b": "C1 BETWEEN gồm 2 đầu mốc · C2 DISTINCT bắt buộc · C3 nối 4 bảng cần 3 điều kiện · C4 kết quả 0 dòng là đúng · C5 LEFT JOIN + COUNT(l.MALOP) + GROUP BY mã · C6 \"trên 3\" là > 3 · C7 \"ít nhất 3\" là >= 3, đề gốc ghi >= 2 sai · C8 chữ \"thực\" gợi ý LEFT JOIN · C9 phải >= ALL vì có nhóm 0 · C10 COUNT(DISTINCT) đếm người · C11 >= ALL trả cả hai môn bằng nhau."
+    },
+    {
+      "f": "Đề 2 — 16 câu, trọng tâm",
+      "b": "C1-11 giống đề 1, chỉ khác: câu 2 lớp D13TMDT, câu 4 môn HEQTCSDL, câu 6 \"trên 5 môn\", câu 10 \"ít nhất 3 SV\". C12 subquery phải có GROUP BY MASV. C13 gom nhóm cả hai vế theo MAMH. C14 sửa cả lỗi dấu Nữ lẫn lỗi alias. C15 môn chưa ai học → 0 dòng là đúng. C16 LEFT JOIN giữ lớp rỗng."
+    },
+    {
+      "f": "Đề 3 — 16 câu, trọng tâm",
+      "b": "C4 sách mượn ngày 20/11/2023, cần DISTINCT. C5 tổng sách = SUM(SOLUONG) = 11 cuốn. C10 độc giả mượn nhiều nhất phải nối 3 bảng vì CTPHIEUMUON chỉ có MAPM. C11 \"trên 3 cuốn\" là > 3. C15 bẫy NOT LIKE mất dòng NULL. C16 thiếu N'...' là lỗi hay gặp nhất."
+    },
+    {
+      "f": "Bảy câu cho kết quả rỗng hoặc bất ngờ",
+      "b": "Đ1 C4: 0 dòng vì SV007 ở khoa K03. Đ1 C6: chỉ 1 SV vì \"trên 3\" là > 3. Đ1 C7: chỉ 1 khoa vì đề gốc ghi >= 2. Đ2 C6: 0 dòng vì không ai học quá 5 môn. Đ2 C14: 0 dòng vì dữ liệu ghi 'Nữ' có dấu. Đ2 C15: 0 dòng vì cả 8 môn đều có người học. Đ3 C15: mất 1 dòng vì NOT LIKE không trả dòng NULL."
+    },
+    {
+      "f": "Bài học từ kết quả 0 dòng",
+      "b": "Kết quả 0 dòng không phải tín hiệu làm sai. Trước khi sửa câu lệnh, chạy từng điều kiện riêng để xem dữ liệu thật. Nếu đúng là phải rỗng, ghi rõ lý do vào bài — có khi đó là điểm cộng vì bạn hiểu dữ liệu."
+    },
+    {
+      "f": "Ba điều kiện cho câu đếm theo nhóm",
+      "b": "1) LEFT JOIN nếu đề nói \"trong từng X\" (giữ cả nhóm rỗng). 2) COUNT(cột của bảng bên phải) chứ không COUNT(*) — sau LEFT JOIN, COUNT(*) luôn ≥ 1. 3) GROUP BY theo mã kèm tên để hiển thị. Thiếu một trong ba là sai dù không báo lỗi."
+    },
+    {
+      "f": "Khi nào dùng >= ALL, khi nào dùng NOT EXISTS",
+      "b": "Câu \"nhiều nhất / lớn nhất\" dùng >= ALL vì nó so sánh với MỌI nhóm nên loại được nhóm có 0. Câu \"chưa ai / chưa có / không có\" dùng NOT EXISTS vì an toàn với NULL. Câu \"có nhiều nhất 5\" thì mới dùng NOT EXISTS và HAVING COUNT <= 5."
+    },
+    {
+      "f": "Nhầm ranh giới — hai lỗi trong đề gốc",
+      "b": "\"Trên 3\" là > 3 nhưng đáp án dùng >= 3 (đề 1 câu 6, đề 2 câu 6). \"Ít nhất 3\" là >= 3 nhưng đáp án dùng >= 2 (đề 1 câu 7). Cả hai đều lấy THỪA, và trên dữ liệu mẫu có khi ra cùng kết quả nên rất dễ lọt."
+    },
+    {
+      "f": "Subquery phải có GROUP BY riêng",
+      "b": "Ở câu \"sinh viên học nhiều môn nhất\", subquery phải có GROUP BY MASV. Không có nó thì subquery chỉ trả một số duy nhất và >= ALL trở thành so sánh với chính mình — luôn đúng, mọi sinh viên đều lọt. Cùng nguyên nhân với lỗi subquery tự biến do thiếu alias."
+    },
+    {
+      "f": "Lỗi của đề, không phải của đáp án",
+      "b": "Đề 2 câu 4: đề ghi mã khoa là K01 nhưng đáp án lọc makhoa='cntt' — đây là lỗi của đề (lỗi số 8). Ngược lại, câu 14 viết gioitinh='nu' không dấu là lỗi của đáp án vì dữ liệu ghi 'Nữ' có dấu."
+    },
+    {
+      "f": "Ba bảng của đề 3 và cách nối",
+      "b": "CTPHIEUMUON không có cột MADG, chỉ có MAPM. Nên muốn biết ai mượn phải đi qua PHIEUMUON. Câu \"độc giả mượn nhiều sách nhất\" phải nối 3 bảng CTPHIEUMUON → PHIEUMUON → DOCGIA. Muốn hiện tên thì cần DOCGIA; chỉ cần mã thì 2 bảng là đủ."
+    },
+    {
+      "f": "\"Cuốn\" hay \"lượt\"",
+      "b": "SUM(CTPHIEUMUON.SOLUONG) = 11 là tổng số CUỐN. COUNT(*) trên PHIEUMUON = 3 là số PHIẾU. COUNT(*) trên CTPHIEUMUON = 7 là số LƯỢT (dòng chi tiết). Đề ghi \"tổng số sách\" nên lấy 11. Nhưng ghi rõ cách hiểu ngay đầu bài làm."
+    },
+    {
+      "f": "Lỗi chính tả trong dữ liệu mẫu",
+      "b": "MH01 tên HQTCSDL (6 SV học), MH08 tên HEQTCSDL (2 SV học) — bản viết sai chính tả cố ý. Ngoài ra HQTCSDL và HEQTCSDL chỉ khác nhau một chữ. Lọc bằng = với giá trị sai chính tả sẽ không khớp mã đúng."
+    },
+    {
+      "f": "Chuỗi tiếng Việt phải viết N'...'",
+      "b": "Đề 2 câu 14 dùng gioitinh='nu' không dấu trong khi dữ liệu ghi 'Nữ' có dấu nên ra 0 d��ng. Thiếu N'...' không chỉ sai chính tả mà còn lưu sai kiểu dữ liệu, và lỗi đó không báo gì ngay."
+    },
+    {
+      "f": "Script kiểm chứng",
+      "b": "Mọi bảng kết quả trong tài liệu đều chạy thật trên dữ liệu mẫu. Script: giai_de12.py (đề 1 + đề 2 câu 1-11), giai_de23.py (đề 2 câu 12-16, đề 3 câu 2,3,5,12-16), giai_de3b.py (đề 3 câu 4, 6-11, 16), run_de4.py (đề 4). Thư mục /home/bachhoang/sql_kiem_chung/."
+    }
+  ],
+  "fill": [
+    {
+      "b": "Đề 1 câu 4 trả về 0 dòng vì SV007 có điểm ______ nhưng học lớp thuộc khoa ______.",
+      "a": [
+        "4.5",
+        "k03"
+      ],
+      "s": "4",
+      "w": "SV007 là sinh viên duy nhất có điểm HQTCSDL dưới 5, nhưng học lớp D16CKMAT2 thuộc khoa K03. Kết quả rỗng là đúng."
+    },
+    {
+      "b": "Đề 1 câu 6 \"trên 3 môn\" dùng ______, còn đề 2 câu 6 \"trên 5 môn\" cũng dùng ______.",
+      "a": [
+        ">",
+        "trên"
+      ],
+      "s": "6",
+      "w": "Cả hai đều là >, tức từ số kế tiếp trở lên. Đáp án gốc dùng >= cho cả hai là lấy thừa."
+    },
+    {
+      "b": "Đề 1 câu 7 \"ít nhất 3 lớp\" dùng ______, nhưng đáp án gốc ghi ______ nên ra 3 khoa.",
+      "a": [
+        ">= 3",
+        ">= 2"
+      ],
+      "s": "7",
+      "w": "Lỗi số 3 trong Phụ lục A. Đúng là >= 3, khi đó chỉ Công nghệ thông tin."
+    },
+    {
+      "b": "Đề 1 câu 9 phải dùng ______ ALL vì khoa Điện tử có ______ sinh viên.",
+      "a": [
+        ">=",
+        "0"
+      ],
+      "s": "9",
+      "w": ">= ALL so sánh với mọi nhóm nên loại được nhóm 0. Nếu dùng MAX(...) = COUNT(...) thì giá trị 0 có thể khớp nhầm."
+    },
+    {
+      "b": "Nối 4 bảng ở đề 1 câu 3 cần ______ điều kiện khớp.",
+      "a": [
+        "3"
+      ],
+      "s": "3",
+      "w": "Quy tắc N−1: n bảng cần n−1 điều kiện. Thiếu một thì số d��ng ra bằng tích số dòng của các bảng."
+    },
+    {
+      "b": "Đề 2 câu 12: subquery phải có ______ MASV, nếu không thì ______ ALL so sánh với chính mình.",
+      "a": [
+        "group by",
+        ">="
+      ],
+      "s": "12",
+      "w": "So sánh một giá trị với chính nó thì luôn đúng nên mọi sinh viên đều lọt qua."
+    },
+    {
+      "b": "Đề 2 câu 13: phải gom nhóm theo ______ ở cả hai vế, không gom ngoài theo tên rồi trong theo mã.",
+      "a": [
+        "mamh"
+      ],
+      "s": "13",
+      "w": "Lỗi số 5 trong Phụ lục A. Hai bộ khác nhau nên so sánh không có ý nghĩa."
+    },
+    {
+      "b": "Đề 2 câu 14 trả 0 dòng vì dữ liệu ghi giới tính là 'Nữ' có ______, còn đáp án so sánh không ______.",
+      "a": [
+        "dấu",
+        "dấu"
+      ],
+      "s": "14",
+      "w": "Sửa cả lỗi dấu và lỗi alias thì ra SV004 Lê Thị Dung, điểm TB 9.75."
+    },
+    {
+      "b": "Đề 2 câu 15 \"môn chưa có sinh viên học\" trả ______ dòng vì cả 8 môn đều có người học.",
+      "a": [
+        "0"
+      ],
+      "s": "15",
+      "w": "Câu hỏi hỏi \"chưa có\" nên đáp án rỗng là hợp lệ, không phải làm sai."
+    },
+    {
+      "b": "Đề 3 câu 15: NOT LIKE trả 2 dòng, thêm ______ IS NULL thì ra 3 dòng.",
+      "a": [
+        "diachi"
+      ],
+      "s": "15",
+      "w": "DG05 có DIACHI = NULL nên không xuất hiện ở bản đầu, và không có báo lỗi nào."
+    },
+    {
+      "b": "\"Tổng số sách\" mượn ngày 20/11/2023 dùng ______ cho ______ cuốn.",
+      "a": [
+        "sum",
+        "11"
+      ],
+      "s": "5",
+      "w": "SUM(CTPHIEUMUON.SOLUONG) = 11 cuốn. Còn số phiếu mượn là 3 và số lượt (dòng chi tiết) là 7."
+    },
+    {
+      "b": "Đề 3 câu 10 phải nối ______ bảng vì CTPHIEUMUON chỉ có cột ______ chứ không có MADG.",
+      "a": [
+        "3",
+        "mapm"
+      ],
+      "s": "10",
+      "w": "Muốn biết ai mượn phải đi qua PHIEUMUON. Kết quả là DG01 Nguyễn Văn An với 9 cuốn."
+    },
+    {
+      "b": "Đề 3 câu 11 \"trên 3 cuốn\" dùng ______, kết quả là DG01 và ______.",
+      "a": [
+        ">",
+        "dg04"
+      ],
+      "s": "11",
+      "w": "\"Trên 3\" là > 3, không phải >= 3. DG01 mượn 9 cuốn, DG04 mượn 4 cuốn."
+    },
+    {
+      "b": "Đề 1 câu 5 cho kết quả 4 khoa, trong đó Điện tử có ______ lớp, nhờ dùng ______.",
+      "a": [
+        "0",
+        "left join"
+      ],
+      "s": "5",
+      "w": "LEFT JOIN giữ khoa rỗng, COUNT(l.MALOP) cho số đếm 0 thay vì 1."
+    },
+    {
+      "b": "Dữ liệu mẫu có MH01 tên ______ (6 SV học) và MH08 tên ______ (2 SV học) — bản viết sai chính tả cố ý.",
+      "a": [
+        "hqtc sdl",
+        "heqtc sdl"
+      ],
+      "s": "4",
+      "w": "Hai môn này chỉ khác nhau một chữ. Lọc bằng = với giá trị sai chính tả sẽ không khớp mã đúng."
+    },
+    {
+      "b": "Số lượt mượn ngày 20/11/2023 tính bằng ______ dòng chi tiết cho ______, còn tổng cuốn là ______.",
+      "a": [
+        "count(*)",
+        "7",
+        "11"
+      ],
+      "s": "5",
+      "w": "COUNT(*) trên CTPHIEUMUON = 7 lượt, SUM(SOLUONG) = 11 cuốn. Đề ghi \"tổng số sách\" nên lấy 11."
+    }
+  ],
+  "written": [
+    {
+      "q": "Đề 1 câu 5: viết SQL lấy tên khoa và số lớp trong từng khoa, giải thích ba điều kiện bắt buộc.",
+      "m": "SELECT k.TENKHOA, COUNT(l.MALOP) AS SoLop FROM KHOA k LEFT JOIN LOP l ON l.MAKHOA = k.MAKHOA GROUP BY k.MAKHOA, k.TENKHOA ORDER BY k.MAKHOA. Ba điều kiện: một, phải LEFT JOIN để giữ khoa Điện tử không có lớp nào. Hai, phải đếm COUNT(l.MALOP) là cột của bảng bên phải, vì COUNT(*) sau LEFT JOIN luôn lớn hơn hoặc bằng 1 nên khoa rỗng sẽ ra 1 thay vì 0. Ba, phải gom nhóm theo k.MAKHOA kèm k.TENKHOA vì hai khoa có thể trùng tên. Kết quả chạy thật: Công nghệ thông tin 4, Cơ khí 2, Kế toán 1, Điện tử 0.",
+      "s": "5"
+    },
+    {
+      "q": "Đề 1 câu 9: tại sao \"khoa có nhiều nhất sinh viên\" phải dùng >= ALL chứ không dùng NOT EXISTS hay MAX = COUNT?",
+      "m": "Vì dữ liệu có khoa K04 Điện tử có 0 sinh viên. Nếu viết MAX(...) = COUNT(...) thì giá trị 0 có thể khớp nhầm với nhóm không có sinh viên. >= ALL so sánh với MỌI nhóm nên loại được nhóm 0 và trả về đúng khoa Công nghệ thông tin. Đếm phải dùng COUNT(sv.MASV) chứ không COUNT(*), vì sau LEFT JOIN x2 thì một khoa không có sinh viên vẫn ra đúng 1 dòng và COUNT(*) sẽ đếm dòng đó thành 1. NOT EXISTS thì dành cho câu \"khoa có nhiều hơn 5 sinh viên\", không phải câu \"nhiều nhất\".",
+      "s": "9"
+    },
+    {
+      "q": "Đề 2 câu 12 và 13: subquery phải có GROUP BY và gom nhóm nhất quán. Vì sao?",
+      "m": "Ở câu 12, subquery phải có GROUP BY MASV. Không có nó thì subquery chỉ trả một số duy nhất và phép >= ALL trở thành so sánh với chính mình — luôn đúng, mọi sinh viên đều lọt qua. Ở câu 13, phải gom nhóm theo MAMH ở cả hai vế. Đáp án gốc gom ngoài theo tên môn, trong theo mã môn, nên hai bộ khác nhau và so sánh không có ý nghĩa. Đây là lỗi số 5 trong Phụ lục A. Cùng nguyên nhân với lỗi subquery tự biến do thiếu alias.",
+      "s": "12"
+    },
+    {
+      "q": "Đề 2 câu 14: giải thích vì sao câu trả về 0 dòng và sửa thế nào.",
+      "m": "Có hai lỗi. Một, đáp án viết gioitinh='nu' không dấu trong khi dữ liệu ghi 'Nữ' có dấu nên không khớp — đây là bài học về kiểu dữ liệu: khi so sánh chuỗi tiếng Việt trong SQL Server phải viết N'...' và dùng đúng chính tả trong dữ liệu. Hai, dùng chung tên bảng không alias nên biến thành subquery tự biến, khiến >= ALL luôn đúng và ra toàn bộ sinh viên nữ. Sửa cả hai thì câu trả về đúng SV004 Lê Thị Dung với điểm trung bình 9.75, cao nhất trong các sinh viên nữ.",
+      "s": "14"
+    },
+    {
+      "q": "Đề 3 câu 15: ba cách viết câu \"độc giả không ở Hà Nội\" và kết quả của từng cách.",
+      "m": "Cách một, WHERE DIACHI NOT LIKE '%Hà Nội%' cho 2 dòng là DG03 Lê Văn Chiến (Hải Phòng) và DG04 Phạm Thị Dung (Đà Nẵng) — DG05 biến mất vì DIACHI của họ là NULL, và không có báo lỗi nào. Cách hai, thêm OR DIACHI IS NULL thì ra 3 dòng, có thêm DG05 Hoàng Minh Em. Cách ba, dùng NOT EXISTS với điều kiện d2.DIACHI LIKE '%Hà Nội%' AND d2.MADG = d.MADG, cũng ra 3 dòng và không cần nghĩ về NULL. Lý do là NULL không chứa chuỗi nào nên NOT LIKE trả UNKNOWN, dòng đó bị loại. Câu \"DG05 có ở Hà Nội không?\" thì không ai biết, và \"chưa biết có chứa Hà Nội không\" không phải \"không chứa Hà Nội\".",
+      "s": "15"
+    },
+    {
+      "q": "Nêu bảy câu trong 43 câu cho kết quả rỗng hoặc bất ngờ, kèm lý do.",
+      "m": "Đề 1 câu 4: 0 dòng vì SV007 điểm 4.5 nhưng học lớp thuộc khoa K03 chứ không phải K01. Đề 1 câu 6: chỉ 1 sinh viên vì \"trên 3 môn\" là > 3, còn đáp án gốc dùng >= 3. Đề 1 câu 7: chỉ 1 khoa vì đề ghi >= 2, đúng phải là >= 3. Đề 2 câu 6: 0 dòng vì không ai học trên 5 môn. Đề 2 câu 14: 0 dòng vì dữ liệu ghi 'Nữ' có dấu còn đáp án so sánh không dấu. Đề 2 câu 15: 0 dòng vì cả 8 môn đều có sinh viên học nên đáp án rỗng là đúng. Đề 3 câu 15: mất 1 dòng vì NOT LIKE không trả về dòng có DIACHI = NULL.",
+      "s": "Tổng kết"
+    },
+    {
+      "q": "Đề 1 câu 4 trả về 0 dòng. Bạn làm gì trước khi kết luận mình sai?",
+      "m": "Không sửa câu lệnh ngay. Chạy từng điều kiện riêng để xem dữ liệu thật: SELECT MASV, DIEM FROM KETQUA WHERE MAMH='MH01' AND DIEM < 5 cho ra SV007 với 4.5; SELECT MALOP FROM SINHVIEN WHERE MASV='SV007' cho D16CKMAT2; SELECT MAKHOA FROM LOP WHERE MALOP='D16CKMAT2' cho K03. Ba truy vấn này cho thấy điều kiện nào lọc mất dòng — sinh viên duy nhất có điểm thấp lại ở khoa khác. Kết quả rỗng là đúng với dữ liệu mẫu. Bài học chung: kết quả 0 dòng không phải tín hiệu làm sai, và nếu đúng là phải rỗng thì ghi rõ lý do vào bài, có khi đó là điểm cộng.",
+      "s": "4"
+    },
+    {
+      "q": "Viết câu \"độc giả mượn nhiều sách nhất\" và giải thích vì sao phải nối 3 bảng.",
+      "m": "SELECT p.MADG, d.HOTEN, SUM(c.SOLUONG) AS TongSoCuon FROM CTPHIEUMUON c JOIN PHIEUMUON p ON p.MAPM = c.MAPM JOIN DOCGIA d ON d.MADG = p.MADG GROUP BY p.MADG, d.HOTEN HAVING SUM(c.SOLUONG) >= ALL (SELECT SUM(SOLUONG) FROM CTPHIEUMUON c2 JOIN PHIEUMUON p2 ON p2.MAPM = c2.MAPM GROUP BY p2.MADG) ORDER BY p.MADG. Phải nối 3 bảng vì CTPHIEUMUON không có cột MADG, chỉ có MAPM, nên muốn biết ai mượn thì phải đi qua PHIEUMUON. Muốn hiện tên độc giả thì nối thêm DOCGIA; nếu chỉ cần mã thì 2 bảng là đủ. Kết quả chạy thật: DG01 Nguyễn Văn An với 9 cuốn. Subquery phải có GROUP BY p2.MADG riêng, nếu không thì nó chỉ trả một số và >= ALL sẽ luôn đúng.",
+      "s": "10"
+    },
+    {
+      "q": "Giải thích vì sao đề 1 câu 11 dùng LIMIT 1 dễ bị chấp nhận nhầm, và cách nào đúng hơn.",
+      "m": "Vì trên dữ liệu mẫu cả ORDER BY SOTIET DESC LIMIT 1 và >= ALL đều ra MH03 Lập trình C vì chỉ có một môn đạt 90 tiết. Nhưng khi có hai môn cùng 90 tiết thì LIMIT 1 chỉ lấy một và bỏ mất môn còn lại, sai ý đề. >= ALL trả về mọi môn có số tiết lớn nhất, đúng nghĩa câu hỏi và chạy được trên mọi DBMS. Trên SQL Server dùng TOP 1 WITH TIES, trên MySQL/PostgreSQL dùng RANK() rồi lọc rk = 1. Bài học: cùng một kết quả trên dữ liệu mẫu chưa chắc câu lệnh đúng — phải nghĩ tới trường hợp có giá trị bằng nhau.",
+      "s": "11"
+    },
+    {
+      "q": "Viết câu \"sinh viên lớp D16CNPM2 có điểm từ 6 đến 8\" và giải thích vai trò của DISTINCT.",
+      "m": "SELECT DISTINCT sv.MASV, sv.HOTEN FROM SINHVIEN sv JOIN KETQUA k ON k.MASV = sv.MASV WHERE sv.MALOP = 'D16CNPM2' AND k.DIEM BETWEEN 6 AND 8 ORDER BY sv.MASV. Kết quả chạy thật: SV001 Nguyễn Văn An, SV002 Trần Thị Bình, SV003 Nguyễn Văn An. DISTINCT bắt buộc vì một sinh viên học nhiều môn thì mỗi môn ra một dòng trong KETQUA, mà đề chỉ hỏi danh sách sinh viên. Thiếu DISTINCT là lỗi hay gặp nhất ở dạng này. Lưu ý thêm: lọc theo MALOP không cần nối bảng LOP vì SINHVIEN đã có sẵn cột này.",
+      "s": "2"
+    }
+  ]
+}

@@ -1,0 +1,592 @@
+{
+  "id": "khai-niem",
+  "title": "Tầng khái niệm",
+  "mcq": [
+    {
+      "q": "DBMS là gì?",
+      "o": [
+        "Phần mềm quản lý cơ sở dữ liệu, ví dụ SQL Server",
+        "Tập hợp dữ liệu của một trường",
+        "Một bảng tính Excel được lưu vào ổ cứng",
+        "Ngôn ngữ lập trình dùng để hỏi CSDL"
+      ],
+      "a": 0,
+      "w": "DBMS là phần mềm tạo, truy vấn, bảo mật và bảo đảm tính đúng đắn cho CSDL: SQL Server, MySQL, PostgreSQL, SQLite, Oracle. CSDL mới là dữ liệu.",
+      "s": "2"
+    },
+    {
+      "q": "Một máy chủ có SQL Server đang chứa CSDL của khoa CNTT, CSDL điểm danh và CSDL của một đề tài nghiên cứu. Câu nào đúng?",
+      "o": [
+        "Đó là ba DBMS khác nhau",
+        "Đó là ba CSDL được một DBMS quản lý",
+        "Đó là một CSDL có ba bảng",
+        "Đó là không hợp lệ với SQL Server"
+      ],
+      "a": 1,
+      "w": "Một DBMS quản lý được nhiều CSDL. DBMS là phần mềm, CSDL là dữ liệu nó giữ.",
+      "s": "2"
+    },
+    {
+      "q": "Thay ổ cứng của máy chủ CSDL thuộc mức nào, và mức trên có phải viết lại không?",
+      "o": [
+        "Mức ngoại — phải viết lại giao diện",
+        "Mức ý niệm — phải sửa câu truy vấn",
+        "Mức vật lý — không phải viết lại gì",
+        "Không thuộc mức nào trong ba mức"
+      ],
+      "a": 2,
+      "w": "Nguyên tắc của kiến trúc 3 mức: đổi được tầng dưới mà không phải sửa tầng trên. Thay ổ cứng là mức vật lý, câu SELECT ... FROM ... vẫn trả về đúng số dòng.",
+      "s": "3"
+    },
+    {
+      "q": "Trong bảng SINHVIEN(MASV, HOTEN, GIOITINH), từ nào ứng với cả bảng, từ nào ứng với một dòng, từ nào ứng với một cột?",
+      "o": [
+        "CSDL / bộ / thuộc tính",
+        "Quan hệ / bộ / thuộc tính",
+        "Bảng / cột / ô",
+        "Thuộc tính / quan hệ / miền giá trị"
+      ],
+      "a": 1,
+      "w": "Quan hệ = bảng, bộ (tuple) = dòng, thuộc tính (attribute) = cột. Mẹo nhớ: quan hệ chứa bộ, bộ chứa thuộc tính.",
+      "s": "4.1"
+    },
+    {
+      "q": "Bảng có cột DIEM chứa giá trị \"8.5, 7.0, 9.0\". Vi phạm tính chất nào của bảng quan hệ?",
+      "o": [
+        "Mỗi dòng phải là duy nhất",
+        "Mỗi ô chỉ chứa một giá trị đơn",
+        "Tên cột phải duy nhất",
+        "Thứ tự dòng phải có ý nghĩa"
+      ],
+      "a": 1,
+      "w": "Ô phải chứa một giá trị đơn. Muốn hỏi \"sinh viên nào điểm dưới 5\" thì phải tách chuỗi rồi so từng đoạn — SQL không làm được. Cách đúng: mỗi điểm một dòng trong bảng KETQUA.",
+      "s": "5.2"
+    },
+    {
+      "q": "Cả bảng KETQUA và bảng SINHVIEN đều có cột tên MASV. Điều nào đúng?",
+      "o": [
+        "Đây là lỗi thiết kế, phải đổi tên một cột",
+        "Đây là chuyện bình thường, nhưng khi nối phải viết rõ cột của bảng nào: s.MASV = k.MASV",
+        "Phải thêm UNIQUE cho cả hai cột MASV",
+        "Chỉ được phép trùng tên cột ở bảng con"
+      ],
+      "a": 1,
+      "w": "Trùng tên cột giữa hai bảng khác nhau là rất hay gặp và hoàn toàn hợp lệ. Chỉ cấm hai cột trùng tên bên trong cùng một bảng.",
+      "s": "5.4"
+    },
+    {
+      "q": "Siêu khóa và khóa dự tuyển khác nhau ở điểm nào?",
+      "o": [
+        "Siêu khóa nhỏ hơn khóa dự tuyển",
+        "Siêu khóa là mọi tập xác định duy nhất một dòng; khóa dự tuyển là tập nhỏ nhất trong số đó",
+        "Khóa dự tuyển phải là một cột duy nhất",
+        "Hai từ này là đồng nghĩa"
+      ],
+      "a": 1,
+      "w": "Siêu khóa rộng, khóa dự tuyển là siêu khóa nhỏ nhất — bỏ bớt thuộc tính thừa. Khóa chính là một khóa dự tuyển được chọn để làm định danh.",
+      "s": "6"
+    },
+    {
+      "q": "Bảng minh hoạ có 4 dòng, trong đó SV001 và SV003 cùng tên \"Nguyễn Văn An\" và cùng ngày sinh 2002-05-10. Vậy tập (HOTEN, NGSINH) là gì?",
+      "o": [
+        "Khóa dự tuyển",
+        "Siêu khóa",
+        "Không phải siêu khóa vì còn tồn tại cặp trùng",
+        "Khóa chính"
+      ],
+      "a": 2,
+      "w": "\"Nguyễn Văn An + 2002-05-10\" xuất hiện 2 lần nên cặp đó không xác định duy nhất một dòng. Bảng này chỉ có đúng một khóa dự tuyển: MASV.",
+      "s": "6.1"
+    },
+    {
+      "q": "Vì sao ghép thêm thuộc tính vào một tập khóa lại làm khóa tệ hơn?",
+      "o": [
+        "Vì SQL Server không cho phép khóa gộp quá 3 cột",
+        "Vì khóa càng to thì càng thừa, và hai người khác nhau vẫn có thể trùng cả hai thuộc tính",
+        "Vì khóa gộp không hỗ trợ khóa ngoại",
+        "Vì khóa gộp chậm hơn nhưng vẫn dùng được"
+      ],
+      "a": 1,
+      "w": "Bẫy hay sai nhất ở mục 6.1: nghĩ rằng ghép nhiều thuộc tính \"không trùng\" vào sẽ chắc chắn hơn. Không phải — và giá phải trả là khóa thừa.",
+      "s": "6.1"
+    },
+    {
+      "q": "Hai tính chất bắt buộc của khóa chính là gì?",
+      "o": [
+        "Duy nhất và không được NULL",
+        "Duy nhất và không được rỗng",
+        "Có kiểu dữ liệu và có giá trị mặc định",
+        "Duy nhất và phải là số"
+      ],
+      "a": 0,
+      "w": "Khóa chính vừa là khóa vừa là NOT NULL. Kiểm chứng: SELECT COUNT(*) FROM SINHVIEN WHERE MASV IS NULL trả về 0.",
+      "s": "6.2"
+    },
+    {
+      "q": "Chèn một sinh viên với MALOP = 'D99' trong khi bảng LOP không có lớp D99 thì hệ thống phản ứng thế nào?",
+      "o": [
+        "Chấp nhận, vì khóa ngoại chỉ cần đúng kiểu dữ liệu",
+        "Từ chối — vi phạm ràng buộc tham chiếu",
+        "Tự tạo lớp D99 trong bảng LOP",
+        "Chấp nhận nhưng ghi giá trị NULL vào cột MALOP"
+      ],
+      "a": 1,
+      "w": "Giá trị khóa ngoại phải tồn tại trong bảng cha. Đây là kiểm tra đã chạy thật, SQL Server trả về \"Violates foreign key ... does not exist in the referenced table\".",
+      "s": "8.3"
+    },
+    {
+      "q": "Chèn một sinh viên với MALOP = NULL thì kết quả là gì?",
+      "o": [
+        "Bị từ chối vì cột khóa ngoại không được NULL",
+        "Được chấp nhận — NULL là giá trị hợp lệ của khóa ngoại",
+        "Bị từ chối vì vi phạm ràng buộc khóa chính",
+        "Được chấp nhận nhưng MASV bị đặt NULL"
+      ],
+      "a": 1,
+      "w": "Khóa ngoại chỉ cần tồn tại trong bảng cha HOẶC là NULL. Điểm này đã kiểm chạy: NULL được chấp nhận.",
+      "s": "6.3"
+    },
+    {
+      "q": "Vì sao KETQUA(MASV, MAMH, DIEM) không thể dùng MASV làm khóa chính?",
+      "o": [
+        "Vì MASV kiểu CHAR mà MAMH kiểu khác",
+        "Vì một sinh viên học nhiều môn nên MASV lặp ở nhiều dòng",
+        "Vì DIEM là số thập phân",
+        "Vì khóa chính phải là một cột thuần chữ"
+      ],
+      "a": 1,
+      "w": "MASV lặp và MAMH cũng lặp, nhưng cặp (MASV, MAMH) mỗi cặp chỉ xuất hiện một lần nên xác định duy nhất một dòng. Đó là lý do khóa chính là khóa gộp.",
+      "s": "6.4"
+    },
+    {
+      "q": "Vì sao quan hệ N-N bắt buộc phải có bảng cầu nối?",
+      "o": [
+        "Vì N-N không thể biểu diễn bằng khóa ngoại ở một phía",
+        "Vì bảng cầu nối giúp câu truy vấn chạy nhanh hơn",
+        "Vì quy tắc chuẩn hóa bắt buộc có bảng trung gian",
+        "Vì khóa chính không được trùng tên giữa hai bảng"
+      ],
+      "a": 0,
+      "w": "Không bảng nào trong hai bảng chứa được thông tin kết nối: đặt MAMH vào SINHVIEN thì số môn không cố định, còn một cột \"MON_DA_HOC\" chứa \"MH01,MH02,MH03\" thì vi phạm tính chất mỗi ô chứa một giá trị đơn.",
+      "s": "7.2"
+    },
+    {
+      "q": "Câu hỏi \"cho biết tên sinh viên lớp D16CNPM2 có điểm từ 6 đến 8\". Vì sao KHÔNG cần nối bảng LOP?",
+      "o": [
+        "Vì bảng LOP không còn cần thiết với SQL mới",
+        "Vì SINHVIEN đã có sẵn cột MALOP chứa mã lớp",
+        "Vì tên lớp không nằm trong yêu cầu đầu ra",
+        "Vì đề không cho phép nối quá 3 bảng"
+      ],
+      "a": 1,
+      "w": "Mỗi danh từ trong câu hỏi không tự động sinh ra một bảng. Chỉ lọc theo mã lớp đã có sẵn trong SINHVIEN thì không cần LOP. Ngược lại, bảng KETQUA là bảng bắt buộc dù không hề xuất hiện trong câu hỏi.",
+      "s": "7.3"
+    },
+    {
+      "q": "Câu hỏi \"cho biết tên những khoa có ít nhất 3 lớp\". Cần những bảng nào?",
+      "o": [
+        "KHOA, LOP, SINHVIEN",
+        "KHOA và LOP",
+        "Chỉ LOP",
+        "KHOA, LOP và KETQUA"
+      ],
+      "a": 1,
+      "w": "SINHVIEN không mang thông tin gì về số lớp, KETQUA cũng không. Chỉ cần KHOA và LOP. Câu hỏi có từ \"sinh viên\" mới cần SINHVIEN.",
+      "s": "7.3"
+    },
+    {
+      "q": "PRIMARY KEY và UNIQUE khác nhau ở điểm nào trên SQL Server?",
+      "o": [
+        "PRIMARY KEY cho phép NULL, UNIQUE thì không",
+        "PRIMARY KEY không được NULL; UNIQUE cho phép một giá trị NULL",
+        "Hai từ này hoàn toàn giống nhau",
+        "UNIQUE không chống được trùng lặp"
+      ],
+      "a": 1,
+      "w": "Cả hai đều chống trùng lặp. Nhưng khóa chính không được NULL, còn UNIQUE cho phép một giá trị NULL. MySQL và PostgreSQL lại cho phép UNIQUE chứa nhiều dòng NULL — đó là lý do nên dùng NOT NULL kèm UNIQUE khi đề không nói rõ DBMS.",
+      "s": "8.4"
+    },
+    {
+      "q": "Nhập GIOITINH = 'Khac' bị hệ thống chặn với thông báo CHECK constraint failed. Loại ràng buộc nào đã chặn?",
+      "o": [
+        "Ràng buộc khóa",
+        "Ràng buộc miền giá trị",
+        "Ràng buộc tham chiếu",
+        "Ràng buộc NOT NULL"
+      ],
+      "a": 1,
+      "w": "Bốn dữ liệu thử đã chạy cho ra bốn loại ràng buộc khác nhau: trùng khóa chính, sai miền giá trị, NULL chặng NOT NULL, mã lớp không tồn tại. Đây là bốn câu hỏi lý thuyết mẫu.",
+      "s": "8.2"
+    },
+    {
+      "q": "Chạy SELECT ... WHERE DCHI = NULL trên một bảng có vài dòng, trong đó có dòng NULL. Kết quả?",
+      "o": [
+        "Trả về đúng dòng NULL",
+        "Không bao giờ trả về dòng nào",
+        "Báo lỗi cú pháp",
+        "Trả về toàn bộ bảng"
+      ],
+      "a": 1,
+      "w": "NULL không phải là một giá trị, nên phép so sánh bằng = hoặc <> với NULL không bao giờ cho kết quả đúng. Phải dùng IS NULL / IS NOT NULL.",
+      "s": "9.1"
+    },
+    {
+      "q": "Bảng có 2 dòng: một có địa chỉ chứa \"Hà Nội\", một có DCHI = NULL. Chạy WHERE DCHI NOT LIKE N'%Hà Nội%'. Kết quả?",
+      "o": [
+        "1 dòng — dòng NULL",
+        "0 dòng",
+        "2 dòng",
+        "Báo lỗi vì NULL"
+      ],
+      "a": 1,
+      "w": "Với NULL, kết quả so sánh là \"không xác định\", không phải Đúng, nên dòng đó không thoát ra được điều kiện. Thêm DCHI IS NULL OR ... mới lấy được nó — câu này có hai cách viết cho hai kết quả khác nhau.",
+      "s": "9.2"
+    },
+    {
+      "q": "Bảng 2 dòng (một DCCI có giá trị, một NULL). COUNT(*) và COUNT(DCHI) cho kết quả nào?",
+      "o": [
+        "2 và 2",
+        "2 và 1",
+        "1 và 2",
+        "1 và 1"
+      ],
+      "a": 1,
+      "w": "COUNT(*) đếm cả dòng, COUNT(cột) bỏ qua NULL. Đây cũng là nguyên nhân gốc của bẫy ở câu 15 đề 3, khi DOCGIA.DIACHI có thể NULL.",
+      "s": "9.3"
+    },
+    {
+      "q": "Vì sao điện thoại không được khai báo kiểu DECIMAL?",
+      "o": [
+        "Vì DECIMAL không lưu được chữ số",
+        "Vì 0912345678 bắt đầu bằng chữ số 0 và số 0 đầu sẽ bị mất",
+        "Vì DECIMAL chỉ dành cho số lớn hơn 100",
+        "Vì số điện thoại không phải là số"
+      ],
+      "a": 1,
+      "w": "Nếu lưu kiểu số, 0912345678 thành 912345678. Số điện thoại là chuỗi, dùng CHAR hoặc VARCHAR.",
+      "s": "2.2"
+    },
+    {
+      "q": "Bảng quan hệ không có tính chất nào sau đây?",
+      "o": [
+        "Mỗi dòng là duy nhất",
+        "Thứ tự dòng có ý nghĩa xác định",
+        "Mỗi ô chứa một giá trị đơn",
+        "Tên cột duy nhất trong một bảng"
+      ],
+      "a": 1,
+      "w": "Bốn tính chất là: dòng duy nhất, ô chứa một giá trị đơn, thứ tự dòng không quan trọng, tên cột duy nhất. Không có \"dòng thứ nhất\" mang ý nghĩa — đó là lý do phải có ORDER BY.",
+      "s": "5.3"
+    },
+    {
+      "q": "Nhập HOTEN = NULL vào bảng SINHVIEN bị chặn. Loại ràng buộc nào chặn?",
+      "o": [
+        "NOT NULL",
+        "UNIQUE",
+        "CHECK",
+        "FOREIGN KEY"
+      ],
+      "a": 0,
+      "w": "Thông báo là \"NOT NULL constraint failed\". Đây là ràng buộc thứ ba trong bốn loại thử đã chạy.",
+      "s": "8.2"
+    }
+  ],
+  "cards": [
+    {
+      "f": "Dữ liệu / CSDL / DBMS / hệ quản trị CSDL",
+      "b": "Dữ liệu = mảnh thông tin nhỏ nhất (8.5 là điểm của một SV ở một môn). CSDL = tập hợp dữ liệu có tổ chức, lưu lâu dài. DBMS = phần mềm quản lý (SQL Server, MySQL, PostgreSQL, SQLite). Hệ quản trị = một DBMS cụ thể đang chạy. Xếp từ nhỏ đến lớn. Một DBMS quản lý nhiều CSDL."
+    },
+    {
+      "f": "Ba mức kiến trúc hệ CSDL",
+      "b": "Ngoại (người dùng, ứng dụng) → ý niệm (bảng, khóa, ràng buộc) → vật lý (ổ đĩa, file .mdf/.ndf/.ldf). Ý nghĩa thực tế: đổi được tầng dưới mà không phải sửa tầng trên."
+    },
+    {
+      "f": "Quan hệ / bộ / thuộc tính / ô",
+      "b": "Quan hệ (relation) = bảng. Bộ (tuple) = dòng. Thuộc tính (attribute) = cột. Ô giao 1 dòng 1 cột = thuộc tính giá trị. Tập mọi giá trị của 1 cột = miền giá trị (domain). Mẹo: quan hệ chứa bộ, bộ chứa thuộc tính."
+    },
+    {
+      "f": "Bốn tính chất của bảng quan hệ",
+      "b": "1) Mỗi dòng là duy nhất. 2) Mỗi ô chứa một giá trị đơn. 3) Thứ tự dòng không quan trọng. 4) Tên cột phải duy nhất trong một bảng. Riêng #4: hai bảng khác nhau cùng tên cột thì hoàn toàn bình thường và rất hay gặp trong đề."
+    },
+    {
+      "f": "Thang khóa: siêu khóa → khóa dự tuyển → khóa chính → khóa ngoại",
+      "b": "Siêu khóa = mọi tập thuộc tính xác định duy nhất 1 dòng (rộng nhất). Khóa dự tuyển = tập nhỏ nhất trong các siêu khóa. Khóa chính = một khóa dự tuyển được chọn làm định danh. Khóa ngoại = mang khóa chính của bảng khác sang bảng này để tham chiếu. Nhớ theo vòng thu hẹp dần."
+    },
+    {
+      "f": "Hai tính chất bắt buộc của khóa chính",
+      "b": "Duy nhất (không hai dòng nào trùng giá trị) và không được NULL — khóa chính vừa là khóa vừa là NOT NULL."
+    },
+    {
+      "f": "Tính chất của khóa ngoại",
+      "b": "Giá trị phải tồn tại trong bảng được trỏ tới, HOẶC là NULL. Một bảng có thể có nhiều khóa ngoại trỏ cùng một bảng cha. Một cột vừa là khóa chính vừa là khóa ngoại là chuyện có thật — ở bảng KETQUA."
+    },
+    {
+      "f": "Ba loại ràng buộc toàn vẹn",
+      "b": "1) Ràng buộc khóa: giá trị khóa chính duy nhất và không NULL. 2) Ràng buộc miền giá trị: kiểu dữ liệu, NOT NULL, CHECK, DEFAULT. 3) Ràng buộc tham chiếu: khóa ngoại phải tồn tại ở bảng cha hoặc NULL."
+    },
+    {
+      "f": "Sáu ràng buộc viết trong CREATE TABLE",
+      "b": "PRIMARY KEY (duy nhất + không NULL) · FOREIGN KEY ... REFERENCES (giá trị phải tồn tại ở bảng cha) · NOT NULL · UNIQUE (chống trùng lặp) · CHECK (điều kiện) · DEFAULT (tự điền khi không nhập)."
+    },
+    {
+      "f": "PRIMARY KEY khác UNIQUE ở chỗ nào?",
+      "b": "Cả hai đều chống trùng lặp. PRIMARY KEY không được NULL; UNIQUE cho phép một giá trị NULL. Đây là hành vi của SQL Server — MySQL/PostgreSQL cho phép UNIQUE chứa nhiều dòng NULL. Đề không nói rõ DBMS thì dùng NOT NULL kèm UNIQUE."
+    },
+    {
+      "f": "NULL có phải là một giá trị không?",
+      "b": "Không. NULL nghĩa là chưa biết hoặc không có. Không phải số 0, không phải chuỗi rỗng, không phải FALSE. Hệ quả: so sánh NULL bằng = hoặc <> không bao giờ đúng. Phải dùng IS NULL / IS NOT NULL."
+    },
+    {
+      "f": "Ba logic thay vì hai",
+      "b": "Không NULL thì điều kiện trả Đúng hoặc Sai. Có NULL xuất hiện trạng thái thứ ba: Không xác định (UNKNOWN). \"Chưa biết có chứa Hà Nội không\" KHÔNG phải \"không chứa Hà Nội\" — nên NOT LIKE loại mất dòng NULL."
+    },
+    {
+      "f": "COUNT(*) / COUNT(cột) / COUNT(DISTINCT cột)",
+      "b": "COUNT(*) đếm dòng. COUNT(cột) bỏ qua NULL nên cho kết quả nhỏ hơn. COUNT(DISTINCT cột) đếm giá trị khác nhau — an toàn hơn COUNT(*) khi dữ liệu có thể trùng khóa gộp."
+    },
+    {
+      "f": "Quan hệ 1-N",
+      "b": "Một KHOA có nhiều LOP. Khóa ngoại nằm ở phía nhiều: LOP.MAKHOA trờ về KHOA.MAKHOA. Không cần bảng riêng, chỉ cần đặt khóa ngoại vào bảng \"nhiều\"."
+    },
+    {
+      "f": "Quan hệ N-N và bảng cầu nối",
+      "b": "1 sinh viên học nhiều môn, 1 môn có nhiều sinh viên. Giải pháp là bảng cầu nối ghi mỗi dòng là một cặp, cộng thông tin riêng của quan hệ. Vì mỗi cặp chỉ xuất hiện một lần nên khóa chính phải là khóa gộp (MASV, MAMH). Ví dụ ở đề 3: CTPHIEUMUON (MAPM, MASACH)."
+    },
+    {
+      "f": "Bản đồ quan hệ của đề thi",
+      "b": "KHOA(MAKHOA) → LOP(MALOP, MAKHOA→FK) → SINHVIEN(MASV, MALOP→FK). Quan hệ N-N: SINHVIEN ↔ MONHOC qua KETQUA(MASV+MAMH ← PK gộp, DIEM). Vẽ lại bản đồ này từ trí nhớ là bài tập tốt nhất phần tầng khái niệm."
+    },
+    {
+      "f": "Đọc quan hệ từ câu hỏi, không từ bảng",
+      "b": "Mỗi danh từ trong câu hỏi KHÔNG tự động sinh ra một bảng. Cần bảng KHOA khi cần hiện tên khoa hoặc đếm theo khoa; không cần khi chỉ lọc theo mã khoa đã nằm sẵn trong LOP. Ngược lại KETQUA là bảng bắt buộc dù không có trong câu hỏi."
+    },
+    {
+      "f": "Vì sao KETQUA phải dùng khóa chính gộp",
+      "b": "MASV lặp (SV001 học nhiều môn), MAMH lặp (MH01 có nhiều SV học). Cặp (MASV, MAMH) thì mỗi cặp chỉ xuất hiện một lần nên xác định duy nhất một dòng. Không tìm được cột đơn nào làm khóa thì ghép nhiều cột lại."
+    },
+    {
+      "f": "Cách chắc chắn tìm khóa",
+      "b": "Kiểm tra, không nhìn bằng mắt: thử từng tập thuộc tính xem có tập nào trùng giá trị không. Tập nào có trùng thì không phải khóa. Ở bảng minh hoạ 4 dòng: MASV 0 nhóm trùng, HOTEN 2 lần, (HOTEN, NGSINH) 2 lần, MALOP 3 lần → chỉ MASV là khóa dự tuyển."
+    },
+    {
+      "f": "Bản đồ quan hệ đề 4 — bảng cầu nối CTHOADON",
+      "b": "HOADON(MaHD) ↔ CTHOADON(MaHD, MaHang, SoLuong, Dongia) ↔ HANGHOA(MaHang). CTHOADON là bảng cầu nối N-N y hệt KETQUA, khóa chính gộp (MaHD, MaHang). Mỗi dòng là một MẶT HÀNG trong một đơn — nên \"số mặt hàng\" là COUNT, không phải SUM(SoLuong)."
+    },
+    {
+      "f": "Bốn kiểu dữ liệu chỉ cần biết",
+      "b": "CHAR/VARCHAR: chuỗi không dấu (dùng cho số điện thoại). NVARCHAR: chuỗi có dấu tiếng Việt (thiếu N'...' là lỗi). INT: số nguyên (bọc nháy '2022' thành chuỗi là sai). DATE: ngày, định dạng yyyymmdd. DECIMAL(p,s): số thập phân — KHÔNG dùng cho số điện thoại vì mất chữ số 0 đầu."
+    },
+    {
+      "f": "Vì sao điện thoại không dùng DECIMAL",
+      "b": "0912345678 bắt đầu bằng 0. Lưu kiểu số thì chữ số 0 đầu tiên bị mất và giá trị thành 912345678. Số điện thoại là chuỗi."
+    }
+  ],
+  "fill": [
+    {
+      "b": "Một ______ là phần mềm tạo, truy vấn, bảo mật và bảo đảm tính đúng đắn cho CSDL (ví dụ SQL Server).",
+      "a": [
+        "dbms"
+      ],
+      "s": "2",
+      "w": "CSDL là dữ liệu; DBMS là phần mềm quản lý nó. Một DBMS quản lý được nhiều CSDL."
+    },
+    {
+      "b": "Kiến trúc 3 mức, xếp từ trên xuống: mức ______ (người dùng, ứng dụng), mức ý niệm, mức vật lý.",
+      "a": [
+        "ngoại"
+      ],
+      "s": "3",
+      "w": "Ngoại → ý niệm → vật lý. Đổi được tầng dưới mà không phải sửa tầng trên."
+    },
+    {
+      "b": "Cả bảng trong lý thuyết CSDL gọi là ______, một dòng gọi là bộ (tuple), một cột gọi là thuộc tính.",
+      "a": [
+        "quan hệ"
+      ],
+      "s": "4.1",
+      "w": "Quan hệ chứa bộ, bộ chứa thuộc tính. Bảng chứa dòng, dòng chứa cột."
+    },
+    {
+      "b": "Ghi một danh sách \"8.5, 7.0, 9.0\" vào một ô sẽ vi phạm tính chất: mỗi ô chỉ chứa ______ giá trị đơn.",
+      "a": [
+        "một"
+      ],
+      "s": "5.2",
+      "w": "Muốn hỏi \"SV nào điểm dưới 5\" thì phải tách chuỗi rồi so từng đoạn — SQL không làm được. Mỗi điểm phải là một dòng riêng trong KETQUA."
+    },
+    {
+      "b": "Tập thuộc tính nhỏ nhất trong số các siêu khóa gọi là khóa ______.",
+      "a": [
+        "dự tuyển"
+      ],
+      "s": "6",
+      "w": "Khóa dự tuyển. Khóa chính là một khóa dự tuyển được chọn làm định danh chính."
+    },
+    {
+      "b": "Khóa chính phải thỏa hai tính chất: duy nhất và không được ______.",
+      "a": [
+        "null"
+      ],
+      "s": "6.2",
+      "w": "Khóa chính vừa là khóa vừa là NOT NULL. Kiểm chứng: COUNT(*) WHERE MASV IS NULL trả về 0."
+    },
+    {
+      "b": "Giá trị khóa ngoại phải tồn tại trong bảng cha, ______ là cũng hợp lệ.",
+      "a": [
+        "null"
+      ],
+      "s": "6.3",
+      "w": "Đã kiểm chạy: chèn MALOP = 'D99' bị từ chối, chèn MALOP = NULL được chấp nhận."
+    },
+    {
+      "b": "KETQUA phải dùng khóa chính gộp vì MASV ______ và MAMH đều lặp ở nhiều dòng.",
+      "a": [
+        "lặp"
+      ],
+      "s": "6.4",
+      "w": "Một sinh viên học nhiều môn, một môn có nhiều sinh viên. Cặp (MASV, MAMH) mới xác định duy nhất một dòng."
+    },
+    {
+      "b": "Giải pháp cho quan hệ N-N là tạo một bảng ______, mỗi dòng ghi một cặp thực thể.",
+      "a": [
+        "cầu nối"
+      ],
+      "s": "7.2",
+      "w": "Đặt MAMH vào SINHVIEN thì số môn không cố định; một cột chứa \"MH01,MH02\" thì vi phạm tính chất ô chứa một giá trị đơn."
+    },
+    {
+      "b": "Nhập MASV = 'SV001' lần thứ hai bị chặn bởi ràng buộc ______.",
+      "a": [
+        "khóa"
+      ],
+      "s": "8.1",
+      "w": "Thông báo: Duplicate key ... violates primary key constraint."
+    },
+    {
+      "b": "Nhập GIOITINH = 'Khac' bị chặn bởi ràng buộc ______ giá trị.",
+      "a": [
+        "miền"
+      ],
+      "s": "8.2",
+      "w": "CHECK constraint failed ... IN ('Nam','Nữ')."
+    },
+    {
+      "b": "Nhập MALOP = 'D99' khi LOP không có D99 bị chặn bởi ràng buộc ______.",
+      "a": [
+        "tham chiếu"
+      ],
+      "s": "8.3",
+      "w": "Violates foreign key ... does not exist in the referenced table."
+    },
+    {
+      "b": "So sánh NULL bằng dấu = hoặc <> không bao giờ cho kết quả đúng; phải dùng ______ NULL.",
+      "a": [
+        "is"
+      ],
+      "s": "9.1",
+      "w": "IS NULL / IS NOT NULL. NULL không phải là một giá trị."
+    },
+    {
+      "b": "Trên bảng 2 dòng (một có địa chỉ, một NULL), WHERE DCHI NOT LIKE N'%Hà Nội%' trả về ______ dòng.",
+      "a": [
+        "0"
+      ],
+      "s": "9.2",
+      "w": "Vì NULL khiến phép so sánh thành \"không xác định\" chứ không phải Đúng. Thêm DCHI IS NULL OR ... mới lấy được dòng đó."
+    },
+    {
+      "b": "COUNT(bản ghi) trên cùng bảng đó trả về 2, còn COUNT(DCHI) trả về ______.",
+      "a": [
+        "1"
+      ],
+      "s": "9.3",
+      "w": "COUNT(*) đếm cả hai dòng, COUNT(cột) chỉ đếm ô khác NULL."
+    },
+    {
+      "b": "Số điện thoại không dùng DECIMAL vì 0912345678 bắt đầu bằng ______ và chữ số đó sẽ bị mất.",
+      "a": [
+        "0"
+      ],
+      "s": "2.2",
+      "w": "Lưu kiểu số thì giá trị thành 912345678."
+    },
+    {
+      "b": "Với SQL Server, UNIQUE cho phép tối đa ______ giá trị NULL, còn PRIMARY KEY thì không cho phép.",
+      "a": [
+        "một"
+      ],
+      "s": "8.4",
+      "w": "Đây là hành vi riêng của SQL Server. MySQL/PostgreSQL cho phép UNIQUE chứa nhiều dòng NULL."
+    },
+    {
+      "b": "Bản đồ đề thi: KHOA → LOP → SINHVIEN, và quan hệ N-N giữa SINHVIEN với MONHOC được ghi ở bảng ______.",
+      "a": [
+        "ketqua"
+      ],
+      "s": "6.4",
+      "w": "KETQUA(MASV, MAMH ← PK gộp, DIEM) là bảng cầu nối."
+    }
+  ],
+  "written": [
+    {
+      "q": "Phân biệt rõ CSDL với hệ quản trị CSDL, cho ba ví dụ DBMS.",
+      "m": "CSDL là tập hợp dữ liệu có cấu trúc, được tổ chức thành bảng, lưu trữ lâu dài. Hệ quản trị CSDL là phần mềm tạo ra, truy vấn, bảo mật và bảo đảm tính đúng đắn cho CSDL đó. Ba ví dụ: SQL Server, MySQL, PostgreSQL (thêm SQLite, Oracle). Một hệ quản trị quản lý được nhiều CSDL.",
+      "s": "2"
+    },
+    {
+      "q": "CSDL hơn bảng tính ở những điểm nào? Nêu bốn.",
+      "m": "Giảm dư thừa (thông tin khoa lưu một chỗ, không lặp ở mọi lớp) · bảo đảm nhất quán · bảo mật · chia sẻ đồng thời mà không xung đột. Điểm mấu chốt: khác biệt không phải ở chỗ nhiều dữ liệu hơn mà ở chỗ có quy tắc bắt buộc — không có CSDL thì quy tắc nằm trong đầu từng người.",
+      "s": "1"
+    },
+    {
+      "q": "Ba mức của hệ CSDL là gì? Thay ổ cứng thuộc mức nào, và mức trên có phải viết lại không?",
+      "m": "Mức ngoại, mức ý niệm, mức vật lý. Thay ổ cứng thuộc mức vật lý; mức ý niệm và mức ngoại không phải viết lại. Đây là điểm thực tế của kiến trúc 3 mức: đổi được tầng dưới mà không phải sửa tầng trên.",
+      "s": "3"
+    },
+    {
+      "q": "Quan hệ, bộ, thuộc tính tương ứng với cái gì? Vì sao đề hay đảo ba từ này?",
+      "m": "Quan hệ = bảng, bộ = dòng, thuộc tính = cột. Mẹo nhớ: quan hệ chứa bộ, bộ chứa thuộc tính — bảng chứa dòng, dòng chứa cột, cột chứa giá trị.",
+      "s": "4.1"
+    },
+    {
+      "q": "Vì sao KETQUA(MASV, MAMH, DIEM) không dùng MASV làm khóa chính?",
+      "m": "Một sinh viên học nhiều môn nên MASV lặp nhiều dòng, không xác định được dòng. MAMH cũng lặp vì một môn có nhiều sinh viên. Khóa chính phải là cặp MASV + MAMH vì mỗi cặp chỉ xuất hiện đúng một lần.",
+      "s": "6.4"
+    },
+    {
+      "q": "Bảng có hai cột trùng tên DIEM được không? Còn hai bảng khác nhau cùng có cột MASV thì sao?",
+      "m": "Trong một bảng thì không được — phải đặt thành DIEM_LY, DIEM_HOA. Ở hai bảng khác nhau thì bình thường, rất hay gặp trong đề (cả KETQUA.MASV và SINHVIEN.MASV). Khi nối phải viết rõ cột của bảng nào: s.MASV = k.MASV.",
+      "s": "5.4"
+    },
+    {
+      "q": "Cho bảng LOP(MALOP, TENLOP, SISODK, MAKHOA). Khóa chính là gì? TENLOP có làm được khóa chính không, và vì sao?",
+      "m": "Khóa chính là MALOP. TENLOP không được vì hai lớp ở hai khoa khác nhau có thể trùng tên — kiểm tra bằng cách thử xem tên có lặp không.",
+      "s": "6.1"
+    },
+    {
+      "q": "Với bảng minh hoạ ở mục 6.1, hãy liệt kê các tập thuộc tính là siêu khóa và chỉ ra khóa dự tuyển.",
+      "m": "MASV: 0 nhóm trùng → dùng được. (MASV, bất kỳ thuộc tính nào khác) cũng là siêu khóa vì đã chứa MASV. HOTEN có 2 lần → không. (HOTEN, NGSINH) có 2 lần → không. MALOP có 3 lần → không. Khóa dự tuyển duy nhất: MASV, và không bỏ được thuộc tính nào khỏi nó.",
+      "s": "6.1"
+    },
+    {
+      "q": "Thêm dòng MALOP = 'D99' vào SINHVIEN khi LOP không có D99 thì vi phạm ràng buộc nào? Còn nếu thêm MALOP = NULL thì sao?",
+      "m": "Vi phạm ràng buộc tham chiếu — giá trị khóa ngoại phải tồn tại trong bảng cha. Còn NULL là hợp lệ với khóa ngoại nên được chấp nhận. Cả hai kết luận này đều đã kiểm chạy thật.",
+      "s": "8.3"
+    },
+    {
+      "q": "WHERE DCHI <> N'Hà Nội' trả về 0 dòng trên bảng 3 dòng, trong đó một dòng có DCHI = NULL. Giải thích và nêu cách sửa.",
+      "m": "NULL ở một ô khiến phép so sánh trở thành \"không xác định\" chứ không phải Đúng, nên dòng đó không thoát ra được điều kiện. Sửa bằng: WHERE DCHI IS NULL OR DCHI NOT LIKE N'%Hà Nội%'. Hai cách viết cho hai kết quả khác nhau — đó là điểm mấu chốt của bài này.",
+      "s": "9.2"
+    },
+    {
+      "q": "Với câu hỏi \"tên những khoa có ít nhất 3 lớp\", viết danh sách bảng cần nối và giải thích vì sao không cần SINHVIEN.",
+      "m": "Chỉ cần KHOA và LOP. Bảng SINHVIEN không mang thông tin gì về số lớp. Đây là ví dụ cho quy tắc: mỗi danh từ trong câu hỏi không tự động sinh ra một bảng.",
+      "s": "7.3"
+    },
+    {
+      "q": "Cho ví dụ một CHECK hợp lệ cho cột DIEM, và giải thích vì sao DIEM cần CHECK chứ không cần NOT NULL.",
+      "m": "Ví dụ: CHECK (DIEM >= 0 AND DIEM <= 10). NOT NULL chỉ bắt buộc có giá trị, còn CHECK mới ràng buộc giá trị nằm trong miền hợp lệ. Hai ràng buộc này chặn hai việc khác nhau.",
+      "s": "8.2"
+    }
+  ]
+}

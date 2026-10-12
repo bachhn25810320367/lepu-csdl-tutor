@@ -303,6 +303,9 @@ async function loadDoc(id) {
   $('#crumbDoc').title = meta.label;
   fillSectionNav();
   $('#docScroll').scrollTop = 0;
+  // Nạp ngân hàng câu hỏi (trắc nghiệm / thẻ / điền chỗ trống / tự luận)
+  // của bài này rồi vẽ lại chế độ đang mở.
+  if (typeof onDocChanged === 'function') onDocChanged(meta.id);
 }
 
 function collectSections() {
@@ -887,6 +890,10 @@ function init() {
   renderThread();
   checkHealth();
   setInterval(checkHealth, 60000);
+
+  // Các chế độ ôn tập nạp sau cùng: cần S.docId, các hàm esc/inline/toast
+  // và DOM đã có đủ. initModes() tự gọi refreshCounts + vẽ chế độ hiện tại.
+  if (typeof initModes === 'function') initModes();
 }
 
 document.addEventListener('DOMContentLoaded', init);
