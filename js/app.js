@@ -60,6 +60,33 @@ function esc(s) {
 }
 function escAttr(s) { return esc(s).replace(/'/g, '&#39;'); }
 
+/* Duong dan media: chi cho phep tep cuc bo trong repo + http(s)/
+   file:// bat buoc (khong duoc goi bo bang video src). Chan data:/
+   javascript: nhu phan link. */
+const MEDIA_EXT = /\.(png|jpe?g|webp|gif|svg|mp4|webm|ogv)$/i;
+function mediaUrl(u) {
+  const s = String(u).trim();
+  if (/^data:/i.test(s) || /^javascript:/i.test(s)) return null;
+  if (/^https?:\/\//i.test(s)) return s;
+  // "//host/x.png" la protocol-relative -> tro sang domain khac, tu choi
+  if (s.startsWith('//')) return null;
+  // duong dan tuong doi trong repo: "assets/media/sodo.png" hoac "/assets/media/sodo.png"
+  if (/^\/?[A-Za-z0-9_][\w\-./]*$/.test(s) && MEDIA_EXT.test(s)) return s;
+  return null;
+}
+function mediaTag(u, alt, isVideo) {
+  const src = mediaUrl(u);
+  if (!src) return null;
+  const a = escAttr(alt || '');
+  if (isVideo) {
+    return `<figure class="md-fig"><video controls preload="metadata" playsinline`
+      + ` src="${escAttr(src)}"></video>`
+      + `<figcaption class="md-cap">▶ ${a}</figcaption></figure>`;
+  }
+  return `<figure class="md-fig"><img loading="lazy" decoding="async"`
+    + ` src="${escAttr(src)}" alt="${a}"></figure>`;
+}
+
 /* ================================================================ markdown
    Thu tu: code fence -> heading -> table -> list -> blockquote -> inline
    Khong dung thu vien ngoai.
@@ -163,6 +190,24 @@ function mdToHtml(src) {
     // --- hr ---
     if (/^\s*([-*_])\s*\1\s*\1[\s\-*_]*$/.test(line)) {
       closeList(); out.push('<hr>'); i++; continue;
+    }
+
+    // --- media block: ![alt](path) | ![alt](path.mp4) | <video src="x.mp4"> ---
+    const mm = /^\s*!\[([^\]]*)\]\(([^)\s]+)\)\s*$/.exec(line);
+    if (mm) {
+      closeList();
+      const isVid = /\.(mp4|webm|ogv)$/i.test(mm[2]);
+      const tag = mediaTag(mm[2], mm[1], isVid);
+      out.push(tag || `<p>${inline(line)}</p>`);
+      i++; continue;
+    }
+    // the <video src="..."> nguyen ban: chi lay src, bo qua phan con lai
+    const vv = /^\s*<video[^>]*\ssrc=["']([^"']+)["']/.exec(line);
+    if (vv) {
+      closeList();
+      const tag = mediaTag(vv[1], 'Video', true);
+      out.push(tag || `<p>${inline(line)}</p>`);
+      i++; continue;
     }
 
     // --- paragraph ---
@@ -664,7 +709,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v13';
+const VER = 'v14';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;

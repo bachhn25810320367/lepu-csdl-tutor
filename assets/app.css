@@ -347,7 +347,41 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .md tbody tr:last-child td { border-bottom: 0; }
 .md tbody tr:hover { background: var(--surface); }
 
-.md img { max-width: 100%; border-radius: var(--radius-md); }
+.md img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.md-fig { margin: 26px 0; }
+.md-fig img { box-shadow: 0 1px 0 rgba(245, 242, 235, 0.04) inset; }
+.md video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: #000;
+}
+.md-cap {
+  margin-top: 9px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  text-align: center;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+/* placeholder khi anh chua tai / loi duong dan */
+.md-fig img.broken {
+  min-height: 96px;
+  border-style: dashed;
+  border-color: var(--border);
+  opacity: 0.55;
+}
 
 /* code block copy */
 .code-wrap { position: relative; }
