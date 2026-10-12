@@ -20,6 +20,7 @@
 8. [Ba loại ràng buộc toàn vẹn](#8-ba-loại-ràng-buộc-toàn-vẹn)
 9. [NULL: ba logic, không phải hai](#9-null-ba-logic-không-phải-hai)
 10. [Tóm tắt và tự kiểm tra](#10-tóm-tắt-và-tự-kiểm-tra)
+11. [Đề 4 nhìn lại qua lý thuyết: CSDL bán hàng](#11-đề-4-nhìn-lại-qua-lý-thuyết-csdl-bán-hàng)
 
 ---
 
@@ -541,7 +542,127 @@ Trong đề thi bảng thư viện, cột `DOCGIA.DIACHI` có thể NULL — đ�
 4. Cho ví dụ một `CHECK` hợp lệ cho cột `DIEM`, và giải thích vì sao `DIEM` cần `CHECK` chứ không cần `NOT NULL`.
 5. Với câu hỏi *"cho biết tên những khoa có ít nhất 3 lớp"*, viết ra danh sách bảng cần nối và giải thích vì sao không cần bảng `SINHVIEN`.
 
-**➤ Đáp án gợi ý câu 5:** chỉ cần `KHOA` và `LOP`. Bảng `SINHVIEN` không mang thông tin nào về số lớp.
+**➤ Đáp án gợi ý câu 5:** chỉ cần `KHOA` và `LOP`. Bảng `SINHVIEN` không mang thông tin gì về số lớp.
+
+---
+
+## 11. Đề 4 nhìn lại qua lý thuyết: CSDL bán hàng
+
+Ba mục trước nói về bảng, khóa, ràng buộc. Đề 4 — lập trình CSDL — không hỏi
+gì mới về lý thuyết: nó chỉ **dùng lại** những gì đã học, rồi bắt viết ra thành
+cú pháp. Đọc mục này để thấy cơ chế quen đã dùng ở đâu.
+
+![Lược đồ QuanLyBanHang: CTHOADON là bảng cầu nối N-N](assets/media/de4-luoc-do-quan-ly-ban-hang.png)
+
+### 11.1. `CTHOADON` — ví dụ quen thuộc của bảng cầu nối
+
+Đề 4 dùng CSDL `QuanLyBanHang` với ba bảng:
+
+```
+HANGHOA (MaHang ← PK, TenHang, DonViTinh, SoLuongTon)
+     │
+     │  1 mặt hàng nằm trong nhiều hoá đơn
+     ↓
+CTHOADON (MaHD, MaHang, SoLuong, Dongia)   ← bảng cầu nối
+     ↑
+     │  1 hoá đơn có nhiều mặt hàng
+HOADON (MaHD ← PK, NgayHD, TienBan, GiamGia, ThanhToan)
+```
+
+Đây đúng là quan hệ **N-N**, và `CTHOADON` là bảng cầu nối — y hệt `KETQUA` ở mục 6.4
+và `CTPHIEUMUON` ở đề 3. Khóa chính gộp `(MaHD, MaHang)` vì lý do đã học:
+
+- `MaHD` lặp: một hoá đơn có nhiều dòng chi tiết
+- `MaHang` lặp: một mặt hàng bán trong nhiều hoá đơn
+- `{MaHD, MaHang}`: mỗi cặp chỉ xuất hiện một lần
+
+**Hệ quả trực tiếp cho câu hỏi thi.** Vì mỗi dòng `CTHOADON` là *một mặt hàng
+trong một đơn*, nên:
+
+- "**số mặt hàng**" = `COUNT(ct.MaHang)` — đếm dòng chi tiết
+- "**số lượng bán**" = `SUM(ct.SoLuong)` — tổng số lượng
+
+Hai con số này khác nhau. Câu 2.7 của đề 4 hỏi *"hoá đơn bán trên 3 mặt hàng"* —
+phải dùng `COUNT`, không phải `SUM`. Dùng `SUM` sẽ lấy thêm những hoá đơn chỉ có
+2 mặt hàng nhưng số lượng lớn. Vì khóa gộp không trùng nên `COUNT(ct.MaHang)` và
+`COUNT(DISTINCT ct.MaHang)` cho kết quả giống nhau.
+
+```
+-- SAI: lấy cả hoá đơn 2 mặt hàng nhưng số lượng 100
+SELECT hd.MaHD, hd.NgayHD, SUM(ct.SoLuong) AS TongSoMatHang
+FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD
+GROUP BY hd.MaHD, hd.NgayHD HAVING SUM(ct.SoLuong) > 3;
+
+-- ĐÚNG: chỉ đếm dòng chi tiết
+SELECT hd.MaHD, hd.NgayHD, COUNT(ct.MaHang) AS TongSoMatHang
+FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD
+GROUP BY hd.MaHD, hd.NgayHD HAVING COUNT(ct.MaHang) > 3;
+```
+
+### 11.2. `TienBan` là dữ liệu tính được — ví dụ vi phạm chuẩn hoá
+
+`HOADON` lưu cả `TienBan`, và cột đó bằng `SUM(SoLuong * Dongia)` của các dòng
+trong `CTHOADON`. Đây là **dữ liệu tính được**, không phải dữ liệu gốc:
+
+- Nó **không độc lập** với dữ liệu khác — sửa một dòng `CTHOADON` thì `TienBan`
+  phải đổi theo, nếu không thì hai nơi mâu thuẫn nhau.
+- Nó **lưu thừa** — cùng một thông tin đã có ở `CTHOADON`.
+
+Đây là dạng vi phạm phụ thuộc hàm, dẫn tới dư thừa. Nguyên tắc chuẩn hoá nói:
+thuộc tính phải phụ thuộc vào **khóa chính** của bảng chứa nó. Mà `TienBan` lại
+phụ thuộc vào `SoLuong` và `Dongia` — hai thuộc tính nằm ở bảng khác.
+
+Hai cách xử lý, đều đúng về lý thuyết:
+
+1. **Chấp nhận dư thừa, ràng buộc bằng trigger.** Giữ cột `TienBan` và dùng
+   trigger tính lại mỗi khi `CTHOADON` thay đổi. Đây là cách đề 4 yêu cầu.
+2. **Loại bỏ dư thừa, không cần trigger.** Bỏ cột `TienBan` khỏi `HOADON`, hễ
+   cần thì tính:
+
+   ```sql
+   SELECT hd.MaHD, SUM(ct.SoLuong * ct.Dongia) AS TienBan
+   FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD
+   GROUP BY hd.MaHD;
+   ```
+
+Cách 2 đúng hơn về thiết kế CSDL, vì không bao giờ có dữ liệu sai. Nhưng **đề đã
+yêu cầu tạo trigger và cột `TienBan` đã có trong lược đồ**, nên làm bài thì phải
+theo đề.
+
+> **Bài học rút ra:** khi đề bắt lưu một giá trị tính được, dù biết là dư thừa
+> thì vẫn phải làm theo đề. Việc nhận ra nó là dư thừa và nói ra được là điểm cộng
+> khi giảng viên hỏi thêm — nhưng đừng sửa bài làm.
+
+### 11.3. Vì sao phải bọc `ISNULL`
+
+Xoá hết dòng chi tiết của một hoá đơn thì `SUM(SoLuong * Dongia)` trả về `NULL`
+— hàm tổng hợp trên tập rỗng trả `NULL`, không phải 0 (xem lại mục 9.3).
+
+Không bọc thì `TienBan` bị ghi đè bằng `NULL`, và mọi câu `WHERE TienBan > 0` sau
+đó sẽ bỏ sót hoá đơn đó — cùng một lớp bẫy `NULL` đã học ở mục 9, chỉ khác chỗ
+xảy ra.
+
+```sql
+-- Cần bọc: ISNULL của SQL Server, hoặc COALESCE viết chuẩn SQL
+UPDATE h SET h.TienBan = ISNULL((
+        SELECT SUM(ct.SoLuong * ct.Dongia)
+        FROM CTHOADON ct WHERE ct.MaHD = h.MaHD), 0)
+FROM HOADON h WHERE h.MaHD = ...;
+```
+
+### 11.4. Bốn kỹ năng của đề 4 xếp lại theo lý thuyết đã học
+
+| Kỹ năng đề 4 | Dựa trên mục nào đã học |
+|---|---|
+| `CREATE TABLE` + 6 ràng buộc | Mục 8.4 — sáu ràng buộc trong `CREATE TABLE` |
+| Khóa chính gộp `(MaHD, MaHang)` | Mục 6.4 — vì sao `KETQUA` phải dùng khóa gộp |
+| `ALTER TABLE ... CHECK (SoLuongTon > 0)` | Mục 8.2 — ràng buộc miền giá trị |
+| Câu `GROUP BY ... HAVING COUNT(...) > 3` | Ôn thi máy mục 6 — `WHERE` lọc trước, `HAVING` lọc sau |
+| Trigger cập nhật `TienBan` | Mục 11.2 — dữ liệu tính được phải có ai đó giữ cho đúng |
+| `BACKUP DATABASE` | Mục 3 — đổi tầng vật lý mà không phải sửa tầng trên |
+
+Không có kiến thức mới nào trong đề 4 mà bài này chưa nói. Đề 4 chỉ là bài thi
+tập hợp: ai hiểu bảng, khóa, ràng buộc và `NULL` sẽ thấy đề 4 dễ hơn đề 3.
 
 ---
 

@@ -786,7 +786,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v19';
+const VER = 'v20';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;

@@ -16,14 +16,15 @@
 6. [6. Dạng 3 — Gom nhóm và đếm](#6-dạng-3-gom-nhóm-và-đếm)
 7. [7. Dạng 4 — So sánh với giá trị lớn nhất](#7-dạng-4-so-sánh-với-giá-trị-lớn-nhất)
 8. [8. Dạng 5 — Loại trừ](#8-dạng-5-loại-trừ)
-9. [9. Đề 3 — Lời giải đầy đủ](#9-đề-3-lời-giải-đầy-đủ)
-10. [10. Bản đồ 43 câu của 3 đề → dạng đã học](#10-bản-đồ-43-câu-của-3-đề-dạng-đã-học)
-11. [11. Đọc câu hỏi như thế nào — bốn bước tách SQL ra khỏi câu tiếng Việt](#11-đọc-câu-hỏi-như-thế-nào-bốn-bước-tách-sql-ra-khỏi-câu-tiếng-việt)
-12. [12. Quy trình làm bài trên máy](#12-quy-trình-làm-bài-trên-máy)
-13. [Phụ lục A — 8 lỗi thật trong đề gốc](#phụ-lục-a-8-lỗi-thật-trong-đề-gốc)
-14. [Phụ lục B — Phụ thuộc hàm và chuẩn hóa](#phụ-lục-b-phụ-thuộc-hàm-và-chuẩn-hóa)
-15. [Phụ lục C — Sai khác SQL Server so với MySQL/PostgreSQL](#phụ-lục-c-sai-khác-sql-server-so-với-mysqlpostgresql)
-16. [Ghi chú cuối](#ghi-chú-cuối)
+9. [9. Dạng 6 — Lập trình CSDL: ràng buộc, procedure, trigger, backup](#9-dạng-6-lập-trình-csdl-ràng-buộc-procedure-trigger-backup)
+10. [10. Đề 3 — Lời giải đầy đủ](#10-đề-3-lời-giải-đầy-đủ)
+11. [11. Bản đồ 43 câu của 3 đề + 6 câu đề 4 → dạng đã học](#11-bản-đồ-43-câu-của-3-đề--6-câu-đề-4--dạng-đã-học)
+12. [12. Đọc câu hỏi như thế nào — bốn bước tách SQL ra khỏi câu tiếng Việt](#12-đọc-câu-hỏi-như-thế-nào-bốn-bước-tách-sql-ra-khỏi-câu-tiếng-việt)
+13. [13. Quy trình làm bài trên máy](#13-quy-trình-làm-bài-trên-máy)
+14. [Phụ lục A — 8 lỗi thật trong đề gốc](#phụ-lục-a-8-lỗi-thật-trong-đề-gốc)
+15. [Phụ lục B — Phụ thuộc hàm và chuẩn hóa](#phụ-lục-b-phụ-thuộc-hàm-và-chuẩn-hóa)
+16. [Phụ lục C — Sai khác SQL Server so với MySQL/PostgreSQL](#phụ-lục-c-sai-khác-sql-server-so-với-mysqlpostgresql)
+17. [Ghi chú cuối](#ghi-chú-cuối)
 
 ---
 
@@ -965,8 +966,259 @@ Cách quyết định khi nào dùng bản nào: đọc kỹ câu hỏi. "Độc
 3. Nhà xuất bản chưa xuất bản cuốn nào được mượn.
 
 ---
+---
 
-## 9. Đề 3 — Lời giải đầy đủ
+## 9. Dạng 6 — Lập trình CSDL: ràng buộc, procedure, trigger, backup
+
+![Dạng 6 — Lập trình CSDL: bốn kỹ năng của đề 4](assets/media/de4-dang-6-lap-trinh-csdl.png)
+Năm dạng trước đều **trả lời câu hỏi**: đọc bảng, nối, đếm, tìm lớn nhất, loại trừ.
+Dạng 6 khác: đề **bắt viết code làm thay đổi cơ sở dữ liệu**. Nếu kỳ thi giữ
+3 đề cũ thì bỏ qua. Nhưng đề 4 của học kỳ này đã xuất hiện, và mất trọn điểm
+phần này thì còn thiếu.
+
+**Bốn kỹ năng, theo thứ tự đề thường ra:**
+
+| # | Kỹ năng | Câu lệnh | Bẫy chính |
+|---|---|---|---|
+| 1 | Thêm ràng buộc | `ALTER TABLE ... ADD CONSTRAINT ... CHECK` | Bảng đã có dữ liệu vi phạm thì thêm không được |
+| 2 | Stored procedure | `CREATE PROCEDURE ... GO` | `GO` không phải SQL; tham số viết `@TenBien` |
+| 3 | Trigger | `CREATE TRIGGER ... AFTER INSERT, UPDATE, DELETE` | `inserted`/`deleted` rỗng tuỳ thao tác |
+| 4 | Sao lưu | `BACKUP DATABASE ... TO DISK` | Đường dẫn phải trên máy chạy SQL Server |
+
+Lướt nhanh qua cả bốn, phần sâu nằm ở [bài 03 — Đề 4](13-de4-lap-trinh-csdl.md).
+
+### 9.1. Thêm ràng buộc `CHECK` vào bảng đã có dữ liệu
+
+Đề 4 câu 3: *"Tạo bổ sung ràng buộc cho cột số lượng tồn của bảng hàng hoá nhận
+giá trị lớn hơn 0."*
+
+```sql
+ALTER TABLE HANGHOA
+ADD CONSTRAINT CK_HANGHOA_TON CHECK (SoLuongTon > 0);
+```
+
+Ba điều phải biết:
+
+1. **SQL Server kiểm tra dữ liệu đang có trước khi thêm.** Nếu bảng đã có dòng
+   vi phạm thì lệnh báo lỗi và ràng buộc **không được tạo** — không phải tạo
+   xong rồi mới báo.
+2. **Kiểm tra trước mà không đụng tới bảng:**
+
+   ```sql
+   SELECT MaHang, TenHang, SoLuongTon FROM HANGHOA WHERE SoLuongTon <= 0;
+   ```
+
+3. `CHECK` không tự sinh chỉ mục. Cần nó chạy nhanh thì phải khai báo thêm
+   `INDEX` — nhưng đề không yêu cầu.
+
+Sau khi thêm, nhập vi phạm sẽ bị chặn:
+
+```sql
+INSERT INTO HANGHOA (MaHang, TenHang, SoLuongTon) VALUES ('H99', N'Thử', -1);
+-- Msg 547: The INSERT statement conflicted with the CHECK constraint "CK_HANGHOA_TON".
+```
+
+**Bẫy phụ đáng nhớ:** `Msg 547` dùng cho **cả** ràng buộc `CHECK` lẫn khóa ngoại.
+Đừng thấy 547 rồi kết luận lỗi khóa ngoại — phải đọc phần message phía sau.
+
+### 9.2. Stored procedure
+
+Đề 4 câu 4: *"Tạo thủ tục hiển thị thông tin của một mặt hàng khi biết mã hàng."*
+
+```sql
+CREATE PROCEDURE dbo.HienThiHangHoa
+    @MaHang CHAR(10)
+AS
+BEGIN
+    SELECT MaHang, TenHang, SoLuongTon
+    FROM HANGHOA
+    WHERE MaHang = @MaHang;
+END
+GO
+
+EXEC dbo.HienThiHangHoa 'H05';
+```
+
+Bốn điểm, tất cả đều là bẫy cụ thể của SQL Server:
+
+**1. `GO` không phải SQL.** Trong SSMS, `CREATE PROCEDURE` phải là câu lệnh
+đầu tiên của một lô. Không có `GO` ở giữa thì SQL Server báo:
+`Msg 102: Incorrect syntax near 'GO'`. Chạy file `.sql` thì bắt buộc có `GO`.
+
+**2. Tham số viết `@TenBien`, không viết kiểu trước.** `WHERE MaHang = CHAR(10)`
+là sai — sai cả kiểu dữ liệu lẫn ý nghĩa.
+
+**3. Procedure không nên `SELECT *`.** `SELECT *` khiến kết quả phụ thuộc vào thứ
+tự cột trong bảng. Đề muốn *"mã hàng, tên hàng, số lượng tồn"* thì liệt kê đúng
+3 cột đó.
+
+**4. `CREATE PROCEDURE` không nằm trong `CREATE TABLE`.** Câu 1 tạo CSDL và bảng,
+câu 4 tạo procedure — hai việc tách biệt, điểm số riêng. Không gộp vào một khối.
+
+### 9.3. Trigger — phần khó nhất của đề 4
+
+Đề 4 câu 5: *"Tạo trigger cập nhật lại tiền bán của mỗi hoá đơn khi chỉnh sửa
+thông tin mặt hàng được lưu trong bảng CTHOADON. Biết công thức tính tiền bán
+trên mỗi hoá đơn là `TienBan = Sum(SoLuong * Dongia)`."*
+
+![Ba bảng tạm trong trigger: inserted và deleted](assets/media/de4-trigger-inserted-deleted.png)
+Một trigger `AFTER INSERT, UPDATE, DELETE` nhìn vào **hai bảng tạm**:
+
+- `inserted` — dòng **sau** khi thay đổi
+- `deleted` — dòng **trước** khi thay đổi
+
+| Thao tác | `inserted` | `deleted` | Phải tính lại `TienBan` cho |
+|---|---|---|---|
+| `INSERT` | có dòng | rỗng | `MaHD` trong `inserted` |
+| `DELETE` | rỗng | có dòng | `MaHD` trong `deleted` |
+| `UPDATE` | có dòng | có dòng | **cả hai** |
+
+```sql
+CREATE TRIGGER TR_CTHD_TinhLaiTienBan
+ON CTHOADON
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- 1. Xoá: inserted rỗng, chỉ còn deleted
+    IF NOT EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+    BEGIN
+        UPDATE h
+        SET h.TienBan = ISNULL((
+                SELECT SUM(ct.SoLuong * ct.Dongia)
+                FROM CTHOADON ct WHERE ct.MaHD = h.MaHD), 0)
+        FROM HOADON h
+        WHERE h.MaHD IN (SELECT MaHD FROM deleted);
+        RETURN;
+    END
+
+    -- 2. Thêm mới: chỉ có inserted, chưa có deleted
+    IF NOT EXISTS (SELECT 1 FROM deleted) AND EXISTS (SELECT 1 FROM inserted)
+    BEGIN
+        UPDATE h
+        SET h.TienBan = ISNULL((
+                SELECT SUM(ct.SoLuong * ct.Dongia)
+                FROM CTHOADON ct WHERE ct.MaHD = h.MaHD), 0)
+        FROM HOADON h
+        WHERE h.MaHD IN (SELECT MaHD FROM inserted);
+        RETURN;
+    END
+
+    -- 3. Sửa: có cả hai. MaHD có thể bị đổi, nên tính lại cả hoá đơn cũ lẫn mới
+    UPDATE h
+    SET h.TienBan = ISNULL((
+            SELECT SUM(ct.SoLuong * ct.Dongia)
+            FROM CTHOADON ct WHERE ct.MaHD = h.MaHD), 0)
+    FROM HOADON h
+    WHERE h.MaHD IN (SELECT MaHD FROM inserted)
+       OR h.MaHD IN (SELECT MaHD FROM deleted);
+END
+GO
+```
+
+**Bẫy chết người: viết một khối `UPDATE` chung cho cả ba trường hợp.**
+
+```sql
+-- SAI: khi xoá dòng, inserted rỗng nên không khớp dòng nào
+UPDATE h SET h.TienBan = ... FROM HOADON h
+WHERE h.MaHD IN (SELECT MaHD FROM inserted);
+```
+
+Khi xoá, `inserted` rỗng nên `WHERE MaHD IN (SELECT MaHD FROM inserted)` không
+khớp dòng nào — tổng tiền hoá đơn đó **không bao giờ được cập nhật** và vẫn giữ
+số tiền cũ. Không báo lỗi, chỉ ra sai dữ liệu.
+
+**Bẫy thứ hai, ít ai để ý: sửa `MaHD` của một dòng chi tiết.** Dòng đó chuyển từ
+hoá đơn `HD001` sang `HD002`. Nếu chỉ tính lại theo `inserted`, hoá đơn `HD001`
+mất một dòng chi tiết mà tổng tiền của nó không được sửa. Vì vậy nhánh `UPDATE`
+phải tính cả `inserted` lẫn `deleted`.
+
+**Đã chạy thật, kết quả từng bước:**
+
+| Bước | `TienBan` của `HD001` | Kiểm tra tay |
+|---|---|---|
+| Nạp dữ liệu xong | 3 450 000 | 2 × 1.500.000 + 1 × 450.000 |
+| `UPDATE ... SET SoLuong = 5` | 7 950 000 | 5 × 1.500.000 + 450.000 |
+| `DELETE` dòng (HD001, H01) | 450 000 | còn lại 1 × 450.000 |
+
+**Vì sao phải bọc `ISNULL(..., 0)`:** xoá hết dòng chi tiết của một hoá đơn thì
+`SUM(SoLuong * Dongia)` trả về `NULL` — hàm tổng hợp trên tập rỗng trả `NULL`,
+không phải 0 (xem lại mục 8.3 và bài 01 mục 11.3). Không bọc thì `TienBan` bị ghi
+đè bằng `NULL` và mọi câu `WHERE TienBan > 0` sau đó sẽ bỏ sót hoá đơn đó.
+
+`ISNULL(x, 0)` và `COALESCE(x, 0)` cho cùng kết quả ở đây. `COALESCE` là cách viết
+chuẩn SQL, dùng được từ 2 tham số trở lên; `ISNULL` chỉ 2 và là hàm riêng của
+SQL Server. Đề thi dùng SQL Server nên cả hai đều được.
+
+**Một lựa chọn thiết kế khác, cũng đúng:** nếu giảng viên chấp nhận bỏ cột
+`TienBan` khỏi `HOADON` và tính mỗi khi cần, thì không cần trigger:
+
+```sql
+SELECT hd.MaHD, SUM(ct.SoLuong * ct.Dongia) AS TienBan
+FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD
+GROUP BY hd.MaHD;
+```
+
+Đây là lựa chọn đúng về thiết kế CSDL vì không có nguy cơ dữ liệu sai. Nhưng
+**đề đã yêu cầu tạo trigger và cột `TienBan` đã có trong lược đồ**, nên làm bài
+phải theo đề.
+
+### 9.4. Sao lưu CSDL
+
+```sql
+BACKUP DATABASE QuanLyBanHang
+TO DISK = 'D:\Backup\QuanLyBanHang.bak'
+WITH INIT;
+```
+
+Trên SSMS: chuột phải vào database → **Tasks** → **Back Up…**
+
+- **Source**: `Database`
+- **Backup type**: `Full`
+- **Destination**: `Disk`, chọn đường dẫn ổ đĩa khác
+
+Ba chỗ dễ sai:
+
+1. **Đường dẫn phải nằm trên máy chạy SQL Server**, không phải máy đang mở
+   SSMS. Nếu SQL Server chạy ở máy khác qua mạng, chọn `\\tenserver\share`
+   chứ không phải `D:\backup` trên máy bạn.
+2. **Đuôi file phải là `.bak`.** SQL Server tự thêm nếu thiếu.
+3. **Phải có quyền `sysadmin`** hoặc quyền ghi vào thư mục đích.
+
+Kiểm tra bản sao lưu đã đủ:
+
+```sql
+RESTORE FILELISTONLY FROM DISK = 'D:\Backup\QuanLyBanHang.bak';
+```
+
+Sao lưu khác với sao chép file: file `.mdf` khi copy tay sẽ sai vì nó đang được
+SQL Server giữ khoá. Chỉ `BACKUP DATABASE` mới tạo được bản sao lưu đúng.
+
+### 9.5. Sáu điểm dễ mất trong dạng 6
+
+1. `GO` thiếu sau `CREATE PROCEDURE` và `CREATE TRIGGER` → SQL Server báo lỗi cú pháp.
+2. Trigger viết một khối chung cho `INSERT/UPDATE/DELETE` → xoá dòng không cập
+   nhật tổng tiền.
+3. Sửa `MaHD` của dòng chi tiết → hoá đơn cũ giữ tổng tiền cũ.
+4. Không bọc `ISNULL(..., 0)` → xoá hết dòng thì `TienBan` thành `NULL`.
+5. `> 20` viết thành `>= 20` → lấy thừa hàng có đúng 20.
+6. Tham số procedure viết `WHERE MaHang = CHAR(10)` thay vì `@MaHang`.
+
+### Tự làm
+
+1. Viết `ALTER TABLE` thêm ràng buộc cho cột `DIEM` chỉ nhận từ 0 đến 10, rồi
+   chạy câu kiểm tra dữ liệu sẵn có trước khi thêm.
+2. Viết stored procedure lấy danh sách hoá đơn theo khoảng ngày, có tham số
+   `@Tu` và `@Den`.
+3. Viết trigger tính lại `TienBan`, rồi thử đủ ba thao tác INSERT, UPDATE,
+   DELETE — kết quả mỗi bước phải khớp tay tính.
+4. Đổi nhánh `UPDATE` trong trigger thành chỉ lọc theo `inserted`, chạy lại và
+   xác nhận hoá đơn cũ bị sai. Đây là cách tự thấy bẫy thay vì chỉ đọc.
+
+---
+
+## 10. Đề 3 — Lời giải đầy đủ
 
 
 ![Lược đồ quan hệ của bài quản lý thư viện](assets/media/f1-luoc-do-thu-vien.jpg)
@@ -988,7 +1240,7 @@ SACH   ──1-N── CTPHIEUMUON
 
 Script đầy đủ ở [mục 2.1](#21-script-tạo-chạy-trên-sql-server).
 
-### 9.1. Câu 1 — Tạo CSDL, bảng, khóa, nhập liệu
+### 10.1. Câu 1 — Tạo CSDL, bảng, khóa, nhập liệu
 
 **Ghi vào bài ba điều trước khi viết SQL:**
 
@@ -1014,7 +1266,7 @@ GO
 | `CTPHIEUMUON.MAPM` | `PHIEUMUON(MAPM)` | 1 phiếu mượn có nhiều dòng chi tiết |
 | `CTPHIEUMUON.MASACH` | `SACH(MASACH)` | 1 cuốn sách xuất hiện ở nhiều phiếu |
 
-### 9.2. Câu 2 — Sách của NXB Giáo dục xuất bản năm 2022
+### 10.2. Câu 2 — Sách của NXB Giáo dục xuất bản năm 2022
 
 ```sql
 SELECT MASACH, TENSACH, NAMXB FROM SACH
@@ -1035,7 +1287,7 @@ WHERE NXB LIKE N'%Giáo dục%' AND NAMXB = 2022
 
 **Cảnh báo collation:** so sánh chuỗi không phân biệt hoa thường có thể không nhạy với dấu tiếng Việt tùo collation của database. `Giáo dục` trong dữ liệu và `giao duc` không dấu khi so sánh có thể trùng. Giải pháp chắc chắn: luôn gõ đúng chính tả có dấu, và luôn dùng `N'...'`.
 
-### 9.3. Câu 3 — Độc giả có địa chỉ ở Hà Nội
+### 10.3. Câu 3 — Độc giả có địa chỉ ở Hà Nội
 
 ```sql
 SELECT MADG, HOTEN, DIACHI FROM DOCGIA
@@ -1047,7 +1299,7 @@ WHERE DIACHI LIKE N'%Hà Nội%' ORDER BY MADG;
 | DG01 | Nguyễn Văn An | Hà Nội |
 | DG02 | Trần Thị Bình | Hà Nội |
 
-### 9.4. Câu 4 — Sách được mượn ngày 20/11/2023
+### 10.4. Câu 4 — Sách được mượn ngày 20/11/2023
 
 ```sql
 SELECT DISTINCT s.MASACH, s.TENSACH, p.NGAYMUON
@@ -1069,7 +1321,7 @@ ORDER BY s.MASACH;
 
 **`DISTINCT` là bắt buộc.** `S01` nằm trong cả `PM01` và `PM02`, cả hai đều mượn ngày 20/11. Bỏ `DISTINCT` sẽ ra 7 dòng với `S01` lặp 2 lần — đã kiểm chạy thật.
 
-### 9.5. Câu 5 — Tổng số sách mượn ngày 20/11/2023
+### 10.5. Câu 5 — Tổng số sách mượn ngày 20/11/2023
 
 ```sql
 
@@ -1094,7 +1346,7 @@ GROUP BY p.NGAYMUON;
 -- → 7
 ```
 
-### 9.6. Câu 6 — Tổng số sách độc giả DG01 đã mượn
+### 10.6. Câu 6 — Tổng số sách độc giả DG01 đã mượn
 
 ```sql
 SELECT d.MADG, d.HOTEN, SUM(c.SOLUONG) AS TONGSOSACH
@@ -1111,7 +1363,7 @@ GROUP BY d.MADG, d.HOTEN;
 
 `DG01` có 3 phiếu mượn (PM01, PM03, PM05) với 7 dòng chi tiết. `SUM` ra 9 cuốn, `COUNT(*)` ra 7 lượt.
 
-### 9.7. Câu 7 — Tổng số sách thể loại thiếu nhi đã được mượn
+### 10.7. Câu 7 — Tổng số sách thể loại thiếu nhi đã được mượn
 
 ```sql
 SELECT s.THELOAI, SUM(c.SOLUONG) AS TONGSOSACH
@@ -1124,7 +1376,7 @@ GROUP BY s.THELOAI;
 |---|---|
 | Thiếu nhi | 7 |
 
-### 9.8. Câu 8 — Tổng số sách mượn theo thể loại
+### 10.8. Câu 8 — Tổng số sách mượn theo thể loại
 
 ```sql
 SELECT s.THELOAI, SUM(c.SOLUONG) AS TONGSOSACH
@@ -1139,7 +1391,7 @@ GROUP BY s.THELOAI ORDER BY s.THELOAI;
 | Thiếu nhi | 7 |
 | Toán | 1 |
 
-### 9.9. Câu 9 — Tổng số sách mượn theo nhà xuất bản
+### 10.9. Câu 9 — Tổng số sách mượn theo nhà xuất bản
 
 ```sql
 SELECT s.NXB, SUM(c.SOLUONG) AS TONGSOSACH
@@ -1155,7 +1407,7 @@ GROUP BY s.NXB ORDER BY s.NXB;
 
 Chỉ có 3 dòng vì `S07` (Bách khoa) chưa có ai mượn — câu 14 hỏi chính cuốn đó.
 
-### 9.10. Câu 10 — Độc giả mượn nhiều sách nhất
+### 10.10. Câu 10 — Độc giả mượn nhiều sách nhất
 
 ```sql
 SELECT d.MADG, d.HOTEN, SUM(c.SOLUONG) AS TONGSOSACH
@@ -1176,7 +1428,7 @@ ORDER BY d.MADG;
 
 Trong dữ liệu mẫu chỉ có một người đạt đỉnh nên `>= ALL` và `TOP 1 WITH TIES` cho cùng kết quả. Nếu thêm một độc giả mượn 9 cuốn nữa, `>= ALL` trả cả hai, `TOP 1` thì không.
 
-### 9.11. Câu 11 — Độc giả mượn trên 3 cuốn sách
+### 10.11. Câu 11 — Độc giả mượn trên 3 cuốn sách
 
 ```sql
 SELECT d.MADG, d.HOTEN, SUM(c.SOLUONG) AS TONGSOSACH
@@ -1195,7 +1447,7 @@ ORDER BY d.MADG;
 
 "Trên 3" là `> 3`, không phải `>= 3`. `DG02` mượn đúng 3 cuốn nên không có mặt — dùng `>= 3` là sai.
 
-### 9.12. Câu 12 — Cuốn sách được mượn nhiều nhất
+### 10.12. Câu 12 — Cuốn sách được mượn nhiều nhất
 
 Đề nói "tổng số lượt mượn" → đếm số dòng chi tiết:
 
@@ -1213,7 +1465,7 @@ ORDER BY s.MASACH;
 
 Đếm lượt bằng `COUNT(*)`, không phải `SUM(SOLUONG)`. Câu này hỏi "lượt mượn" nên dùng `COUNT`.
 
-### 9.13. Câu 13 — Sách được mượn trên 3 lần
+### 10.13. Câu 13 — Sách được mượn trên 3 lần
 
 ```sql
 SELECT s.MASACH, s.TENSACH, COUNT(*) AS SOLUOTMUON
@@ -1227,7 +1479,7 @@ ORDER BY s.MASACH;
 |---|---|---|
 | S04 | Dế Mèn phiêu lưu ký | 4 |
 
-### 9.14. Câu 14 — Sách chưa bao giờ có khách mượn
+### 10.14. Câu 14 — Sách chưa bao giờ có khách mượn
 
 ```sql
 SELECT s.MASACH, s.TENSACH, s.NXB FROM SACH s
@@ -1241,7 +1493,7 @@ ORDER BY s.MASACH;
 
 `MASACH NOT IN (SELECT MASACH FROM CTPHIEUMUON)` cho kết quả giống hệt vì `MASACH` thuộc khóa chính gộp nên không NULL. Dùng `NOT EXISTS` vẫn tốt hơn — không phải suy luận.
 
-### 9.15. Câu 15 — Độc giả không ở Hà Nội
+### 10.15. Câu 15 — Độc giả không ở Hà Nội
 
 ```sql
 SELECT MADG, HOTEN, DIACHI FROM DOCGIA
@@ -1255,7 +1507,7 @@ Bổ sung người có địa chỉ NULL — xem lý do ở [mục 8.3](#83-not-
 WHERE DIACHI IS NULL OR DIACHI NOT LIKE N'%Hà Nội%'
 ```
 
-### 9.16. Câu 16 — Sách không do NXB Giáo dục xuất bản
+### 10.16. Câu 16 — Sách không do NXB Giáo dục xuất bản
 
 ```sql
 SELECT MASACH, TENSACH, NXB, NAMXB FROM SACH
@@ -1274,13 +1526,13 @@ ORDER BY MASACH;
 
 ---
 
-## 10. Bản đồ 43 câu của 3 đề → dạng đã học
+## 11. Bản đồ 43 câu của 3 đề + 6 câu đề 4 → dạng đã học
 
 
 
 ![Bản đồ 43 câu của 3 đề rơi vào 5 dạng](assets/media/f5-ban-do-43-cau.jpg)
 ![Đề 3 dùng đúng 5 dạng câu hỏi đã học](assets/media/f4-de-3-dung-5-dang.jpg)
-Mục này để tự kiểm tra xem đã phủ đề chưa. Mỗi câu đề ánh xạ về đúng một dạng đã dạy ở mục 4–8.
+Mục này để tự kiểm tra xem đã phủ đề chưa. Mỗi câu đề ánh xạ về đúng một dạng đã dạy ở mục 4–9.
 
 | Đề | Câu | Nội dung | Dạng đã học | Đủ? |
 |---|---|---|---|---|
@@ -1328,11 +1580,26 @@ Mục này để tự kiểm tra xem đã phủ đề chưa. Mỗi câu đề á
 | 3 | 15 | Độc giả không ở Hà Nội | 8.3 — `NOT LIKE` + NULL | ✅ |
 | 3 | 16 | Sách không do NXB Giáo dục | 4 — `<>` + `N'...'` | ✅ |
 
-**Đọc bảng này như thế nào:** cột "Đủ?" không có một dấu đỏ nào là đủ trả lời "còn thiếu gì". Hai mục ⚠️ đều là lỗi của đề, không phải thiếu học — xem Phụ lục A và mục 9.5.
+**Đề 4 — dạng 6 (lập trình CSDL), 6 câu:**
+
+| Đề | Câu | Nội dung | Dạng đã học | Đủ? |
+|---|---|---|---|---|
+| 4 | 1 | Tạo CSDL + 3 bảng + khóa + nhập liệu | 2.1 + mục 2.1 | ✅ |
+| 4 | 2 | Mặt hàng tồn **lớn hơn** 20 | 4 — `WHERE > 20` | ✅ |
+| 4 | 3 | Thêm ràng buộc `SoLuongTon > 0` | **9.1** — `ALTER TABLE ... CHECK` | ✅ |
+| 4 | 4 | Stored procedure xem mặt hàng | **9.2** — `CREATE PROCEDURE` + `GO` | ✅ |
+| 4 | 5 | Trigger cập nhật `TienBan` | **9.3** — `inserted`/`deleted` | ⚠️ dễ viết 1 khối chung |
+| 4 | 6 | Backup CSDL ra ổ đĩa khác | **9.4** — `BACKUP DATABASE` | ⚠️ dễ chọn sai đường dẫn |
+
+Ba câu cuối **không thuộc 5 dạng truy vấn** — đó là lý do đề 4 tách riêng.
+Câu 5 là câu khó nhất của cả đề: chỉ sai ở chỗ viết một khối `UPDATE` chung cho
+cả ba thao tác là nhánh `DELETE` không bao giờ cập nhật tổng tiền.
+
+**Đọc bảng này như thế nào:** cột "Đủ?" trả lời "còn thiếu gì". Hai mục ⚠️ ở đề 1–3 đều là **lỗi của đề**, không phải thiếu học — xem Phụ lục A. Hai mục ⚠️ ở đề 4 là **bẫy thật trong cách làm**, nằm ở mục 9.3 và 9.4: nhớ chia ba nhánh trigger và nhớ đường dẫn backup phải nằm trên máy chạy SQL Server.
 
 Muốn tự kiểm tra: đổi cột "Đủ?" thành phần trả lời của bạn, rồi xem đáp ở cuối từng mục.
 
-## 11. Đọc câu hỏi như thế nào — bốn bước tách SQL ra khỏi câu tiếng Việt
+## 12. Đọc câu hỏi như thế nào — bốn bước tách SQL ra khỏi câu tiếng Việt
 
 
 
@@ -1342,7 +1609,7 @@ Muốn tự kiểm tra: đổi cột "Đủ?" thành phần trả lời của b�
 ![Bốn bước tách SQL khỏi câu tiếng Việt](assets/media/c4-bon-buoc-doc-de.jpg)
 Mục 4–8 dạng công thức. Mục này dạy **làm sao biết dùng công thức nào** khi câu hỏi viết bằng tiếng Việt.
 
-### 11.1. Bốn bước, luôn theo thứ tự này
+### 12.1. Bốn bước, luôn theo thứ tự này
 
 **Bước 1 — Chốt danh từ: câu hỏi cần những cột nào**
 
@@ -1395,7 +1662,7 @@ Ba câu hỏi kiểm tra trước khi viết `WHERE`:
 2. Điều kiện có thuộc bảng bên phải của `LEFT JOIN` không? Nếu có và muốn giữ dòng trống → `ON`.
 3. Có chữ "sau khi đếm/gom" không? Nếu có → `HAVING`.
 
-### 11.2. Bốn bước áp dụng vào ba câu thật
+### 12.2. Bốn bước áp dụng vào ba câu thật
 
 **Câu A — *"Liệt kê danh sách tên khoa và số lượng lớp trong từng khoa."***
 
@@ -1431,7 +1698,7 @@ JOIN KETQUA k ON k.MASV = s.MASV
 WHERE s.GIOITINH = N'Nữ' AND k.DIEM BETWEEN 6 AND 8;
 ```
 
-Chỉ xuất `HOTEN` mà dữ liệu có trùng tên → thêm `DISTINCT`. Đây là bước kiểm thứ năm, xem mục 11.3.
+Chỉ xuất `HOTEN` mà dữ liệu có trùng tên → thêm `DISTINCT`. Đây là bước kiểm thứ năm, xem mục 12.3.
 
 **Câu C — *"Cho biết môn học nào có số tiết trên 30 và có ít nhất 2 sinh viên theo học."***
 
@@ -1453,7 +1720,7 @@ HAVING COUNT(DISTINCT k.MASV) >= 2;
 
 Câu này có cả `WHERE` lẫn `HAVING`. Đó là dấu hiệu câu hỏi ghép **hai điều kiện thuộc hai thời điểm khác nhau**.
 
-### 11.3. Bước kiểm thứ năm: kết quả có lặp không
+### 12.3. Bước kiểm thứ năm: kết quả có lặp không
 
 Sau khi có câu lệnh, hỏi: *cột đầu tiên trong `SELECT` có thể trùng giá trị giữa các dòng không?*
 
@@ -1467,7 +1734,7 @@ Ba kiểm tra còn lại trước khi chạy:
 | `LEFT JOIN` + đếm | Đang đếm cột của bảng bên phải chưa? |
 | "nhiều nhất" | Đang dùng `TOP 1`/`LIMIT 1` trần không? Phải thêm `WITH TIES` hoặc đổi `>= ALL` |
 
-### 11.4. Một câu trả về 0 dòng không phải lúc nào cũng sai
+### 12.4. Một câu trả về 0 dòng không phải lúc nào cũng sai
 
 Kết quả rỗng có ba nguyên nhân, phải phân biệt:
 
@@ -1497,9 +1764,9 @@ Xóa `MH09` đi thì về đúng 8 môn như ban đầu. Ba kết luận rút ra
 
 Trong kỳ thi, câu nào ra 0 dòng mà đề hỏi "liệt kê danh sách" thì hãy làm ba bước trên trước khi kết luận mình sai. Cách nhanh nhất: **thêm một dòng dữ liệu thử** rồi xem câu có ra không.
 
-### 11.5. Mười hai câu tự làm, có đáp án
+### 12.5. Mười hai câu tự làm, có đáp án
 
-Viết SQL trước, xem đáp án sau. Câu nào không ra kết quả thì đọc lại mục 11.1.
+Viết SQL trước, xem đáp án sau. Câu nào không ra kết quả thì đọc lại mục 12.1.
 
 **Câu 1.** Liệt kê mã, họ tên sinh viên kèm tên lớp, sắp theo mã.
 
@@ -1580,7 +1847,7 @@ WHERE NOT EXISTS (SELECT 1 FROM KETQUA k WHERE k.MAMH = m.MAMH)
 ORDER BY m.TENMH;
 ```
 
-**Kết quả: 0 dòng.** Đọc mục 11.4 — đây là đúng, vì 8 môn trong dữ liệu đều đã có sinh viên học. Thêm môn `MH09` thì câu trả về `MH09`.
+**Kết quả: 0 dòng.** Đọc mục 12.4 — đây là đúng, vì 8 môn trong dữ liệu đều đã có sinh viên học. Thêm môn `MH09` thì câu trả về `MH09`.
 
 **Câu 5.** Tên môn học mà sinh viên **nam** ở khoa `K01` đã học.
 
@@ -1753,19 +2020,19 @@ ORDER BY l.MALOP;
 
 Hai cột đếm dùng `DISTINCT` là bắt buộc: nối `LOP → SINHVIEN → KETQUA` mà không `DISTINCT` thì một sinh viên học 5 môn bị đếm 5 lần. Lớp `Kỹ thuật phần mềm 3` không có sinh viên nên cả hai cột đều 0.
 
-### 11.6. Quy trình đầy đủ khi ngồi thi
+### 12.6. Quy trình đầy đủ khi ngồi thi
 
 1. Đọc câu, gạch ch Danh từ → chốt bảng (bước 1).
 2. Nhìn khóa ngoại → chốt điều kiện nối (bước 2).
 3. Tìm từ "bao nhiêu / mỗi / nhất" → chốt có gom nhóm không (bước 3).
 4. Chọn `WHERE` hay `HAVING` hay `ON` (bước 4).
 5. Kiểm tra `DISTINCT` và cột đếm (bước 5).
-6. Chạy. Nếu 0 dòng — làm ba kiểm tra ở mục 11.4.
+6. Chạy. Nếu 0 dòng — làm ba kiểm tra ở mục 12.4.
 7. So kết quả với câu hỏi: có đúng những gì đề hỏi, không thừa không thiếu?
 
 Bảy bước, mỗi bước một câu hỏi. Nếu làm theo thứ tự thì không cần nhớ tên lệnh — chỉ cần nhớ hỏi đúng câu.
 
-## 12. Quy trình làm bài trên máy
+## 13. Quy trình làm bài trên máy
 
 Thi máy nên quy trình khác thi giấy: không ghi ra giấy rồi chép lại, mà **chạy và soi kết quả ngay**.
 
