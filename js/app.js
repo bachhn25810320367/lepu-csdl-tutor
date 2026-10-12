@@ -35,6 +35,8 @@ let ACTIVE = null;
 const DOCS = [
   { id: 'khai-niem', file: 'data/01-khai-niem.md', label: '01 · Tầng khái niệm' },
   { id: 'on-thi', file: 'data/02-on-thi-may.md', label: '02 · Ôn thi máy' },
+  { id: 'de4', file: 'data/13-de4-lap-trinh-csdl.md', label: '03 · Đề 4: lập trình CSDL' },
+  { id: 'giai', file: 'data/14-giai-chi-tiet-43-cau.md', label: '04 · Giải chi tiết 43 câu' },
 ];
 
 /* ---------------------------------------------------------------- state */
@@ -709,7 +711,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v16';
+const VER = 'v17';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
