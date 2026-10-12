@@ -189,6 +189,8 @@ Hai dòng giống hệt nhau trong một bảng là điều không được phé
 
 ### 5.2. Mỗi ô chỉ chứa một giá trị đơn
 
+
+![Ô chứa nhiều giá trị: vi phạm 1NF](assets/media/b7-o-chua-nhieu-gia-tri.jpg)
 Không nhét cả danh sách vào một ô.
 
 **Cách sai:**
@@ -241,6 +243,8 @@ Khóa ngoại (foreign key)   ràng buộc tham chiếu giữa hai bảng
 
 ### 6.1. Tìm khóa bằng cách kiểm tra, không bằng mắt
 
+
+![Tìm khóa bằng kiểm tra, không bằng mắt](assets/media/b8-tim-khoa-bang-kiem-tra.jpg)
 Cách chắc chắn duy nhất: **thử từng tập thuộc tính xem có tập thuộc tính nào trùng giá trị không.** Tập nào có trùng thì không phải khóa.
 
 Dùng bảng minh hoạ có 4 dòng cố ý trùng:
@@ -275,6 +279,8 @@ Bảng này có **đúng một khóa dự tuyển**: `MASV`. Chọn nó làm kh�
 
 ### 6.3. Tính chất của khóa ngoại
 
+
+![Khóa ngoại trỏ tới khóa chính](assets/media/b10-khoa-ngoai.jpg)
 1. Giá trị phải **tồn tại** trong bảng được trỏ tới, **hoặc** là NULL.
 2. Một bảng có thể có nhiều khóa ngoại trỏ tới cùng một bảng khác.
 3. Một cột vừa là khóa chính vừa là khóa ngoại — trường hợp này có thật trong đề, ở bảng `KETQUA`.
@@ -284,6 +290,8 @@ Bảng này có **đúng một khóa dự tuyển**: `MASV`. Chọn nó làm kh�
 ### 6.4. Vì sao `KETQUA` phải dùng khóa chính gộp
 
 ```
+
+![Vì sao KETQUA dùng khóa chính gộp](assets/media/b9-khoa-chinh-gop.jpg)
 MASV  | MAMH | DIEM
 SV001 | MH01 | 8.5
 SV001 | MH02 | 7.0     ← MASV lặp
@@ -350,6 +358,8 @@ Ngược lại, bảng `KETQUA` là bảng cầu nối — nó không phải dan
 ## 8. Ba loại ràng buộc toàn vẹn
 
 
+
+![Ba loại ràng buộc toàn vẹn](assets/media/b11-ba-rang-buoc.jpg)
 ![Ba loại ràng buộc toàn vẹn](assets/media/d11-rang-buoc-toan-ven.jpg)
 ### 8.1. Ràng buộc khóa
 
@@ -410,11 +420,17 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 
 ## 9. NULL: ba logic, không phải hai
 
+![NULL — ba logic, không phải hai](assets/media/video-null-ba-logic.mp4)
+
 Đây là chỗ làm sai nhiều nhất trong đề thi, và nó không phải thứ gì đó học thuộc — nó là một quy ước dữ liệu.
 
 ### 9.1. NULL không phải là một giá trị
 
 
+
+
+![Bốn cách so sánh với NULL](assets/media/c3b-bon-cach-so-sanh-null.jpg)
+![NULL không phải là một giá trị](assets/media/c1-null-khong-phai-gia-tri.jpg)
 ![Bốn cách so sánh với NULL](assets/media/c3-bon-cach-so-sanh-null.jpg)
 `NULL` nghĩa là **chưa biết** hoặc **không có**. Nó không phải số 0, không phải chuỗi rỗng `''`, cũng không phải giá trị `FALSE`.
 
@@ -431,6 +447,8 @@ Phải dùng `IS NULL` / `IS NOT NULL`.
 ### 9.2. Ba logic thay vì hai
 
 
+
+![NULL tạo ra ba logic, không phải hai](assets/media/c2b-ba-logic-bang-sua.jpg)
 ![NULL tạo ra ba logic, không phải hai](assets/media/c2-ba-logic.jpg)
 Với dữ liệu không NULL, kết quả của một điều kiện là **Đúng** hoặc **Sai**. Có NULL thì xuất hiện thêm trạng thái thứ ba: **Không xác định**.
 
@@ -452,6 +470,8 @@ Câu trả lời trung thực là **"chưa biết"**. Và "chưa biết có ch�
 ### 9.3. NULL ảnh hưởng đến hàm tổng hợp
 
 
+
+![NULL ảnh hưởng đến hàm tổng hợp](assets/media/c4b-null-va-ham-tong-hop.jpg)
 ![NULL ảnh hưởng đến COUNT và AVG](assets/media/c4-null-va-ham-tong-hop.jpg)
 `COUNT` bỏ qua NULL — đó là lý do `COUNT(*)` và `COUNT(cột)` cho hai kết quả khác nhau khi cột đó có NULL.
 

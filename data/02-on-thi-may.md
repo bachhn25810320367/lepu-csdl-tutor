@@ -311,6 +311,10 @@ Dùng bảng này trước khi viết bất kỳ câu nào. Đọc câu hỏi, t
 
 
 
+
+
+![BETWEEN gồm cả hai đầu mốc](assets/media/d2-between-hai-dau.jpg)
+![Bốn toán tử lọc trên cùng một bảng](assets/media/d1b-bon-toan-tu.jpg)
 ![Dạng 1 — Lọc một bảng](assets/media/video-dang-1-loc-mot-bang.mp4)
 ![Bốn toán tử lọc trên cùng một bảng](assets/media/d1-bon-toan-tu-loc.jpg)
 **Bảng vào:** `MONHOC`
@@ -352,6 +356,8 @@ Hai dòng "Lập trình C" là **hai môn khác nhau** (`MH03` và `MH07`), ch�
 
 ### `LIKE` — ký tự đại diện
 
+
+![Ký tự đại diện trong LIKE](assets/media/d3-ky-tu-dai-dien.jpg)
 | Ký tự | Nghĩa | Ví dụ |
 |---|---|---|
 | `%` | **0 hoặc nhiều** ký tự bất kỳ | `N'%Giáo dục%'` khớp "Giáo dục", "Nhà xuất bản Giáo dục Việt Nam" |
@@ -423,6 +429,8 @@ Bỏ `DISTINCT` thì ra 4 dòng: `Vũ Thị Hồng` xuất hiện 2 lần, `Đ�
 
 ### 5.2. Nối 4 bảng trong một câu
 
+
+![Nối 4 bảng: cần N−1 điều kiện](assets/media/d5-noi-4-bang.jpg)
 Đây là dạng khó nhất, xuất hiện ở đề 1 câu 3 và đề 2 câu 3.
 
 **Câu hỏi:** tên môn học có số tiết dưới 60, do sinh viên thuộc khoa `K01` học.
@@ -453,6 +461,10 @@ Bốn bảng ở trên cần 3 điều kiện: `k.MAMH = m.MAMH`, `s.MASV = k.MA
 
 ### 5.3. `LEFT JOIN` — giữ dòng không có dữ liệu bên phải
 
+
+
+![LEFT JOIN giữ dòng không khớp](assets/media/d4-left-join.jpg)
+![Dòng NULL đi đâu trong LEFT JOIN](assets/media/c7-null-trong-left-join.jpg)
 **Câu hỏi:** tên khoa và số lượng lớp **trong từng khoa**.
 
 Cách viết sai — khoa không có lớp nào biến mất:
@@ -495,6 +507,8 @@ Hai điểm bắt buộc khi dùng `LEFT JOIN` để đếm:
 ### 5.4. `WHERE` và `ON` không phải chỗ nào cũng giống nhau
 
 
+
+![ON khác WHERE: cùng SQL, kết quả khác](assets/media/d6b-on-khac-where.jpg)
 ![ON khác WHERE: cùng SQL, kết quả khác](assets/media/d6-on-khac-where.jpg)
 Đây là chỗ sai âm thầm, không báo lỗi mà ra sai kết quả.
 
@@ -873,6 +887,8 @@ ORDER BY s.MASACH;
 ### 8.2. Bẫy `NOT IN` — chỉ hỏng khi subquery có NULL
 
 
+
+![NOT IN hỏng ở đâu, không hỏng ở đâu](assets/media/c6b-not-in-hong-khi-nao.jpg)
 ![NOT EXISTS an toàn, NOT IN bẫy NULL](assets/media/c6-not-in-bay.jpg)
 Câu hỏi này **không phải** "NOT IN khi không có kết quả thì ra NULL":
 
@@ -908,6 +924,8 @@ WHERE NOT EXISTS (SELECT 1 FROM LOP l WHERE l.MAKHOA = k.MAKHOA);
 ### 8.3. `NOT LIKE` không trả về dòng NULL
 
 
+
+![Bẫy NOT LIKE: dòng NULL biến mất](assets/media/c5b-bay-not-like.jpg)
 ![Bẫy NOT LIKE làm dòng NULL biến mất](assets/media/c5-bay-not-like.jpg)
 Câu 15 đề 3: độc giả không ở Hà Nội.
 
@@ -1318,6 +1336,8 @@ Muốn tự kiểm tra: đổi cột "Đủ?" thành phần trả lời của b�
 
 
 
+
+![Bốn bước tách SQL khỏi câu tiếng Việt](assets/media/video-bon-buoc-doc-de.mp4)
 ![Đếm cái gì — đó là điều bài hỏi](assets/media/g2-dem-cai-gi.jpg)
 ![Bốn bước tách SQL khỏi câu tiếng Việt](assets/media/c4-bon-buoc-doc-de.jpg)
 Mục 4–8 dạng công thức. Mục này dạy **làm sao biết dùng công thức nào** khi câu hỏi viết bằng tiếng Việt.
