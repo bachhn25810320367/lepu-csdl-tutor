@@ -162,7 +162,10 @@ function mdToHtml(src) {
         t += '</tr>';
       });
       t += '</tbody></table>';
-      out.push(t);
+      // Bang trong tai lieu rong hon vung doc (vd 761px trong hop 626px khi
+      // sidebar + panel AI cung mo). Boc vao .tbl-wrap de no cuon NGANG trong
+      // box rieng thay vi lam trang dich lui sang trai — nhu code block.
+      out.push(`<div class="tbl-wrap">${t}</div>`);
       continue;
     }
 
@@ -310,13 +313,16 @@ function collectSections() {
   }));
 }
 
-/* Muc luc dang o trong sidebar: bat H2 va H3, H3 thut them mot nhay.
-   Chi lay H2 neu bai co it H2, con khong thi lay ca hai cap de khong ban rong. */
+/* Muc luc trong sidebar: H2 la cap chinh, H3 lui them mot nhay de khong loang.
+   Bo cac tieu de mau chua "muc luc" — trong tai lieu co san bang muc luc,
+   dua them vao sidebar chi lam sidebar tu noi ve chinh no.
+
+   innerHTML o day an toan: moi gia tri chen vao deu qua esc()/escAttr(),
+   va danh sach muc den tu chinh file markdown tinh trong repo, khong phai
+   input nguoi dung. */
 function fillSectionNav() {
   const toc = $('#toc');
-  const cur = S.sections.filter(s => s.lvl === 2);
-  const useBoth = cur.length < 3;
-  const items = useBoth ? S.sections : cur;
+  const items = S.sections.filter(s => !/^\s*mục lục\s*$/i.test(s.text));
   if (!items.length) {
     toc.innerHTML = '<li><a class="lvl3" style="cursor:default;opacity:.5">— không có mục —</a></li>';
     return;
@@ -356,17 +362,26 @@ function toggleAi(force) {
   const btn = $('#btnChat');
   const on = force === undefined ? !p.classList.contains('open') : force;
   p.classList.toggle('open', on);
+  // Tren man hinh rong panel phu nen nen nen lui sang trai mot ban rong bang
+  // padding-right. Neu thieu class nay, noi dung se bi panel che.
+  $('.shell').classList.toggle('ai-open', on);
   p.setAttribute('aria-hidden', String(!on));
   btn.classList.toggle('on', on);
   btn.setAttribute('aria-expanded', String(on));
   btn.setAttribute('aria-label', on ? 'Đóng gia sư AI' : 'Mở gia sư AI');
   const scrim = $('#scrim');
   if (on && window.innerWidth <= 1100) {
+    // Cap nhat ngay trong frame goc de lop phu bat dau o opacity 0 roi moi
+    // fade vao. them 'show' truc tiep se no ra ngay giua man hinh.
     scrim.hidden = false;
-    requestAnimationFrame(() => scrim.classList.add('show'));
+    requestAnimationFrame(() => requestAnimationFrame(() => scrim.classList.add('show')));
   } else {
     scrim.classList.remove('show');
-    setTimeout(() => { if (!p.classList.contains('open')) scrim.hidden = true; }, 220);
+    setTimeout(() => {
+      // Chi an luon khi panel da dong; trong luc transition dang chay, an som
+      // se lam panel nhay.
+      if (!p.classList.contains('open')) scrim.hidden = true;
+    }, 240);
   }
   if (on) {
     toggleSidebar(false);
@@ -825,7 +840,9 @@ function init() {
     const s = e.target.closest('.suggest');
     if (s) { ask(s.dataset.q); return; }
     const j = e.target.closest('.jump');
-    if (j && j.dataset.jump) gotoSection(j.dataset.jump);
+    // Jump tro ve mot muc bat ky cap nao (H2 hay H3). Phai dam muc do trong
+    // sidebar luon, neu khong AI nho tu muc 6.4 se khong co gi duoc dam.
+    if (j && j.dataset.jump) { gotoSection(j.dataset.jump); markToc(j.dataset.jump); }
   });
 
   $('#aiThread').addEventListener('click', e => {
