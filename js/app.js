@@ -295,7 +295,9 @@ async function loadDoc(id) {
   $('#docBody').innerHTML = S.md;
   S.sections = collectSections();
   $('#docMeta').textContent =
-    meta.label + ' · ' + (S.raw.length / 1024).toFixed(0) + ' KB · ' + S.sections.length + ' mục';
+    (S.raw.length / 1024).toFixed(0) + ' KB · ' + S.sections.length + ' mục';
+  $('#crumbDoc').textContent = meta.label;
+  $('#crumbDoc').title = meta.label;
   fillSectionNav();
   $('#docScroll').scrollTop = 0;
 }
@@ -308,13 +310,68 @@ function collectSections() {
   }));
 }
 
+/* Muc luc dang o trong sidebar: bat H2 va H3, H3 thut them mot nhay.
+   Chi lay H2 neu bai co it H2, con khong thi lay ca hai cap de khong ban rong. */
 function fillSectionNav() {
-  const sel = $('#secNav');
+  const toc = $('#toc');
   const cur = S.sections.filter(s => s.lvl === 2);
-  const opts = (cur.length ? cur : S.sections)
-    .map(s => `<option value="${escAttr(s.id)}">${esc(s.text)}</option>`).join('');
-  sel.innerHTML = '<option value="">— Mục lục —</option>' + opts;
-  sel.onchange = () => { if (sel.value) gotoSection(sel.value); sel.value = ''; };
+  const useBoth = cur.length < 3;
+  const items = useBoth ? S.sections : cur;
+  if (!items.length) {
+    toc.innerHTML = '<li><a class="lvl3" style="cursor:default;opacity:.5">— không có mục —</a></li>';
+    return;
+  }
+  toc.innerHTML = items.map(s =>
+    `<li><a href="#${escAttr(s.id)}" data-sec="${escAttr(s.id)}" class="${s.lvl === 3 ? 'lvl3' : ''}">${esc(s.text)}</a></li>`
+  ).join('');
+  // Muc hien tai duoc dam: theo doi khi cuon hoac khi bam muc khac
+  $$('#toc a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      gotoSection(a.dataset.sec);
+      markToc(a.dataset.sec);
+      // tren mobile, bam muc xong thi dong drawer cho khong che noi dung
+      if (window.innerWidth <= 860) toggleSidebar(false);
+    });
+  });
+}
+
+function markToc(id) {
+  $$('#toc a').forEach(a => a.classList.toggle('active', a.dataset.sec === id));
+}
+
+function toggleSidebar(force) {
+  const sb = $('#sidebar');
+  const btn = $('#btnNav');
+  const on = force === undefined ? !sb.classList.contains('open') : force;
+  sb.classList.toggle('open', on);
+  btn.setAttribute('aria-expanded', String(on));
+  if (on) toggleAi(false);
+}
+
+/* Panel gia su AI: mo/doi bang nut tren topbar. Tren man hinh rong panel
+   phu nen nen can them lop phu (scrim) de bam ra ngoai khong phai noi dung. */
+function toggleAi(force) {
+  const p = $('#aiPanel');
+  const btn = $('#btnChat');
+  const on = force === undefined ? !p.classList.contains('open') : force;
+  p.classList.toggle('open', on);
+  p.setAttribute('aria-hidden', String(!on));
+  btn.classList.toggle('on', on);
+  btn.setAttribute('aria-expanded', String(on));
+  btn.setAttribute('aria-label', on ? 'Đóng gia sư AI' : 'Mở gia sư AI');
+  const scrim = $('#scrim');
+  if (on && window.innerWidth <= 1100) {
+    scrim.hidden = false;
+    requestAnimationFrame(() => scrim.classList.add('show'));
+  } else {
+    scrim.classList.remove('show');
+    setTimeout(() => { if (!p.classList.contains('open')) scrim.hidden = true; }, 220);
+  }
+  if (on) {
+    toggleSidebar(false);
+    setTimeout(() => $('#ta').focus(), 260);
+  }
 }
 
 function gotoSection(id) {
@@ -332,7 +389,7 @@ function gotoSection(id) {
   el.classList.add('sec-hl');
 }
 
-/* theo doi muc dang doc de dong bo select + nut tro ve AI */
+/* theo doi muc dang doc de dam muc tuong ung trong sidebar + sinh nut tro ve AI */
 let spy = null;
 function startSpy() {
   if (spy) spy.disconnect();
@@ -342,7 +399,7 @@ function startSpy() {
     if (!vis.length) return;
     const id = vis[0].target.id;
     const sec = S.sections.find(s => s.id === id);
-    if (sec && sec.lvl === 2) $('#secNav').value = id;
+    if (sec && sec.lvl === 2) markToc(id);
   }, { root: $('#docScroll'), rootMargin: '-10% 0px -75% 0px', threshold: 0 });
   S.sections.forEach(s => {
     const el = document.getElementById(s.id);
@@ -711,7 +768,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v17';
+const VER = 'v19';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
@@ -758,6 +815,12 @@ function init() {
   $('#btnSend').onclick = () => ask($('#ta').value);
   $('#btnClear').onclick = () => { S.thread = []; renderThread(); };
 
+  // panel AI + drawer sidebar
+  $('#btnChat').onclick = () => toggleAi();
+  $('#btnAiClose').onclick = () => toggleAi(false);
+  $('#btnNav').onclick = () => toggleSidebar();
+  $('#scrim').onclick = () => { toggleAi(false); toggleSidebar(false); };
+
   $('#aiThread').addEventListener('click', e => {
     const s = e.target.closest('.suggest');
     if (s) { ask(s.dataset.q); return; }
@@ -789,10 +852,16 @@ function init() {
     }
   });
 
-  // Cmd/Ctrl+K: focus AI
+  // Cmd/Ctrl+K: focus AI (va mo panel neu dang dong)
   document.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault(); $('#ta').focus();
+      e.preventDefault();
+      if (!$('#aiPanel').classList.contains('open')) toggleAi(true);
+      setTimeout(() => $('#ta').focus(), 60);
+    }
+    if (e.key === 'Escape') {
+      if ($('#aiPanel').classList.contains('open')) toggleAi(false);
+      else if ($('#sidebar').classList.contains('open')) toggleSidebar(false);
     }
   });
 

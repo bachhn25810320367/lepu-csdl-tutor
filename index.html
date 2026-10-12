@@ -14,23 +14,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/app.css?v=18">
+  <link rel="stylesheet" href="assets/app.css?v=19">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141316'/%3E%3Crect x='9' y='13' width='14' height='2' fill='%23f5f2eb'/%3E%3Crect x='9' y='18' width='14' height='2' fill='%23f5f2eb'/%3E%3Crect x='9' y='23' width='9' height='2' fill='%23f5f2eb'/%3E%3C/svg%3E">
 </head>
 <body>
+  <!-- ============ topbar: breadcrumb + nút chat (kiểu Studley) ============ -->
   <header class="topbar">
-    <div class="brand">
-      <span class="mark" aria-hidden="true"></span>
-      LEPU
-      <small>GIA SƯ CSDL</small>
-    </div>
+    <button class="icon-btn nav-toggle" id="btnNav" type="button" title="Mở/đóng mục lục" aria-label="Mở hoặc đóng mục lục" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+
+    <nav class="crumbs" aria-label="Đường dẫn">
+      <a class="crumb" href="#" id="crumbRoot">LEPU</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span class="crumb dim">CSDL</span>
+      <span class="sep" aria-hidden="true">›</span>
+      <span class="crumb cur" id="crumbDoc">…</span>
+    </nav>
 
     <div class="spacer"></div>
+
+    <span class="doc-meta" id="docMeta">…</span>
 
     <div class="status-chip" id="statusChip" data-state="" title="Trạng thái kết nối AI">
       <span class="dot" aria-hidden="true"></span>
       <span class="txt">đang kiểm tra</span>
     </div>
+
+    <!-- nút chat: mở/đóng panel gia sư AI -->
+    <button class="chat-btn" id="btnChat" type="button" title="Gia sư AI (Ctrl+K để hỏi)" aria-label="Mở gia sư AI" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 21l1.9-4.6A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/>
+      </svg>
+      <span class="chat-btn-txt">Gia sư AI</span>
+    </button>
 
     <button class="icon-btn" id="btnTheme" type="button" title="Đổi nền sáng/tối" aria-label="Đổi nền sáng hoặc tối">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -41,46 +60,58 @@
   </header>
 
   <main class="shell">
-    <!-- ================= doc pane: 2/3 ================= -->
-    <section class="doc-pane" aria-label="Nội dung bài học">
-      <div class="doc-bar">
+    <!-- ============ sidebar: mục lục bài đang mở (kiểu Studley) ============ -->
+    <nav class="sidebar" id="sidebar" aria-label="Mục lục bài học">
+      <div class="side-head">
+        <label class="side-label" for="docSel">Bài học</label>
         <select class="doc-select" id="docSel" aria-label="Chọn bài học"></select>
-        <select class="sec-nav" id="secNav" aria-label="Điều hướng theo mục"></select>
-        <div class="spacer"></div>
-        <span class="doc-meta" id="docMeta">…</span>
       </div>
+      <div class="side-scroll" id="sideScroll">
+        <ul class="toc" id="toc"></ul>
+      </div>
+    </nav>
+
+    <div class="scrim" id="scrim" hidden></div>
+
+    <!-- ============ cột nội dung: bài học ============ -->
+    <section class="doc-pane" aria-label="Nội dung bài học">
       <div class="doc-scroll" id="docScroll">
         <article class="md" id="docBody"></article>
       </div>
     </section>
-
-    <!-- ================= AI pane: 1/3 ================= -->
-    <aside class="ai-pane" aria-label="Gia sư AI">
-      <div class="ai-head">
-        <span class="tag">Gia sư AI</span>
-        <span class="model" id="aiModel">—</span>
-      </div>
-
-      <div class="ai-thread" id="aiThread"></div>
-
-      <div class="ai-composer">
-        <textarea id="ta" rows="2" placeholder="Hỏi về bài đang mở…  (Enter để gửi, Shift+Enter xuống dòng)"></textarea>
-        <div class="ai-actions">
-          <span class="hint">Ctrl+K · vào ô hỏi</span>
-          <button class="btn-clear" id="btnClear" type="button">Xoá</button>
-          <button class="btn-send" id="btnSend" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M13 6l6 6-6 6"/>
-            </svg>
-            Hỏi
-          </button>
-        </div>
-      </div>
-    </aside>
   </main>
+
+  <!-- ============ panel gia sư AI: trượt từ phải ============ -->
+  <aside class="ai-panel" id="aiPanel" aria-label="Gia sư AI" aria-hidden="true">
+    <div class="ai-head">
+      <span class="tag">Gia sư AI</span>
+      <span class="model" id="aiModel">—</span>
+      <button class="icon-btn ai-close" id="btnAiClose" type="button" title="Đóng" aria-label="Đóng gia sư AI">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="ai-thread" id="aiThread"></div>
+
+    <div class="ai-composer">
+      <textarea id="ta" rows="2" placeholder="Hỏi về bài đang mở…  (Enter để gửi, Shift+Enter xuống dòng)"></textarea>
+      <div class="ai-actions">
+        <span class="hint">Ctrl+K · vào ô hỏi</span>
+        <button class="btn-clear" id="btnClear" type="button">Xoá</button>
+        <button class="btn-send" id="btnSend" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+          Hỏi
+        </button>
+      </div>
+    </div>
+  </aside>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/app.js?v=17"></script>
+  <script src="js/app.js?v=18"></script>
 </body>
 </html>
