@@ -764,7 +764,7 @@ async function checkHealth() {
     chip.title = title || '';
   };
   if (CONFIG.mode === 'off') { set('', 'AI tắt', 'Đặt CONFIG.mode để bật'); return; }
-  set('checking', 'đang kiểm tra');
+  set('checking', 'Đang kiểm tra');
   ACTIVE = await resolveEndpoint();
   if (!ACTIVE) {
     S.aiOnline = false;
@@ -786,7 +786,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v20';
+const VER = 'v22';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
