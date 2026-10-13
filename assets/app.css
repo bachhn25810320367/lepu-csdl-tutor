@@ -1022,6 +1022,34 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   opacity: 0.55;
 }
 
+/* details / summary (giai thich & dap an an) */
+details.md-details {
+  margin: 20px 0;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color 150ms ease;
+}
+details.md-details[open] {
+  border-color: var(--border-hover);
+  background: var(--surface-subtle);
+}
+summary.md-summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+  user-select: none;
+  outline: none;
+  line-height: 1.5;
+}
+summary.md-summary:hover {
+  text-decoration: underline;
+}
+details.md-details > *:not(summary) {
+  margin-top: 14px;
+}
+
 /* code block with top bar */
 .code-wrap {
   position: relative;

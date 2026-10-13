@@ -33,10 +33,32 @@ const CONFIG = {
 let ACTIVE = null;
 
 const DOCS = [
-  { id: 'khai-niem', file: 'data/01-khai-niem.md', label: '01 · Tầng khái niệm' },
-  { id: 'on-thi', file: 'data/02-on-thi-may.md', label: '02 · Ôn thi máy' },
-  { id: 'de4', file: 'data/13-de4-lap-trinh-csdl.md', label: '03 · Đề 4: lập trình CSDL' },
-  { id: 'giai', file: 'data/14-giai-chi-tiet-43-cau.md', label: '04 · Giải chi tiết 43 câu' },
+  // CSDL — Môn chính
+  { id: 'khai-niem', file: 'data/01-khai-niem.md', label: '01 · Tầng khái niệm', group: 'csdl' },
+  { id: 'on-thi', file: 'data/02-on-thi-may.md', label: '02 · Ôn thi máy', group: 'csdl' },
+  { id: 'de4', file: 'data/13-de4-lap-trinh-csdl.md', label: '03 · Đề 4: lập trình CSDL', group: 'csdl' },
+  { id: 'giai', file: 'data/14-giai-chi-tiet-43-cau.md', label: '04 · Giải chi tiết 43 câu', group: 'csdl' },
+
+  // Lập trình Python — Phần phụ (15 ngày tự học)
+  { id: 'py-01', file: 'data/python/bai-01.md', label: 'Bài 01 · Biến, Input & Toán tử', group: 'python' },
+  { id: 'py-02', file: 'data/python/bai-02.md', label: 'Bài 02 · Rẽ nhánh if - elif - else', group: 'python' },
+  { id: 'py-03', file: 'data/python/bai-03.md', label: 'Bài 03 · Vòng lặp for, while, range', group: 'python' },
+  { id: 'py-04', file: 'data/python/bai-04.md', label: 'Bài 04 · Hàm def, Module, Main', group: 'python' },
+  { id: 'py-05', file: 'data/python/bai-05.md', label: 'Bài 05 · List P1: Nhập, Index, Slice', group: 'python' },
+  { id: 'py-06', file: 'data/python/bai-06.md', label: 'Bài 06 · List P2: Thống kê, Max/Min, Lọc', group: 'python' },
+  { id: 'py-07', file: 'data/python/bai-07.md', label: 'Bài 07 · List P3: Thêm, Xóa, Sắp xếp', group: 'python' },
+  { id: 'py-08', file: 'data/python/bai-08.md', label: 'Bài 08 · Chuỗi P1: Cắt lát & Phương thức', group: 'python' },
+  { id: 'py-09', file: 'data/python/bai-09.md', label: 'Bài 09 · Chuỗi P2: Palindrome, Chuẩn hóa', group: 'python' },
+  { id: 'py-10', file: 'data/python/bai-10.md', label: 'Bài 10 · Tuple: Hoán vị, Unpacking', group: 'python' },
+  { id: 'py-11', file: 'data/python/bai-11.md', label: 'Bài 11 · Dict: Key-Value, Đếm tần suất', group: 'python' },
+  { id: 'py-12', file: 'data/python/bai-12.md', label: 'Bài 12 · List of Dicts: Quản lý học sinh', group: 'python' },
+  { id: 'py-13', file: 'data/python/bai-13.md', label: 'Bài 13 · Luyện đề 1 (20 ý thực hành)', group: 'python' },
+  { id: 'py-14', file: 'data/python/bai-14.md', label: 'Bài 14 · Luyện đề 2 (Nhập liên tục)', group: 'python' },
+  { id: 'py-15', file: 'data/python/bai-15.md', label: 'Bài 15 · Thi thử toàn diện & Barem', group: 'python' },
+  { id: 'py-so-tay', file: 'data/python/so-tay-khuon-mau.md', label: 'Sổ tay · 25 hàm khuôn mẫu A–E', group: 'python' },
+  { id: 'py-ngan-hang', file: 'data/python/ngan-hang-de-lam-sach.md', label: 'Tài liệu · Ngân hàng Đề 1–28 làm sạch', group: 'python' },
+  { id: 'py-checklist', file: 'data/python/phieu-kiem-tra-nop-bai.md', label: 'Quy trình · 12 bước tự kiểm tra', group: 'python' },
+  { id: 'py-de-thi-thu', file: 'data/python/de-thi-thu.md', label: 'Đề thi · Bộ 4 đề thi thử có thang điểm', group: 'python' },
 ];
 
 /* ---------------------------------------------------------------- state */
@@ -94,7 +116,14 @@ function mediaTag(u, alt, isVideo) {
    Khong dung thu vien ngoai.
    ================================================================ */
 function mdToHtml(src) {
-  const text = String(src).replace(/\r\n/g, '\n');
+  let text = String(src).replace(/\r\n/g, '\n');
+  // Bo qua YAML front-matter o dau file neu co
+  if (text.startsWith('---\n')) {
+    const endFm = text.indexOf('\n---\n', 4);
+    if (endFm !== -1) {
+      text = text.slice(endFm + 5);
+    }
+  }
   const lines = text.split('\n');
   const out = [];
   let i = 0;
@@ -228,6 +257,24 @@ function mdToHtml(src) {
       i++; continue;
     }
 
+    // --- details / summary (giai thich va dap an an) ---
+    if (/^\s*<details>/i.test(line)) {
+      closeList();
+      out.push('<details class="md-details">');
+      i++; continue;
+    }
+    if (/^\s*<\/details>/i.test(line)) {
+      closeList();
+      out.push('</details>');
+      i++; continue;
+    }
+    const sm = /^\s*<summary>(.*)<\/summary>/i.exec(line);
+    if (sm) {
+      closeList();
+      out.push(`<summary class="md-summary">${inline(sm[1])}</summary>`);
+      i++; continue;
+    }
+
     // --- paragraph ---
     if (line.trim() === '') { closeList(); i++; continue; }
 
@@ -235,7 +282,7 @@ function mdToHtml(src) {
     const buf = [line];
     i++;
     while (i < lines.length && lines[i].trim() !== '' &&
-           !/^(#{1,6}\s|```|>|\s*([-*+])\s|\s*\d+[.)]\s)/.test(lines[i]) &&
+           !/^(#{1,6}\s|```|>|\s*([-*+])\s|\s*\d+[.)]\s|<\/?details|<summary)/i.test(lines[i]) &&
            !lines[i].includes('|')) { buf.push(lines[i]); i++; }
     out.push(`<p>${inline(buf.join('\n'))}</p>`);
   }
@@ -298,6 +345,9 @@ function slugify(s) {
 async function loadDoc(id) {
   const meta = DOCS.find(d => d.id === id) || DOCS[0];
   S.docId = meta.id;
+  if (window.location.hash !== '#' + meta.id) {
+    history.replaceState(null, '', '#' + meta.id);
+  }
   try {
     const res = await fetch(meta.file + '?v=' + VER, { cache: 'no-cache' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -314,6 +364,10 @@ async function loadDoc(id) {
     (S.raw.length / 1024).toFixed(0) + ' KB · ' + S.sections.length + ' mục';
   $('#crumbDoc').textContent = meta.label;
   $('#crumbDoc').title = meta.label;
+  const crumbSubject = $('#crumbSubject');
+  if (crumbSubject) {
+    crumbSubject.textContent = meta.group === 'python' ? 'Python (Phần phụ)' : 'CSDL (Chính)';
+  }
   fillSectionNav();
   $('#docScroll').scrollTop = 0;
   // Nạp ngân hàng câu hỏi (trắc nghiệm / thẻ / điền chỗ trống / tự luận)
@@ -805,7 +859,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v22';
+const VER = 'v24';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
@@ -826,9 +880,25 @@ function init() {
   initTheme();
   $('#aiModel').textContent = CONFIG.model;
 
-  $('#docSel').innerHTML = DOCS.map(d =>
-    `<option value="${d.id}">${esc(d.label)}</option>`).join('');
-  $('#docSel').value = DOCS[0].id;
+  const csdlDocs = DOCS.filter(d => d.group === 'csdl');
+  const pyDocs = DOCS.filter(d => d.group === 'python');
+  $('#docSel').innerHTML = `
+    <optgroup label="Cơ sở dữ liệu (Chính)">
+      ${csdlDocs.map(d => `<option value="${d.id}">${esc(d.label)}</option>`).join('')}
+    </optgroup>
+    <optgroup label="Lập trình Python 15 ngày (Phần phụ)">
+      ${pyDocs.map(d => `<option value="${d.id}">${esc(d.label)}</option>`).join('')}
+    </optgroup>
+  `;
+
+  const getDocFromHash = () => {
+    const h = window.location.hash.replace(/^#\/?/, '').trim();
+    if (!h) return null;
+    return DOCS.find(d => d.id === h);
+  };
+
+  const initialDoc = getDocFromHash() || DOCS[0];
+  $('#docSel').value = initialDoc.id;
   $('#docSel').onchange = e => {
     // Xoá lịch sử của bài cũ: hai bài khác nhau, đem lịch sử bài trước sang bài
     // sau sẽ khiến model trộn nội dung và trích nhầm mục.
@@ -837,6 +907,17 @@ function init() {
     renderThread();
     setTimeout(startSpy, 250);
   };
+
+  window.addEventListener('hashchange', () => {
+    const target = getDocFromHash();
+    if (target && target.id !== S.docId) {
+      $('#docSel').value = target.id;
+      S.thread = S.thread.filter(m => m.doc === target.id);
+      loadDoc(target.id);
+      renderThread();
+      setTimeout(startSpy, 250);
+    }
+  });
 
   $('#ta').addEventListener('keydown', e => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { ask(e.target.value); }
@@ -914,7 +995,7 @@ function init() {
     });
   }
 
-  loadDoc(DOCS[0].id);
+  loadDoc(initialDoc.id);
   setTimeout(startSpy, 200);
   renderThread();
   checkHealth();
