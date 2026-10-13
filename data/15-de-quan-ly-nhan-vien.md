@@ -10,6 +10,8 @@
 
 ### 1.1. Lược đồ 3 bảng
 
+![Hình 5.1: Violet xem xét mô hình 3 căn cứ Nhà A, Nhà B, Nhà M và bảng phân cấp chức vụ (CHUCVU, PHONG, NHANVIEN)](assets/media/csdl/valhein_violet/b05_01.jpg)
+
 - **`CHUCVU`** (`Macv`, `Tencv`, `Hesopc`): Bảng danh mục chức vụ và hệ số phụ cấp tương ứng (VD: Trưởng phòng `0.4`, Phó phòng `0.3`).
 - **`PHONG`** (`Maph`, `Tenph`, `Diachiphong`): Bảng danh mục phòng ban và địa chỉ phòng (VD: Phòng Hành chính, Nhà A).
 - **`NHANVIEN`** (`Manv`, `Tennv`, `Diachi`, `Hsluong`, `Macv`, `Maph`, `Luong`, `Thuclinh`): Bảng nhân viên, liên kết với chức vụ qua `Macv` (khóa ngoại) và phòng ban qua `Maph` (khóa ngoại).
@@ -98,6 +100,8 @@ GO
 ## 2. Hệ Thống View & Truy Vấn Dữ Liệu Phòng Thi
 
 ### 2.1. View lưu thông tin các nhân viên phòng Hành chính
+
+![Hình 5.2: Violet gọi danh sách binh sĩ phòng Hành chính xếp hàng điểm danh ngoài cổng Nhà A](assets/media/csdl/valhein_violet/b05_02.jpg)
 *Yêu cầu hiển thị:* `Mã nhân viên`, `Tên nhân viên`, `Tên phòng`.
 
 ```sql
@@ -146,6 +150,8 @@ WHERE Hsluong = (SELECT MIN(Hsluong) FROM NHANVIEN);
 ```
 
 ### 2.8 & 2.15. View lưu thông tin những phòng có nhiều nhân viên nhất
+
+![Hình 5.3: Valhein cắm cờ vô địch tại căn cứ tập trung đông đảo binh sĩ nhất (TOP 1 WITH TIES)](assets/media/csdl/valhein_violet/b05_03.jpg)
 *Tư duy suy ra:* Đếm số nhân viên mỗi phòng qua `COUNT(nv.Manv)` với `GROUP BY`, sau đó lọc bằng `TOP 1 WITH TIES ... ORDER BY COUNT(nv.Manv) DESC`.
 
 ```sql
@@ -228,6 +234,8 @@ HAVING COUNT(nv.Manv) < 10;
 
 ### 3.1 & 3.4 & 3.5 & 3.7 & 3.8. Ràng buộc DEFAULT
 
+![Hình 5.4: Violet đứng trạm tuyển quân tự động dán mác Nhà A và cấp 1.800.000 tiền trợ cấp tân binh (Ràng buộc DEFAULT)](assets/media/csdl/valhein_violet/b05_04.jpg)
+
 #### Cách 1: Dùng lệnh `CREATE DEFAULT` và thủ tục `sp_bindefault`
 ```sql
 -- 3.1 Default cho Hesopc bảng CHUCVU nhận 0
@@ -274,6 +282,7 @@ ALTER TABLE NHANVIEN ADD CONSTRAINT DF_NHANVIEN_Luong      DEFAULT 1800000 FOR L
 
 #### Cách 1: Dùng `CREATE RULE` và `sp_bindrule`
 ```sql
+![Hình 5.5: Valhein vận hành Cân Thước Lương Bổng lọc tân binh có hệ số lương hợp lệ 2.67 đến 9.0 (Ràng buộc RULE)](assets/media/csdl/valhein_violet/b05_05.jpg)
 -- 3.10 Rule cho cột Hsluong nhận từ 2.67 đến 9.0
 CREATE RULE R_HsLuong AS @hsl BETWEEN 2.67 AND 9.0;
 GO
@@ -305,6 +314,8 @@ ALTER TABLE NHANVIEN ADD CONSTRAINT CK_NHANVIEN_Thuclinh    CHECK (Thuclinh > 20
 ## 4. Stored Procedure (Thủ Tục Lưu Trữ)
 
 ### 4.1. Hiển thị nhân viên khi biết mã phòng
+
+![Hình 5.6: Violet kích hoạt vòng tròn ma thuật triệu hồi hồ sơ nhân viên theo mã phòng (Stored Procedure sp_NhanVienTheoPhong)](assets/media/csdl/valhein_violet/b05_06.jpg)
 ```sql
 CREATE PROCEDURE sp_NhanVienTheoPhong
     @Maph VARCHAR(10)
@@ -382,6 +393,8 @@ EXEC sp_CapNhatThucLinh;
 ```
 
 ### 4.9. Thủ tục tính Lương: `Lương = 2450000 * Hệ số lương`
+
+![Hình 5.7: Valhein nạp ngọc hệ số lương vào cối xay ma thuật tuôn ra rương tiền vàng (Stored Procedure sp_CapNhatLuong)](assets/media/csdl/valhein_violet/b05_07.jpg)
 ```sql
 CREATE PROCEDURE sp_CapNhatLuong
 AS
@@ -497,6 +510,8 @@ GO
 ```
 
 #### 5.4 & 5.5 & 5.14. Tính tiền Thực lĩnh khi thay đổi hệ số phụ cấp của nhân viên
+
+![Hình 5.8: Violet gạt cần tăng phụ cấp chức vụ, túi tiền lính khắp sân tự nhảy số (Trigger dây chuyền UPDATE sang bảng khác)](assets/media/csdl/valhein_violet/b05_08.jpg)
 *Tư duy suy ra:* Hệ số phụ cấp nằm ở bảng `CHUCVU`. Khi `CHUCVU` thay đổi `Hesopc`, tất cả nhân viên thuộc chức vụ đó phải được cập nhật lại `Thuclinh`.
 
 ```sql
@@ -576,6 +591,8 @@ GO
 ```
 
 #### 5.9 & 5.10. Kiểm tra Thực lĩnh phải > 2,450,000 khi thêm hoặc sửa nhân viên
+
+![Hình 5.9: Valhein giương khiên hộ thể giáng sét chặn sắc lệnh lương dưới 2.450.000 (Trigger ROLLBACK bảo vệ lương tối thiểu)](assets/media/csdl/valhein_violet/b05_09.jpg)
 ```sql
 CREATE TRIGGER TR_NHANVIEN_CheckThucLinh
 ON NHANVIEN
@@ -594,6 +611,8 @@ GO
 ```
 
 ---
+
+![Hình 5.10: Valhein và Violet đứng trên tường thành duyệt doanh trại vận hành hoàn hảo](assets/media/csdl/valhein_violet/b05_10.jpg)
 
 ## 6. Tổng Kết 5 Điểm Trọng Yếu Khi Thi Đề Này
 

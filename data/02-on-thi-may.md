@@ -64,7 +64,7 @@ Kiến trúc 3 mức, chỉ cần nhớ khi đề hỏi "mức nào chịu trác
 ## 2. Bộ dữ liệu mẫu (dùng cho mọi ví dụ)
 
 
-![Bộ dữ liệu mẫu của đề thi](assets/media/f0-bo-du-lieu-mau.jpg)
+
 Không có dữ liệu vào và kết quả ra thì không hình dung được `GROUP BY`, `HAVING`, `LEFT JOIN`, `>= ALL` đang làm gì. Bộ dữ liệu dưới đây nhỏ đủ để tính tay nhưng đủ các bẫy để luyện.
 
 **Các bẫy được cài sẵn có chủ ý:**
@@ -83,7 +83,7 @@ Không có dữ liệu vào và kết quả ra thì không hình dung được `
 
 ```sql
 
-![Bốn cái bẫn có sẵn trong dữ liệu mẫu](assets/media/f3-bon-cai-ban.jpg)
+
 /* ============ BẢNG SINH VIÊN (đề 1 và đề 2) ============ */
 CREATE TABLE KHOA (
     MAKHOA  CHAR(4)       NOT NULL,
@@ -290,7 +290,7 @@ Lưu ý: đây là hành vi **của SQL Server**. MySQL và PostgreSQL cho phép
 ## 3. Bảng đọc đề: từ khóa trong đề → SQL
 
 
-![Bảng đọc đề: từ khóa tiếng Việt → SQL](assets/media/b7-bang-doc-de.jpg)
+
 Dùng bảng này trước khi viết bất kỳ câu nào. Đọc câu hỏi, tìm từ khóa, áp công thức.
 
 | Từ khóa trong đề | Công thức SQL | Lỗi phải tránh |
@@ -314,10 +314,7 @@ Dùng bảng này trước khi viết bất kỳ câu nào. Đọc câu hỏi, t
 
 
 
-![BETWEEN gồm cả hai đầu mốc](assets/media/d2-between-hai-dau.jpg)
-![Bốn toán tử lọc trên cùng một bảng](assets/media/d1b-bon-toan-tu.jpg)
-![Dạng 1 — Lọc một bảng](assets/media/video-dang-1-loc-mot-bang.mp4)
-![Bốn toán tử lọc trên cùng một bảng](assets/media/d1-bon-toan-tu-loc.jpg)
+![Hình 2.1: Violet bật Ống Ngắm Laser màu xanh khóa mục tiêu lọc quái HP > 30 (SELECT ... WHERE)](assets/media/csdl/valhein_violet/b02_01.jpg)
 **Bảng vào:** `MONHOC`
 
 ```
@@ -358,7 +355,9 @@ Hai dòng "Lập trình C" là **hai môn khác nhau** (`MH03` và `MH07`), ch�
 ### `LIKE` — ký tự đại diện
 
 
-![Ký tự đại diện trong LIKE](assets/media/d3-ky-tu-dai-dien.jpg)
+![Hình 2.2: Valhein làm trinh sát soi dấu chân trên tuyết: % là vệt cào dài, _ là đúng một vết chân đơn (Toán tử LIKE)](assets/media/csdl/valhein_violet/b02_02.jpg)
+
+![Hình 2.3: Violet đóng mộc ngọc ấn N\' cứu dòng chữ khỏi bị biến thành dấu chấm hỏi ???? (Bẫy chuỗi tiếng Việt Unicode)](assets/media/csdl/valhein_violet/b02_03.jpg)
 | Ký tự | Nghĩa | Ví dụ |
 |---|---|---|
 | `%` | **0 hoặc nhiều** ký tự bất kỳ | `N'%Giáo dục%'` khớp "Giáo dục", "Nhà xuất bản Giáo dục Việt Nam" |
@@ -383,7 +382,7 @@ Cần tìm một giá trị cụ thể thì đừng dùng `LIKE` — dùng `=`. 
 ## 5. Dạng 2 — Nối bảng
 
 
-![Dạng 2 — Nối bảng: ON khác WHERE](assets/media/video-dang-2-noi-bang.mp4)
+![Hình 2.4: Valhein và Violet ghép hai nửa huy hiệu khớp mã, bừng sáng năng lượng (INNER JOIN)](assets/media/csdl/valhein_violet/b02_04.jpg)
 **Bản đồ khóa của đề:**
 
 ```
@@ -431,7 +430,7 @@ Bỏ `DISTINCT` thì ra 4 dòng: `Vũ Thị Hồng` xuất hiện 2 lần, `Đ�
 ### 5.2. Nối 4 bảng trong một câu
 
 
-![Nối 4 bảng: cần N−1 điều kiện](assets/media/d5-noi-4-bang.jpg)
+![Hình 2.5: Violet chạy qua cây cầu treo năng lượng liên hoàn 4 trạm nối liền 4 bảng](assets/media/csdl/valhein_violet/b02_05.jpg)
 Đây là dạng khó nhất, xuất hiện ở đề 1 câu 3 và đề 2 câu 3.
 
 **Câu hỏi:** tên môn học có số tiết dưới 60, do sinh viên thuộc khoa `K01` học.
@@ -464,8 +463,7 @@ Bốn bảng ở trên cần 3 điều kiện: `k.MAMH = m.MAMH`, `s.MASV = k.MA
 
 
 
-![LEFT JOIN giữ dòng không khớp](assets/media/d4-left-join.jpg)
-![Dòng NULL đi đâu trong LEFT JOIN](assets/media/c7-null-trong-left-join.jpg)
+![Hình 2.6: Valhein điểm danh hàng quân cánh trái: Người không có ngựa nhận đám mây NULL đứng cạnh (LEFT JOIN)](assets/media/csdl/valhein_violet/b02_06.jpg)
 **Câu hỏi:** tên khoa và số lượng lớp **trong từng khoa**.
 
 Cách viết sai — khoa không có lớp nào biến mất:
@@ -509,8 +507,7 @@ Hai điểm bắt buộc khi dùng `LEFT JOIN` để đếm:
 
 
 
-![ON khác WHERE: cùng SQL, kết quả khác](assets/media/d6b-on-khac-where.jpg)
-![ON khác WHERE: cùng SQL, kết quả khác](assets/media/d6-on-khac-where.jpg)
+![Hình 2.7: Violet kinh hãi nhìn cần gạt máy WHERE quét nhầm tân binh đi cạnh xe mây rỗng xuống hố (Bẫy WHERE vs LEFT JOIN)](assets/media/csdl/valhein_violet/b02_07.jpg)
 Đây là chỗ sai âm thầm, không báo lỗi mà ra sai kết quả.
 
 | Đặt điều kiện ở | Thực tế xảy ra | Kết quả |
@@ -541,7 +538,7 @@ Quy tắc rút gọn: **muốn giữ dòng trống thì lọc ở `ON`; không q
 ### 5.5. Bẫy cú pháp: đếm trong `WHERE`
 
 
-![Bẫy cú pháp: đếm trong WHERE](assets/media/d7-dem-trong-where.jpg)
+
 Câu hỏi: lớp nào không có sinh viên nào, đếm số sinh viên.
 
 ```sql
@@ -576,7 +573,7 @@ HAVING COUNT(s.MASV) = 0;
 ## 6. Dạng 3 — Gom nhóm và đếm
 
 
-![Dạng 3 — Gom nhóm và đếm](assets/media/video-dang-3-gom-nhom-dem.mp4)
+![Hình 2.8: Valhein phất cờ gom quái rừng phân loại vào 3 chuồng: Đỏ, Xanh, Rồng (GROUP BY)](assets/media/csdl/valhein_violet/b02_08.jpg)
 ### 6.1. `GROUP BY` cơ bản
 
 **Câu hỏi:** sinh viên học trên 3 môn.
@@ -599,7 +596,7 @@ ORDER BY s.MASV;
 ### 6.2. `WHERE` lọc trước, `HAVING` lọc sau
 
 
-![WHERE lọc trước, HAVING lọc sau](assets/media/d8-where-having.jpg)
+![Hình 2.9: Violet gác Cổng ngoài WHERE xét từng lính, Valhein gác Cổng trong HAVING đếm đủ quân số mới mở cửa](assets/media/csdl/valhein_violet/b02_09.jpg)
 | Mệnh đề | Chạy khi nào | Lọc cái gì |
 |---|---|---|
 | `WHERE` | Trước khi gom nhóm | Từng **dòng** |
@@ -629,7 +626,7 @@ ORDER BY m.TENMH;
 ### 6.3. Nhóm theo khóa, không nhóm theo tên
 
 
-![Gom nhóm theo mã môn, không theo tên](assets/media/d9-gom-theo-ma.jpg)
+![Hình 2.10: Valhein tách hai chiến binh trùng tên bằng phù hiệu ID 01 và 02 (Nhóm theo Khóa, không nhóm theo Tên)](assets/media/csdl/valhein_violet/b02_10.jpg)
 Dữ liệu mẫu có `MH03` và `MH07` **cùng tên** "Lập trình C". Hai môn này khác nhau.
 
 Cách viết sai — gộp hai môn làm một:
@@ -707,7 +704,7 @@ Ba điều chú ý:
 ### 6.4. `COUNT(*)`, `COUNT(cột)`, `COUNT(DISTINCT cột)`
 
 
-![Ba hàm COUNT, ba kết quả khác nhau](assets/media/d10-ba-ham-count.jpg)
+![Hình 2.11: Violet cầm máy đếm số phân biệt người thật, bóng ma và phân thân (COUNT(*) vs COUNT(cột) vs COUNT(DISTINCT))](assets/media/csdl/valhein_violet/b02_11.jpg)
 | Hàm | Đếm gì | Ví dụ trong dữ liệu mẫu |
 |---|---|---|
 | `COUNT(*)` | Số **dòng** của nhóm | `DG01` mượn 3 cuốn ở 3 dòng → 3 |
@@ -730,7 +727,7 @@ Hai con số này khác nhau và đề không phân định. **Ghi rõ cách hi�
 ### 6.6. Lỗi nguy hiểm nhất của đề gốc: subquery tự biến
 
 
-![Subquery tự biến — lỗi nguy hiểm nhất](assets/media/d11-subquery-tu-bien.jpg)
+
 Đáp án gốc câu 14 đề 2 viết thế này:
 
 ```sql
@@ -778,17 +775,13 @@ Nếu cần một subquery cố ý tự biến (ví dụ "lấy tất cả sách
 
 ## 7. Dạng 4 — So sánh với giá trị lớn nhất
 
+![Hình 2.12: Valhein cùng xạ thủ đồng hạng chia sẻ cúp vàng trên đỉnh bục vô địch (TOP 1 WITH TIES)](assets/media/csdl/valhein_violet/b02_12.jpg)
 
-![Dạng 4 — So sánh với giá trị lớn nhất](assets/media/video-dang-4-gia-tri-lon-nhat.mp4)
 Câu hỏi: "độc giả mượn nhiều sách nhất", "môn có số tiết lớn nhất", "sinh viên học nhiều môn nhất".
 
 ### 7.1. `>= ALL` — trả về cả những ai bằng nhau
 
 ```sql
-
-![Ba cách tìm giá trị lớn nhất: >= ALL, NOT EXISTS, ORDER BY LIMIT 1](assets/media/f2-bang-luu-do.jpg)
-
-![>= ALL trả về cả những ai bằng nhau](assets/media/e2-ge-all-bang-nhau.jpg)
 SELECT m.MAMH, m.TENMH, m.SOTIET
 FROM MONHOC m
 WHERE m.SOTIET >= ALL (SELECT SOTIET FROM MONHOC)
@@ -822,7 +815,7 @@ WHERE t.TONGSOSACH = (SELECT MAX(TONGSOSACH) FROM (
 
 ```sql
 
-![So sánh >= ALL và > ALL](assets/media/e2-ge-all-chi-tiet.jpg)
+
 SELECT TOP 1 WITH TIES d.MADG, d.HOTEN, SUM(c.SOLUONG) AS TONGSOSACH
 FROM DOCGIA d
 JOIN PHIEUMUON  p ON p.MADG = d.MADG
@@ -849,7 +842,7 @@ ORDER BY SUM(c.SOLUONG) DESC;
 ### 7.3. `ORDER BY ... LIMIT 1` — không dùng cho câu "nhiều nhất"
 
 
-![TOP 1 mất người bằng điểm](assets/media/e1-top-1-mat-nguoi.jpg)
+
 | Cách viết | Trả về | Đúng ý đề? |
 |---|---|---|
 | `ORDER BY ... LIMIT 1` | Đúng 1 dòng duy nhất | Không — mất người bằng điểm |
@@ -870,9 +863,9 @@ Số `1` trong `LIMIT` / `TOP` chỉ có nghĩa khi đề thật sự hỏi "m�
 
 ## 8. Dạng 5 — Loại trừ
 
-
-![Dạng 5 — Loại trừ: NOT EXISTS và NOT IN](assets/media/video-dang-5-loai-tru.mp4)
 ### 8.1. `NOT EXISTS` — cách an toàn
+
+![Hình 2.13: Violet soi đèn cổ thư tìm cuốn sách chưa từng ai mượn (NOT EXISTS)](assets/media/csdl/valhein_violet/b02_13.jpg)
 
 ```sql
 SELECT s.MASACH, s.TENSACH, s.NXB
@@ -887,10 +880,7 @@ ORDER BY s.MASACH;
 
 ### 8.2. Bẫy `NOT IN` — chỉ hỏng khi subquery có NULL
 
-
-
-![NOT IN hỏng ở đâu, không hỏng ở đâu](assets/media/c6b-not-in-hong-khi-nao.jpg)
-![NOT EXISTS an toàn, NOT IN bẫy NULL](assets/media/c6-not-in-bay.jpg)
+![Hình 2.14: Valhein cầm chiếc lưới thần vỡ nát vì dính phải một giọt ma thuật NULL (Bẫy chết người NOT IN)](assets/media/csdl/valhein_violet/b02_14.jpg)
 Câu hỏi này **không phải** "NOT IN khi không có kết quả thì ra NULL":
 
 ```sql
@@ -926,8 +916,7 @@ WHERE NOT EXISTS (SELECT 1 FROM LOP l WHERE l.MAKHOA = k.MAKHOA);
 
 
 
-![Bẫy NOT LIKE: dòng NULL biến mất](assets/media/c5b-bay-not-like.jpg)
-![Bẫy NOT LIKE làm dòng NULL biến mất](assets/media/c5-bay-not-like.jpg)
+
 Câu 15 đề 3: độc giả không ở Hà Nội.
 
 ```sql
@@ -970,7 +959,7 @@ Cách quyết định khi nào dùng bản nào: đọc kỹ câu hỏi. "Độc
 
 ## 9. Dạng 6 — Lập trình CSDL: ràng buộc, procedure, trigger, backup
 
-![Dạng 6 — Lập trình CSDL: bốn kỹ năng của đề 4](assets/media/de4-dang-6-lap-trinh-csdl.png)
+
 Năm dạng trước đều **trả lời câu hỏi**: đọc bảng, nối, đếm, tìm lớn nhất, loại trừ.
 Dạng 6 khác: đề **bắt viết code làm thay đổi cơ sở dữ liệu**. Nếu kỳ thi giữ
 3 đề cũ thì bỏ qua. Nhưng đề 4 của học kỳ này đã xuất hiện, và mất trọn điểm
@@ -1061,7 +1050,7 @@ câu 4 tạo procedure — hai việc tách biệt, điểm số riêng. Không 
 thông tin mặt hàng được lưu trong bảng CTHOADON. Biết công thức tính tiền bán
 trên mỗi hoá đơn là `TienBan = Sum(SoLuong * Dongia)`."*
 
-![Ba bảng tạm trong trigger: inserted và deleted](assets/media/de4-trigger-inserted-deleted.png)
+
 Một trigger `AFTER INSERT, UPDATE, DELETE` nhìn vào **hai bảng tạm**:
 
 - `inserted` — dòng **sau** khi thay đổi
@@ -1221,7 +1210,7 @@ SQL Server giữ khoá. Chỉ `BACKUP DATABASE` mới tạo được bản sao l
 ## 10. Đề 3 — Lời giải đầy đủ
 
 
-![Lược đồ quan hệ của bài quản lý thư viện](assets/media/f1-luoc-do-thu-vien.jpg)
+
 Lược đồ:
 
 ```
@@ -1325,7 +1314,7 @@ ORDER BY s.MASACH;
 
 ```sql
 
-![Một câu hỏi, ba cách đếm, ba con số](assets/media/f2-ba-cach-dem.jpg)
+
 SELECT p.NGAYMUON, SUM(c.SOLUONG) AS TONGSOSACH
 FROM PHIEUMUON p JOIN CTPHIEUMUON c ON c.MAPM = p.MAPM
 WHERE p.NGAYMUON = '20231120'
@@ -1530,8 +1519,7 @@ ORDER BY MASACH;
 
 
 
-![Bản đồ 43 câu của 3 đề rơi vào 5 dạng](assets/media/f5-ban-do-43-cau.jpg)
-![Đề 3 dùng đúng 5 dạng câu hỏi đã học](assets/media/f4-de-3-dung-5-dang.jpg)
+
 Mục này để tự kiểm tra xem đã phủ đề chưa. Mỗi câu đề ánh xạ về đúng một dạng đã dạy ở mục 4–9.
 
 | Đề | Câu | Nội dung | Dạng đã học | Đủ? |
@@ -1604,9 +1592,7 @@ Muốn tự kiểm tra: đổi cột "Đủ?" thành phần trả lời của b�
 
 
 
-![Bốn bước tách SQL khỏi câu tiếng Việt](assets/media/video-bon-buoc-doc-de.mp4)
-![Đếm cái gì — đó là điều bài hỏi](assets/media/g2-dem-cai-gi.jpg)
-![Bốn bước tách SQL khỏi câu tiếng Việt](assets/media/c4-bon-buoc-doc-de.jpg)
+
 Mục 4–8 dạng công thức. Mục này dạy **làm sao biết dùng công thức nào** khi câu hỏi viết bằng tiếng Việt.
 
 ### 12.1. Bốn bước, luôn theo thứ tự này
@@ -2088,7 +2074,7 @@ Trước khi chạy lệnh xóa/sửa trong kỳ thi, chạy `SELECT` với đú
 ## Phụ lục A — 8 lỗi thật trong đề gốc
 
 
-![Tám lỗi trong đáp án đề gốc](assets/media/c1-8-loi-de-goc.jpg)
+
 Tám lỗi dưới đây có thật trong file đáp án chính thức của Đề 2 (Bài thực hành SQL số 1). Không phải lỗi "có thể có" — đã đối chiếu với đề và kiểm chạy lại trên dữ liệu mẫu.
 
 ### Lỗi 1 — Câu 3 và 4 thiếu `DISTINCT`
@@ -2227,7 +2213,7 @@ Lưu ý thêm: đề 2 câu 4 hỏi môn tên `'HEQTCSDL'` — đây là sai ch�
 ## Phụ lục B — Phụ thuộc hàm và chuẩn hóa
 
 
-![Bảng từ khóa đề ánh xạ sang hàm SQL](assets/media/g1-dem-cai-gi-2.jpg)
+
 Không nằm trong 3 đề đã đọc. Giữ ở phụ lục để khi nào có đề cương mà thấy hỏi thì lấy ra dùng.
 
 ### B.1. Phụ thuộc hàm (FD)
@@ -2326,7 +2312,7 @@ Mỗi bảng chỉ còn một phụ thuộc hàm với vế phải là khóa →
 ## Phụ lục C — Sai khác SQL Server so với MySQL/PostgreSQL
 
 
-![SQL Server khác MySQL và PostgreSQL](assets/media/c3-sqlserver-vs-mysql.jpg)
+![Hình 2.15: Valhein và Violet cùng cắm cờ chiến thắng 10.0 trên đỉnh Tháp Cơ Sở Dữ Liệu EPU](assets/media/csdl/valhein_violet/b02_15.jpg)
 Thi bằng SQL Server thì dùng cột bên trái. Biết cột bên phải để tránh viết SQL của công cụ khác rồi nộp.
 
 | Việc | MySQL / PostgreSQL | **SQL Server** |

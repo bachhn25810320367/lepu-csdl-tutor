@@ -1,5 +1,7 @@
 # LỜI GIẢI CHI TIẾT 43 CÂU — ĐỀ 1, ĐỀ 2, ĐỀ 3
 
+![Hình 4.1: Valhein và Violet bàn chiến thuật trước sa bàn 43 cứ điểm phòng thi EPU](assets/media/csdl/valhein_violet/b04_01.jpg)
+
 Mọi bảng kết quả dưới đây **đã chạy thật** trên dữ liệu mẫu của đề, không phải
 tự tính tay. Script kiểm chứng:
 
@@ -60,6 +62,8 @@ ORDER BY sv.MASV;
 
 ### Câu 3 — Tên môn dưới 60 tiết do sinh viên khoa K01 học
 
+![Hình 4.2: Violet dùng kính thần xóa tan 4 phân thân trùng lặp của Valhein (Bùa lọc trùng DISTINCT)](assets/media/csdl/valhein_violet/b04_02.jpg)
+
 ```sql
 SELECT DISTINCT m.TENMH
 FROM MONHOC m
@@ -112,6 +116,8 @@ Ba truy vấn này cho thấy điều kiện nào lọc mất dòng.
 
 ### Câu 5 — Tên khoa và số lớp, trong từng khoa
 
+![Hình 4.3: Violet bắn dây neo giữ căn cứ khoa không bị trượt xuống vực thẳm (Bẫy INNER JOIN vs LEFT JOIN)](assets/media/csdl/valhein_violet/b04_03.jpg)
+
 ```sql
 SELECT k.TENKHOA, COUNT(l.MALOP) AS SoLop
 FROM KHOA k LEFT JOIN LOP l ON l.MAKHOA = k.MAKHOA
@@ -151,6 +157,8 @@ những sinh viên học đúng 3 môn cũng bị lấy vào. Trong dữ liệu 
 nên hai cách khác nhau.
 
 ### Câu 7 — Khoa có ít nhất 3 lớp
+
+![Hình 4.4: Valhein dẫn đội đúng 3 người vượt qua chốt kiểm tra an toàn (Bẫy ít nhất 3: >= 3 vs > 3)](assets/media/csdl/valhein_violet/b04_04.jpg)
 
 ```sql
 SELECT k.TENKHOA FROM KHOA k JOIN LOP l ON l.MAKHOA = k.MAKHOA
@@ -337,6 +345,8 @@ môn — hai bộ khác nhau nên kết quả sai.
 
 ### Câu 14 — Sinh viên nữ có điểm trung bình cao nhất
 
+![Hình 4.5: Violet đội vòng nguyệt quế thủ khoa nữ có điểm trung bình cao nhất (GIOITINH = N'Nữ' AND AVG(Diem))](assets/media/csdl/valhein_violet/b04_05.jpg)
+
 ```sql
 SELECT SV.MASV, SV.HOTEN
 FROM SINHVIEN SV JOIN KETQUA KQ ON KQ.MASV = SV.MASV
@@ -360,6 +370,8 @@ không alias, biến thành subquery tự biến. Sửa cả hai thì câu này 
 `SV004 Lê Thị Dung` (điểm TB 9.75, cao nhất trong các sinh viên nữ).
 
 ### Câu 15 — Môn chưa có sinh viên học
+
+![Hình 4.6: Violet mở rương cổ thư chứa bí kíp chưa từng ai theo học (NOT IN / NOT EXISTS)](assets/media/csdl/valhein_violet/b04_06.jpg)
 
 ```sql
 SELECT m.MAMH, m.TENMH FROM MONHOC m
@@ -483,6 +495,8 @@ phải đi qua `PHIEUMUON`.
 
 ### Câu 15 — Độc giả không ở Hà Nội (câu bẫy NULL)
 
+![Hình 4.7: Valhein chiếu hào quang kép gom cả lính ngoại tỉnh và lính vô danh ẩn náu trong sương (Bẫy NULL trong NOT EQUAL)](assets/media/csdl/valhein_violet/b04_07.jpg)
+
 Ba cách viết, ba kết quả khác nhau:
 
 ```sql
@@ -527,6 +541,8 @@ nên `NOT LIKE` trả `UNKNOWN`, dòng đó bị loại **không có báo lỗi 
 Thiếu chữ `N` ở `N'Nhà xuất bản Giáo dục'` là lỗi hay gặp nhất ở câu này.
 
 ---
+
+![Hình 4.8: Valhein và Violet nâng cúp vô địch Dũng Sĩ SQL Server vượt trọn 43 ải phòng thi](assets/media/csdl/valhein_violet/b04_08.jpg)
 
 ## Tổng kết: 5 câu trong 43 câu cho kết quả rỗng hoặc bất ngờ
 

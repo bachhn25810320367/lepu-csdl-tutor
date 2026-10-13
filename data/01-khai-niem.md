@@ -27,7 +27,7 @@
 ## 1. Vì sao cần CSDL
 
 
-![Bảng tính và CSDL khác nhau ở chỗ nào](assets/media/a0-bang-tinh-vs-csdl.jpg)
+![Hình 1.1: Valhein ôm sổ tay ghi chép quá tải rách toạc vs Violet điều khiển Khối Pha Lê CSDL ngăn nắp](assets/media/csdl/valhein_violet/b01_01.jpg)
 Cùng một việc — lưu danh sách điểm — có ba cách làm.
 
 **Cách 1: ghi giấy.** Mất khi cháy, mất khi mưa, mỗi lần cộng điểm phải viết lại từ đầu. Không có cách nào tìm nhanh "ai điểm cao nhất" trong 40 tờ giấy.
@@ -40,7 +40,7 @@ Khác biệt không phải ở chỗ "nhiều dữ liệu hơn" mà ở chỗ **
 
 ### Ưu và nhược điểm so với bảng tính
 
-![Một câu SQL đi qua ba bước: trình phân tích cú pháp, bộ tối ưu, bộ thực thi](assets/media/a8-ba-buoc-truy-van.jpg)
+
 
 | Ưu điểm | Giải thích |
 |---|---|
@@ -56,7 +56,7 @@ Nhược điểm: tốn chi phí cài đặt, tốn thời gian thiết kế, c�
 ## 2. Bốn từ phải phân biệt: dữ liệu, CSDL, DBMS, hệ quản trị
 
 
-![Bốn từ dễ nhầm: dữ liệu, CSDL, DBMS, ứng dụng](assets/media/a2-bon-tu-de-nham.jpg)
+
 Bốn từ này hay bị dùng lẫn lộn. Xếp từ nhỏ đến lớn:
 
 | Từ | Nghĩa | Ví dụ cụ thể |
@@ -82,8 +82,7 @@ Cách trả lời an toàn khi đề hỏi *"phân biệt CSDL với hệ quản
 ## 3. Kiến trúc 3 mức
 
 
-![Kiến trúc 3 mức: ngoại, ý niệm, vật lý](assets/media/a1-kien-truc-3-muc.jpg)
-![Kiến trúc 3 mức: ngoại – ý niệm – vật lý](assets/media/s3-kien-truc.png)
+![Hình 1.2: Violet khám phá Tháp Thần 3 tầng kiến trúc ANSI/SPARC (Vật lý, Logic, Khung nhìn)](assets/media/csdl/valhein_violet/b01_02.jpg)
 
 ```
 ┌──────────────────────────────────────────────────┐
@@ -118,8 +117,7 @@ Nếu đề hỏi *"độc lập dữ liệu ở mức nào"*:
 
 
 
-![Sáu tên gọi chuẩn trong bảng quan hệ](assets/media/a6-sau-ten-goi.jpg)
-![Kiểu dữ liệu: dùng sai thì hỏng](assets/media/a3-kieu-du-lieu.jpg)
+![Hình 1.3: Valhein và Violet cùng sắp xếp Tủ Quân Trang Chia Ngăn: Bảng, Dòng, Cột và Ô](assets/media/csdl/valhein_violet/b01_03.jpg)
 | Hình chữ nhật | Tên gọi chuẩn | Ví dụ trong bảng `SINHVIEN` |
 |---|---|---|
 | Cả bảng | **Quan hệ** (relation) | `SINHVIEN` |
@@ -133,7 +131,7 @@ Ba từ này hay bị đảo trong đề thi. Mẹo nhớ: **quan hệ chứa b�
 ### 4.2. Đọc một lược đồ quan hệ
 
 
-![PRIMARY KEY khác UNIQUE ở chỗ nào](assets/media/a5-pk-vs-unique.jpg)
+
 Khi đề viết dòng:
 
 ```
@@ -149,7 +147,7 @@ Từ đó suy ra được:
 
 ### 4.3. Bản đồ quan hệ của đề thi
 
-![Bản đồ quan hệ: KHOA → LOP → SINHVIEN, MONHOC → KETQUA](assets/media/s43-ban-do-quan-he.png)
+
 
 ```
 KHOA     (MAKHOA ← PK)
@@ -181,7 +179,7 @@ KETQUA   (MASV + MAMH ← PK gộp, DIEM)
 ## 5. Bốn tính chất của bảng quan hệ
 
 
-![Bốn tính chất của bảng quan hệ](assets/media/a5-bon-tinh-chat.jpg)
+![Hình 1.5: Violet điều khiển tiểu đội lính đổi chỗ đứng trước sau: Thứ tự dòng không làm đổi bản chất bảng](assets/media/csdl/valhein_violet/b01_05.jpg)
 ### 5.1. Mỗi dòng là duy nhất
 
 Hai dòng giống hệt nhau trong một bảng là điều không được phép — không có cách nào phân biệt dòng nào là "dòng thật".
@@ -191,7 +189,7 @@ Hai dòng giống hệt nhau trong một bảng là điều không được phé
 ### 5.2. Mỗi ô chỉ chứa một giá trị đơn
 
 
-![Ô chứa nhiều giá trị: vi phạm 1NF](assets/media/b7-o-chua-nhieu-gia-tri.jpg)
+![Hình 1.4: Valhein nhét 3 món nổ túi trang bị vs Violet chuẩn 1NF mỗi ô chỉ chứa đúng một món](assets/media/csdl/valhein_violet/b01_04.jpg)
 Không nhét cả danh sách vào một ô.
 
 **Cách sai:**
@@ -229,7 +227,7 @@ Cần chú ý: **khác nhau với khóa ngoại.** Hai bảng khác nhau đượ
 ## 6. Khóa: từ siêu khóa đến khóa ngoại
 
 
-![Thang khóa: siêu khóa, ứng viên, chính, ngoại](assets/media/a3-thang-khoa.jpg)
+
 Bốn từ này xếp tầng từ rộng đến hẹp. Nhớ theo vòng thu hẹp:
 
 ```
@@ -245,7 +243,7 @@ Khóa ngoại (foreign key)   ràng buộc tham chiếu giữa hai bảng
 ### 6.1. Tìm khóa bằng cách kiểm tra, không bằng mắt
 
 
-![Tìm khóa bằng kiểm tra, không bằng mắt](assets/media/b8-tim-khoa-bang-kiem-tra.jpg)
+
 Cách chắc chắn duy nhất: **thử từng tập thuộc tính xem có tập thuộc tính nào trùng giá trị không.** Tập nào có trùng thì không phải khóa.
 
 Dùng bảng minh hoạ có 4 dòng cố ý trùng:
@@ -281,7 +279,7 @@ Bảng này có **đúng một khóa dự tuyển**: `MASV`. Chọn nó làm kh�
 ### 6.3. Tính chất của khóa ngoại
 
 
-![Khóa ngoại trỏ tới khóa chính](assets/media/b10-khoa-ngoai.jpg)
+![Hình 1.7: Khẩu súng của Violet nối Xích Năng Lượng Khóa Ngoại FK khóa chặt vào Kho Trang Bị](assets/media/csdl/valhein_violet/b01_07.jpg)
 1. Giá trị phải **tồn tại** trong bảng được trỏ tới, **hoặc** là NULL.
 2. Một bảng có thể có nhiều khóa ngoại trỏ tới cùng một bảng khác.
 3. Một cột vừa là khóa chính vừa là khóa ngoại — trường hợp này có thật trong đề, ở bảng `KETQUA`.
@@ -292,7 +290,7 @@ Bảng này có **đúng một khóa dự tuyển**: `MASV`. Chọn nó làm kh�
 
 ```
 
-![Vì sao KETQUA dùng khóa chính gộp](assets/media/b9-khoa-chinh-gop.jpg)
+![Hình 1.8: Valhein và Violet ghép hai mảnh chìa khóa đôi tạo thành Khóa Chính Gộp cho bảng KETQUA](assets/media/csdl/valhein_violet/b01_08.jpg)
 MASV  | MAMH | DIEM
 SV001 | MH01 | 8.5
 SV001 | MH02 | 7.0     ← MASV lặp
@@ -312,7 +310,9 @@ Không tìm được một cột đơn nào làm khóa thì ghép nhiều cột 
 ## 7. Quan hệ 1-N và N-N: vì sao có bảng cầu nối
 
 
-![Quan hệ 1-N và N-N, bảng cầu nối](assets/media/b4-quan-he-1n-nn.jpg)
+![Hình 1.9: Violet làm Chỉ Huy Doanh Trại che chở cho cả tiểu đội lính nhỏ: Quan hệ 1-N](assets/media/csdl/valhein_violet/b01_09.jpg)
+
+![Hình 1.10: Valhein và Violet điều hành Quầy Giao Dịch Chợ Đen trung gian kết nối Tướng và Trang Bị: Quan hệ N-N](assets/media/csdl/valhein_violet/b01_10.jpg)
 ### 7.1. Quan hệ 1-N
 
 Một `KHOA` có nhiều `LOP`. Trong quan hệ này, khóa ngoại nằm ở phía nhiều: `LOP.MAKHOA` trỏ về `KHOA.MAKHOA`.
@@ -360,8 +360,7 @@ Ngược lại, bảng `KETQUA` là bảng cầu nối — nó không phải dan
 
 
 
-![Ba loại ràng buộc toàn vẹn](assets/media/b11-ba-rang-buoc.jpg)
-![Ba loại ràng buộc toàn vẹn](assets/media/d11-rang-buoc-toan-ven.jpg)
+![Hình 1.11: Valhein gác Cổng quét an ninh Ràng buộc CHECK giáng sét đuổi quái chỉ số âm](assets/media/csdl/valhein_violet/b01_11.jpg)
 ### 8.1. Ràng buộc khóa
 
 - Giá trị khóa chính phải duy nhất
@@ -403,7 +402,7 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 ### 8.4. Sáu ràng buộc trong câu `CREATE TABLE`
 
 
-![Sáu ràng buộc trong câu CREATE TABLE](assets/media/a4-sau-rang-buoc.jpg)
+![Hình 1.6: Valhein giơ cao Thẻ Bài Bản Mệnh Khóa Chính PK đẩy lùi bóng ma vô danh](assets/media/csdl/valhein_violet/b01_06.jpg)
 | Ràng buộc | Cú pháp | Tác dụng |
 |---|---|---|
 | Khóa chính | `PRIMARY KEY` | Duy nhất + không NULL |
@@ -421,18 +420,12 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 
 ## 9. NULL: ba logic, không phải hai
 
-![NULL — ba logic, không phải hai](assets/media/video-null-ba-logic.mp4)
+![Hình 1.12: Violet mở 3 rương báu: Chứa 0 vàng vs Rương trống vs Màn sương ma thuật NULL](assets/media/csdl/valhein_violet/b01_12.jpg)
 
 Đây là chỗ làm sai nhiều nhất trong đề thi, và nó không phải thứ gì đó học thuộc — nó là một quy ước dữ liệu.
 
 ### 9.1. NULL không phải là một giá trị
 
-
-
-
-![Bốn cách so sánh với NULL](assets/media/c3b-bon-cach-so-sanh-null.jpg)
-![NULL không phải là một giá trị](assets/media/c1-null-khong-phai-gia-tri.jpg)
-![Bốn cách so sánh với NULL](assets/media/c3-bon-cach-so-sanh-null.jpg)
 `NULL` nghĩa là **chưa biết** hoặc **không có**. Nó không phải số 0, không phải chuỗi rỗng `''`, cũng không phải giá trị `FALSE`.
 
 Hệ quả trực tiếp: so sánh với `NULL` bằng `=` hoặc `<>` **không bao giờ cho kết quả đúng.**
@@ -449,8 +442,7 @@ Phải dùng `IS NULL` / `IS NOT NULL`.
 
 
 
-![NULL tạo ra ba logic, không phải hai](assets/media/c2b-ba-logic-bang-sua.jpg)
-![NULL tạo ra ba logic, không phải hai](assets/media/c2-ba-logic.jpg)
+![Hình 1.13: Valhein bắn phi tiêu xuyên bóng ma = NULL vs Violet dùng kính soi IS NULL bắt gọn](assets/media/csdl/valhein_violet/b01_13.jpg)
 Với dữ liệu không NULL, kết quả của một điều kiện là **Đúng** hoặc **Sai**. Có NULL thì xuất hiện thêm trạng thái thứ ba: **Không xác định**.
 
 Ba kiểm tra trên dữ liệu mẫu, hai sinh viên — một có địa chỉ, một không:
@@ -472,8 +464,7 @@ Câu trả lời trung thực là **"chưa biết"**. Và "chưa biết có ch�
 
 
 
-![NULL ảnh hưởng đến hàm tổng hợp](assets/media/c4b-null-va-ham-tong-hop.jpg)
-![NULL ảnh hưởng đến COUNT và AVG](assets/media/c4-null-va-ham-tong-hop.jpg)
+
 `COUNT` bỏ qua NULL — đó là lý do `COUNT(*)` và `COUNT(cột)` cho hai kết quả khác nhau khi cột đó có NULL.
 
 `SUM`, `AVG` cũng bỏ qua NULL. Cần phân biệt "tổng bằng 0 vì không có dòng nào" với "tổng bằng 0 vì tất cả các giá trị đều NULL" thì phải dùng `COUNT(cột)` bên cạnh.
@@ -552,7 +543,7 @@ Ba mục trước nói về bảng, khóa, ràng buộc. Đề 4 — lập trìn
 gì mới về lý thuyết: nó chỉ **dùng lại** những gì đã học, rồi bắt viết ra thành
 cú pháp. Đọc mục này để thấy cơ chế quen đã dùng ở đâu.
 
-![Lược đồ QuanLyBanHang: CTHOADON là bảng cầu nối N-N](assets/media/de4-luoc-do-quan-ly-ban-hang.png)
+
 
 ### 11.1. `CTHOADON` — ví dụ quen thuộc của bảng cầu nối
 
@@ -669,6 +660,6 @@ tập hợp: ai hiểu bảng, khóa, ràng buộc và `NULL` sẽ thấy đề 
 ## Ghi chú
 
 
-![Phụ thuộc hàm và chuẩn hóa 1NF đến 3NF](assets/media/c2-chuan-hoa-1nf-3nf.jpg)
+
 - Các ví dụ ở mục 6.1, 8.2, 9.2 chạy trên bảng minh hoạ 4 dòng và bảng 3 dòng dựng riêng, không phải dữ liệu đề — để khái niệm hiện ra rõ.
 - Bảng dữ liệu thật của đề nằm ở [CSDL_ON_THI_MAY.md](CSDL_ON_THI_MAY.md) mục 2.

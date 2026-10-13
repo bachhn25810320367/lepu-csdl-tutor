@@ -39,6 +39,8 @@ CREATE TABLE <Tên_bảng> (
 
 ### 1.3. Sửa đổi cấu trúc bảng (`ALTER TABLE`) — Bẫy thi thường gặp
 
+![Hình 6.1: Violet làm thợ rèn: Đục thêm ô ngọc ADD, gỡ mảnh giáp hỏng DROP, tôi rèn lại giáp ALTER COLUMN](assets/media/csdl/valhein_violet/b06_01.jpg)
+
 Giảng viên EPU thường yêu cầu sửa đổi bảng đã có dữ liệu bằng lệnh `ALTER TABLE`:
 
 ```sql
@@ -77,6 +79,8 @@ VALUES ('SV01', N'Nguyễn Khánh An', '2000-02-01', N'Hà Nội', 'D15CNPM1');
 ```
 
 #### Cách 2: Nhập dữ liệu tự động từ bảng khác (`INSERT INTO ... SELECT`)
+
+![Hình 6.2: Valhein mở Cổng Teleport Không Gian dịch chuyển nguyên quân đoàn lính (INSERT INTO ... SELECT)](assets/media/csdl/valhein_violet/b06_02.jpg)
 Đây là dạng câu hỏi thường gặp khi cần trích xuất dữ liệu sang bảng lưu trữ phụ:
 
 ```sql
@@ -105,6 +109,8 @@ FROM <Danh sách các bảng>
 
 ### 3.2. Thứ tự thực thi logic của SQL Server
 
+![Hình 6.3: Violet giám sát băng chuyền ma thuật 7 trạm thực thi SQL (FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY)](assets/media/csdl/valhein_violet/b06_03.jpg)
+
 Hiểu thứ tự thực thi giúp không bao giờ bị nhầm lẫn giữa `WHERE` và `HAVING`:
 
 ```
@@ -117,6 +123,8 @@ Hiểu thứ tự thực thi giúp không bao giờ bị nhầm lẫn giữa `WH
 ---
 
 ## 4. Các Hàm Tích Hợp Sẵn Trong T-SQL
+
+![Hình 6.4: Valhein múa phi tiêu cắt chuỗi (LEFT, RIGHT, SUBSTRING), Violet xoay đồng hồ cát thời gian (DAY, MONTH, YEAR)](assets/media/csdl/valhein_violet/b06_04.jpg)
 
 ### 4.1. Hàm Gom Nhóm (Aggregate Functions)
 
@@ -183,6 +191,8 @@ WHERE DCHI IN (N'Hà Nội', N'Hải Phòng', N'Nam Định')
 ```
 
 ### 5.4. Toán tử `IS NULL` và `IS NOT NULL`
+
+![Hình 6.6: Violet rọi đèn tia cực tím hiện hình bóng ma tàng hình (Toán tử IS NULL)](assets/media/csdl/valhein_violet/b06_06.jpg)
 `NULL` biểu diễn dữ liệu chưa biết/rỗng. **Không bao giờ dùng `= NULL`**:
 ```sql
 -- Đúng:
@@ -193,6 +203,8 @@ WHERE DIEM = NULL;
 ```
 
 ### 5.5. Toán tử tập con: `SOME / ANY / ALL`
+
+![Hình 6.5: Valhein trên đấu trường: Vượt qua một người ANY vs Đánh bại tất cả đấu sĩ ALL](assets/media/csdl/valhein_violet/b06_05.jpg)
 
 - `< ANY (Subquery)` / `< SOME (Subquery)`: Nhỏ hơn **ít nhất một** giá trị trong tập con (tức là nhỏ hơn giá trị lớn nhất của tập con).
 - `< ALL (Subquery)`: Nhỏ hơn **tất cả** các giá trị trong tập con (tức là nhỏ hơn giá trị nhỏ nhất của tập con).
@@ -206,6 +218,8 @@ WHERE Diem > ALL (SELECT Diem FROM KETQUA WHERE MALOP = 'D15')
 ---
 
 ## 6. Lời Giải 8 Bài Tập Kinh Điển EPU (Slide Chương 3)
+
+![Hình 6.7: Valhein và Violet giải thế cờ trên sa bàn 5 đại bản doanh: Khoa, Lớp, Sinh viên, Môn học, Kết quả](assets/media/csdl/valhein_violet/b06_07.jpg)
 
 ### Lược đồ CSDL Quản lý sinh viên:
 ```
@@ -304,3 +318,6 @@ JOIN KETQUA kq ON mh.MAMH = kq.MAMH
 WHERE mh.TENMH = N'CSDL'
 GROUP BY mh.MAMH, mh.TENMH;
 ```
+
+
+![Hình 6.8: Valhein và Violet giơ cao Cuốn Bí Kíp Vàng CSDL EPU tự tin bước vào phòng thi thực hành máy](assets/media/csdl/valhein_violet/b06_08.jpg)

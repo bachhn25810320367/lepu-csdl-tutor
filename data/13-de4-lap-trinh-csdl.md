@@ -11,6 +11,8 @@
 
 ### 1.1. Lược đồ 3 bảng
 
+![Hình 3.1: Violet đứng quầy Shop Vũ Khí & Valhein khiêng thùng hàng: 3 bảng HANGHOA, HOADON, CTHOADON](assets/media/csdl/valhein_violet/b03_01.jpg)
+
 - **`HANGHOA`** (`MaHang`, `TenHang`, `DonViTinh`, `SoLuongTon`)
 - **`HOADON`** (`MaHD`, `NgayHD`, `TienBan`, `GiamGia`, `ThanhToan`)
 - **`CTHOADON`** (`MaHD`, `MaHang`, `SoLuong`, `Dongia`)
@@ -120,6 +122,8 @@ WHERE NgayHD = '2023-10-02';
 ```
 
 ### 2.3. Tạo View hiển thị mặt hàng chưa có khách mua
+
+![Hình 3.2: Violet rọi đèn pin vào góc tối kho phát hiện nỏ thần phủ mạng nhện chưa từng ai mua (LEFT JOIN ... IS NULL)](assets/media/csdl/valhein_violet/b03_02.jpg)
 *Tư duy suy ra:* Dùng `NOT EXISTS` hoặc `LEFT JOIN ... WHERE CTHOADON.MaHD IS NULL`.
 ```sql
 CREATE VIEW V_HangHoa_ChuaBan AS
@@ -131,6 +135,8 @@ GO
 ```
 
 ### 2.4. Tạo View hiển thị mặt hàng được khách mua với số lượng nhiều nhất
+
+![Hình 3.3: Valhein mở Bảng Vàng vinh danh món đồ Hot Sale bán nhiều nhất (TOP 1 WITH TIES ... SUM(SoLuong))](assets/media/csdl/valhein_violet/b03_03.jpg)
 *Tư duy suy ra:* Tính tổng số lượng bán bằng `SUM(ct.SoLuong)`, gom theo mặt hàng, dùng `TOP 1 WITH TIES` để không bỏ sót các mặt hàng đồng hạng nhất.
 
 ```sql
@@ -218,6 +224,7 @@ GO
 EXEC sp_bindrule 'R_SoLuongTon', 'HANGHOA.SoLuongTon';
 GO
 
+![Hình 3.4: Violet chĩa súng trừng phạt gian thương đòi áp mã voucher giảm giá vượt trần 0.5 (RULE GiamGia BETWEEN 0 AND 0.5)](assets/media/csdl/valhein_violet/b03_04.jpg)
 -- 3.2 Rule cho GiamGia từ 0 đến 0.5
 CREATE RULE R_GiamGia AS @gg BETWEEN 0 AND 0.5;
 GO
@@ -325,7 +332,9 @@ END;
 GO
 ```
 
-### 4.8. Cập nhật Tiền bán trong bảng HOADON: `TienBan = Sum(SoLuong * Dongia)`
+### 4.8. Cập nhật Tiền bán trong bảng HOADON
+
+![Hình 3.5: Valhein thả thẻ bài vào cỗ máy tính tiền tự động in biên lai (Stored Procedure sp_CapNhatTienBan)](assets/media/csdl/valhein_violet/b03_05.jpg): `TienBan = Sum(SoLuong * Dongia)`
 ```sql
 CREATE PROCEDURE sp_CapNhatTienBan
 AS
@@ -360,9 +369,13 @@ EXEC sp_CapNhatThanhToan;
 
 ## 5. Hệ Thống 19 Trigger Phòng Thi EPU
 
+![Hình 3.6: Violet cầm Khay Xanh inserted (vừa nhập) & Valhein cầm Khay Đỏ deleted (vừa bỏ ra) — Bản chất Trigger](assets/media/csdl/valhein_violet/b03_06.jpg)
+
 ### NHÓM 1: TRIGGER TÍNH TOÁN DỮ LIỆU TỰ ĐỘNG
 
 #### 5.1 & 5.2. Cập nhật lại Tiền bán khi thêm hoặc xóa mặt hàng trong CTHOADON
+
+![Hình 3.8: Valhein chuyển thuốc giữa 2 giỏ hàng, Violet chiếu laser cập nhật lại tổng tiền cả 2 giỏ (Bẫy đổi mã hóa đơn)](assets/media/csdl/valhein_violet/b03_08.jpg)
 *Tư duy suy ra:* Khi thêm thì lấy mã đơn ở bảng `inserted`. Khi xóa thì lấy mã đơn ở bảng `deleted`.
 
 ```sql
@@ -373,6 +386,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    ![Hình 3.10: Valhein ném phao cứu sinh số 0 vào hố đen NULL cứu hóa đơn khi xóa sạch món (Cứu rỗi bằng ISNULL(..., 0))](assets/media/csdl/valhein_violet/b03_10.jpg)
     -- Cập nhật cho các hóa đơn bị ảnh hưởng (cả khi thêm mới lẫn khi xóa)
     UPDATE hd
     SET hd.TienBan = ISNULL((
@@ -405,7 +419,9 @@ END;
 GO
 ```
 
-#### 5.12 & 5.17. Cập nhật số lượng tồn: `SoLuongTon = SoLuongTon - SoLuong` khi thêm vào CTHOADON
+#### 5.12 & 5.17. Cập nhật số lượng tồn
+
+![Hình 3.7: Violet giao súng cho khách, cỗ máy kho tự động trừ số lượng tồn kho (Trigger trừ tồn kho AFTER INSERT)](assets/media/csdl/valhein_violet/b03_07.jpg): `SoLuongTon = SoLuongTon - SoLuong` khi thêm vào CTHOADON
 ```sql
 CREATE TRIGGER TR_CTHD_TruTonKho_Insert
 ON CTHOADON
@@ -502,6 +518,8 @@ GO
 ```
 
 #### 5.10 & 5.11. Kiểm tra Ngày lập hóa đơn <= ngày hiện tại khi thêm hoặc sửa
+
+![Hình 3.9: Violet thổi còi giơ khiên đỏ hủy giao dịch gian lận ghi ngày mai (Trigger ROLLBACK NgayHD > GETDATE())](assets/media/csdl/valhein_violet/b03_09.jpg)
 ```sql
 CREATE TRIGGER TR_HOADON_CheckNgayHD
 ON HOADON
