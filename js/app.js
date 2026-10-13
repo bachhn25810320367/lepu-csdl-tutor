@@ -35,9 +35,11 @@ let ACTIVE = null;
 const DOCS = [
   // CSDL — Môn chính
   { id: 'khai-niem', file: 'data/01-khai-niem.md', label: '01 · Tầng khái niệm', group: 'csdl' },
-  { id: 'on-thi', file: 'data/02-on-thi-may.md', label: '02 · Ôn thi máy', group: 'csdl' },
-  { id: 'de4', file: 'data/13-de4-lap-trinh-csdl.md', label: '03 · Đề 4: lập trình CSDL', group: 'csdl' },
+  { id: 'on-thi', file: 'data/02-on-thi-may.md', label: '02 · Ôn thi máy (Đề 1-3 QLSV & Thư viện)', group: 'csdl' },
+  { id: 'de4', file: 'data/13-de4-lap-trinh-csdl.md', label: '03 · Đề 4: QL Bán hàng (Full View, Proc & 19 Trigger)', group: 'csdl' },
   { id: 'giai', file: 'data/14-giai-chi-tiet-43-cau.md', label: '04 · Giải chi tiết 43 câu', group: 'csdl' },
+  { id: 'de5', file: 'data/15-de-quan-ly-nhan-vien.md', label: '05 · Đề 5: QL Nhân viên (Full View, Proc & 16 Trigger)', group: 'csdl' },
+  { id: 'slide-sql', file: 'data/16-cam-nang-sql-epu.md', label: '06 · Cẩm nang SQL EPU (Slide 3.2 & 8 bài mẫu)', group: 'csdl' },
 
   // Lập trình Python — Phần phụ (15 ngày tự học)
   { id: 'py-01', file: 'data/python/bai-01.md', label: 'Bài 01 · Biến, Input & Toán tử', group: 'python' },
@@ -860,7 +862,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v28';
+const VER = 'v29';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;

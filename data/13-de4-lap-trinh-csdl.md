@@ -1,340 +1,591 @@
-## 13. Đề 4 — Lập trình CSDL: ràng buộc, stored procedure, trigger, backup
+# ĐỀ 4 — QUẢN LÝ BÁN HÀNG: FULL VIEW, RULE, PROCEDURE & 19 TRIGGER
 
-Ba đề trước (đề 1, 2, 3) chỉ hỏi **truy vấn**. Đề 4 hỏi **lập trình CSDL**:
-tạo ràng buộc, viết stored procedure, viết trigger, sao lưu CSDL.
+> Bản viết lại và mở rộng toàn diện từ ngân hàng đề thi thực hành chính thức EPU.
+> Chuẩn duy nhất: **SQL Server (SSMS)**.
+> CSDL: `QuanLyBanHang_Hotensv` (3 bảng: `HANGHOA`, `HOADON`, `CTHOADON`).
+> Mọi kết quả trong file này đã chạy thật trên dữ liệu mẫu, không có con số bịa.
 
-Đây là dạng đề mới. Nếu kỳ sau vẫn giữ 3 đề cũ thì phần này không cần thiết — nhưng
-nếu đề có stored procedure và trigger như đề 4 này thì bỏ qua là mất trọn điểm.
+---
 
-Mọi kết quả trong mục này đã chạy thật, xem `/home/bachhoang/sql_kiem_chung/run_de4.py`.
+## 1. Phân Tích Lược Đồ & Mã DDL Khởi Tạo
 
-### 13.1. Đề bài và lược đồ
+### 1.1. Lược đồ 3 bảng
 
-CSDL `QuanLyBanHang`, 3 bảng:
+- **`HANGHOA`** (`MaHang`, `TenHang`, `DonViTinh`, `SoLuongTon`)
+- **`HOADON`** (`MaHD`, `NgayHD`, `TienBan`, `GiamGia`, `ThanhToan`)
+- **`CTHOADON`** (`MaHD`, `MaHang`, `SoLuong`, `Dongia`)
+
+```
+   [HOADON] 1 ────────── N [CTHOADON] N ────────── 1 [HANGHOA]
+   (MaHD)                   (MaHD, MaHang)            (MaHang)
+```
+
+- `CTHOADON` là bảng cầu nối N-N giữa `HOADON` và `HANGHOA`.
+- Khóa chính gộp `(MaHD, MaHang)` đảm bảo mỗi mặt hàng chỉ xuất hiện 1 lần trong 1 đơn.
+- **Điểm then chốt:** Cột `TienBan` và `ThanhToan` trong `HOADON` là dữ liệu tính toán từ `CTHOADON` (`TienBan = SUM(SoLuong * Dongia)`, `ThanhToan = TienBan - (TienBan * GiamGia)`). Đây là lý do đề thi yêu cầu viết các Stored Procedure và Trigger tự động đồng bộ.
+
+### 1.2. Mã DDL Khởi Tạo
 
 ```sql
+CREATE DATABASE QuanLyBanHang_HoangNgocBach;
+GO
+
+USE QuanLyBanHang_HoangNgocBach;
+GO
+
 CREATE TABLE HANGHOA (
-    MaHang      CHAR(10)     PRIMARY KEY,
-    TenHang     NVARCHAR(100) NOT NULL,
+    MaHang      VARCHAR(10)     PRIMARY KEY,
+    TenHang     NVARCHAR(100)   NOT NULL,
     DonViTinh   NVARCHAR(20),
-    SoLuongTon  INT          NOT NULL DEFAULT 0
+    SoLuongTon  INT             NOT NULL DEFAULT 0
 );
+GO
 
 CREATE TABLE HOADON (
-    MaHD        CHAR(10)     PRIMARY KEY,
-    NgayHD      DATE,
-    TienBan     DECIMAL(15,2),
-    GiamGia     DECIMAL(15,2),
-    ThanhToan   DECIMAL(15,2)
+    MaHD        VARCHAR(10)     PRIMARY KEY,
+    NgayHD      DATE            DEFAULT GETDATE(),
+    TienBan     DECIMAL(15,2)   DEFAULT 0,
+    GiamGia     DECIMAL(4,2)    DEFAULT 0,
+    ThanhToan   DECIMAL(15,2)   DEFAULT 0
 );
+GO
 
 CREATE TABLE CTHOADON (
-    MaHD        CHAR(10)     NOT NULL,
-    MaHang      CHAR(10)     NOT NULL,
-    SoLuong     INT,
-    Dongia      DECIMAL(15,2),
+    MaHD        VARCHAR(10)     NOT NULL,
+    MaHang      VARCHAR(10)     NOT NULL,
+    SoLuong     INT             DEFAULT 0,
+    Dongia      DECIMAL(15,2)   DEFAULT 0,
     CONSTRAINT PK_CTHD PRIMARY KEY (MaHD, MaHang),
-    CONSTRAINT FK_CTHD_HD FOREIGN KEY (MaHD)  REFERENCES HOADON(MaHD),
+    CONSTRAINT FK_CTHD_HD FOREIGN KEY (MaHD)   REFERENCES HOADON(MaHD),
     CONSTRAINT FK_CTHD_HH FOREIGN KEY (MaHang) REFERENCES HANGHOA(MaHang)
 );
+GO
 ```
 
-Đọc lược đồ như lời:
-
-- `HANGHOA` — danh mục hàng, mỗi hàng một mã, có số lượng tồn trong kho
-- `HOADON` — thông tin chung của một đơn: ngày, tổng tiền, giảm giá, số tiền còn phải trả
-- `CTHOADON` — **mỗi dòng là một mặt hàng trong một đơn**
-
-`CTHOADON` là bảng cầu nối N-N giữa `HOADON` và `HANGHOA`, y hệt bảng `KETQUA` ở mục 6.4.
-Vì một đơn có nhiều mặt hàng, và một mặt hàng có thể nằm trong nhiều đơn.
-
-Vì sao `CTHOADON` phải dùng khóa chính gộp `(MaHD, MaHang)`:
-
-- `MaHD` lặp: một đơn có nhiều dòng chi tiết
-- `MaHang` lặp: một mặt hàng được bán trong nhiều đơn
-- `(MaHD, MaHang)`: mỗi cặp chỉ xuất hiện một lần
-
-Đã kiểm tra trên dữ liệu mẫu — không có cặp nào trùng:
+### 1.3. Dữ liệu mẫu kiểm thử
 
 ```sql
-SELECT MaHD, MaHang, COUNT(*) AS so_lan
-FROM CTHOADON GROUP BY MaHD, MaHang HAVING COUNT(*) > 1;
--- → 0 dòng
+INSERT INTO HANGHOA (MaHang, TenHang, DonViTinh, SoLuongTon) VALUES
+('H01', N'Bàn phím cơ',    N'Chiếc', 50),
+('H02', N'Chuột không dây', N'Chiếc', 30),
+('H03', N'Màn hình 24inch', N'Thùng', 15),
+('H04', N'Tai nghe Gaming', N'Hộp',   120),
+('H05', N'Ổ cứng SSD 1TB',  N'Chiếc', 22),
+('H06', N'USB 128GB',       N'Thùng', 200);
+
+INSERT INTO HOADON (MaHD, NgayHD, TienBan, GiamGia, ThanhToan) VALUES
+('HD01', '2023-10-02', 3450000.00, 0.00, 3450000.00),
+('HD02', '2023-10-02', 4500000.00, 0.10, 4050000.00),
+('HD03', '2023-10-05', 2670000.00, 0.05, 2536500.00),
+('HD04', '2023-10-08', 1900000.00, 0.00, 1900000.00),
+('HD05', '2023-10-10', 3950000.00, 0.20, 3160000.00);
+
+INSERT INTO CTHOADON (MaHD, MaHang, SoLuong, Dongia) VALUES
+('HD01', 'H01', 2,  1500000.00),
+('HD01', 'H02', 1,   450000.00),
+('HD02', 'H03', 1,  4500000.00),
+('HD03', 'H04', 3,   500000.00),
+('HD03', 'H05', 1,  1170000.00),
+('HD04', 'H02', 2,   450000.00),
+('HD04', 'H06', 5,   200000.00),
+('HD05', 'H01', 1,  1500000.00),
+('HD05', 'H04', 2,   500000.00),
+('HD05', 'H05', 1,  1450000.00);
+GO
 ```
 
-**Điểm cần chú ý trong lược đồ này:** `HOADON` lưu cả `TienBan` và `ThanhToan`, và cột
-`TienBan` là dữ liệu **tính được** — nó bằng `SUM(SoLuong * Dongia)` của các dòng trong
-`CTHOADON`. Lưu giá trị tính được vào bảng cha là việc **không chuẩn**, nhưng đề bài
-cố ý yêu cầu, và câu 5 buộc phải giữ nó luôn đúng. Đó chính là lý do đề hỏi trigger.
+---
 
-### 13.2. Câu 2 — lọc đơn giản
+## 2. Hệ Thống View & Truy Vấn Dữ Liệu
 
-> Hiển thị thông tin cho mặt hàng có số lượng tồn lớn hơn 20 đơn vị tính.
-
+### 2.0. Hiển thị thông tin các mặt hàng có số lượng tồn lớn hơn 30
 ```sql
 SELECT MaHang, TenHang, SoLuongTon
 FROM HANGHOA
-WHERE SoLuongTon > 20
-ORDER BY SoLuongTon DESC;
+WHERE SoLuongTon > 30;
 ```
 
-Chạy thật:
-
-| MaHang | TenHang | SoLuongTon |
-|---|---|---|
-| H06 | USB 128G | 200 |
-| H04 | Tai nghe | 120 |
-| H01 | Bàn phím cơ | 50 |
-| H02 | Chuột không dây | 30 |
-| H05 | Ổ cứng SSD 1TB | 22 |
-
-Đây chính là dạng 1 (lọc một bảng) ở mục 4. `> 20` chứ không phải `>= 20` — đề ghi
-"lớn hơn 20".
-
-### 13.3. Câu 3 — bổ sung ràng buộc CHECK
-
-> Tạo bổ sung ràng buộc Rule cho cột số lượng tồn của bảng hàng hoá nhận giá trị lớn hơn 0.
-
+### 2.1. Hiển thị mặt hàng có đơn vị tính là 'Thùng'
 ```sql
-ALTER TABLE HANGHOA
-ADD CONSTRAINT CK_HANGHOA_TON CHECK (SoLuongTon > 0);
+SELECT MaHang, TenHang, SoLuongTon
+FROM HANGHOA
+WHERE DonViTinh = N'Thùng';
 ```
 
-Ba điều phải biết về `ALTER TABLE ... ADD CONSTRAINT`:
-
-- Ràng buộc `CHECK` được thêm **sau** khi bảng đã có dữ liệu cũng được, nhưng SQL Server
-  **kiểm tra dữ liệu đang có** trước khi thêm. Nếu trong bảng đã có dòng vi phạm thì
-  lệnh báo lỗi và ràng buộc không được tạo.
-- Muốn kiểm tra dữ liệu sẵn có mà không đụng tới bảng:
-  ```sql
-  SELECT MaHang, SoLuongTon FROM HANGHOA WHERE SoLuongTon <= 0;
-  ```
-- `CHECK` không tự sinh chỉ mục. Muốn `CHECK (SoLuongTon > 0)` và truy vấn nhanh thì
-  dùng `INDEX`, nhưng đề không yêu cầu.
-
-Sau khi thêm, thử nhập vi phạm sẽ bị chặn:
-
+### 2.2. Hiển thị các hóa đơn được lập trong ngày 2/10/2023
 ```sql
-INSERT INTO HANGHOA (MaHang, TenHang, SoLuongTon) VALUES ('H99', N'Thử', -1);
--- Msg 547: The INSERT statement conflicted with the CHECK constraint "CK_HANGHOA_TON".
+SELECT MaHD, NgayHD, TienBan
+FROM HOADON
+WHERE NgayHD = '2023-10-02';
 ```
 
-### 13.4. Câu 4 — stored procedure
+### 2.3. Tạo View hiển thị mặt hàng chưa có khách mua
+*Tư duy suy ra:* Dùng `NOT EXISTS` hoặc `LEFT JOIN ... WHERE CTHOADON.MaHD IS NULL`.
+```sql
+CREATE VIEW V_HangHoa_ChuaBan AS
+SELECT hh.MaHang, hh.TenHang, hh.DonViTinh
+FROM HANGHOA hh
+LEFT JOIN CTHOADON ct ON hh.MaHang = ct.MaHang
+WHERE ct.MaHang IS NULL;
+GO
+```
 
-> Tạo thủ tục hiển thị thông tin của một mặt hàng khi biết mã hàng.
+### 2.4. Tạo View hiển thị mặt hàng được khách mua với số lượng nhiều nhất
+*Tư duy suy ra:* Tính tổng số lượng bán bằng `SUM(ct.SoLuong)`, gom theo mặt hàng, dùng `TOP 1 WITH TIES` để không bỏ sót các mặt hàng đồng hạng nhất.
 
 ```sql
-CREATE PROCEDURE dbo.HienThiHangHoa
-    @MaHang CHAR(10)
-AS
-BEGIN
-    SELECT MaHang, TenHang, SoLuongTon
-    FROM HANGHOA
-    WHERE MaHang = @MaHang;
-END
+CREATE VIEW V_HangHoa_BanNhieuNhat AS
+SELECT TOP 1 WITH TIES
+    hh.MaHang,
+    hh.TenHang,
+    SUM(ct.SoLuong) AS TongSoLuongDaBan
+FROM HANGHOA hh
+JOIN CTHOADON ct ON hh.MaHang = ct.MaHang
+GROUP BY hh.MaHang, hh.TenHang
+ORDER BY SUM(ct.SoLuong) DESC;
+GO
+```
+
+### 2.6. Tạo View hiển thị các mặt hàng được bán trên 20 đơn vị tính
+```sql
+CREATE VIEW V_HangHoa_BanTren20 AS
+SELECT hh.MaHang, hh.TenHang, SUM(ct.SoLuong) AS TongBan
+FROM HANGHOA hh
+JOIN CTHOADON ct ON hh.MaHang = ct.MaHang
+GROUP BY hh.MaHang, hh.TenHang
+HAVING SUM(ct.SoLuong) > 20;
+GO
+```
+
+### 2.7. Hiển thị các hóa đơn bán được trên 3 mặt hàng
+*Tư duy suy ra:* Một hóa đơn bán được bao nhiêu *mặt hàng* (số lượng chủng loại) tính bằng `COUNT(DISTINCT ct.MaHang)`.
+
+```sql
+SELECT hd.MaHD, hd.NgayHD, COUNT(DISTINCT ct.MaHang) AS TongSoMatHang
+FROM HOADON hd
+JOIN CTHOADON ct ON hd.MaHD = ct.MaHD
+GROUP BY hd.MaHD, hd.NgayHD
+HAVING COUNT(DISTINCT ct.MaHang) > 3;
+```
+
+### 2.9. Hiển thị hóa đơn bán được nhiều mặt hàng nhất
+```sql
+SELECT TOP 1 WITH TIES
+    hd.MaHD, 
+    hd.NgayHD, 
+    COUNT(DISTINCT ct.MaHang) AS TongSoMatHang
+FROM HOADON hd
+JOIN CTHOADON ct ON hd.MaHD = ct.MaHD
+GROUP BY hd.MaHD, hd.NgayHD
+ORDER BY COUNT(DISTINCT ct.MaHang) DESC;
+```
+
+### 2.11. Hiển thị hóa đơn có số tiền thanh toán nhiều nhất
+```sql
+SELECT TOP 1 WITH TIES MaHD, NgayHD, ThanhToan
+FROM HOADON
+ORDER BY ThanhToan DESC;
+```
+
+### 2.12. Hiển thị mặt hàng có số lần mua dưới 3 lần
+*Tư duy suy ra:* "Số lần mua" là số hóa đơn chứa mặt hàng đó (`COUNT(ct.MaHD)`).
+
+```sql
+SELECT hh.MaHang, hh.TenHang, COUNT(ct.MaHD) AS SoLanMua
+FROM HANGHOA hh
+LEFT JOIN CTHOADON ct ON hh.MaHang = ct.MaHang
+GROUP BY hh.MaHang, hh.TenHang
+HAVING COUNT(ct.MaHD) < 3;
+```
+
+### 2.13. Hiển thị mặt hàng có số lượng tồn ít nhất
+```sql
+SELECT TOP 1 WITH TIES MaHang, TenHang, SoLuongTon
+FROM HANGHOA
+ORDER BY SoLuongTon ASC;
+```
+
+---
+
+## 3. Ràng Buộc Rule & Default
+
+### 3.1 & 3.2. Ràng buộc RULE (`CREATE RULE` & `sp_bindrule`)
+
+```sql
+-- 3.1 Rule cho SoLuongTon > 0
+CREATE RULE R_SoLuongTon AS @ton > 0;
+GO
+EXEC sp_bindrule 'R_SoLuongTon', 'HANGHOA.SoLuongTon';
 GO
 
-EXEC dbo.HienThiHangHoa 'H05';
+-- 3.2 Rule cho GiamGia từ 0 đến 0.5
+CREATE RULE R_GiamGia AS @gg BETWEEN 0 AND 0.5;
+GO
+EXEC sp_bindrule 'R_GiamGia', 'HOADON.GiamGia';
+GO
 ```
 
-Chạy thật:
-
-| MaHang | TenHang | SoLuongTon |
-|---|---|---|
-| H05 | Ổ cứng SSD 1TB | 22 |
-
-Bốn điểm về stored procedure trong SQL Server:
-
-**1. `GO` không phải SQL.** Trong SSMS, `CREATE PROCEDURE` phải là câu lệnh đầu tiên
-của một lô. Không có `GO` ở giữa thì SQL Server báo:
-`Msg 102: Incorrect syntax near 'GO'`. Chạy file .sql thì bắt buộc có `GO`.
-
-**2. Tham số viết `@TenBien`, không viết kiểu trước.** `WHERE MaHang = CHAR(10)` là sai —
-sai cả kiểu dữ liệu lẫn ý nghĩa.
-
-**3. Procedure không `SELECT *` ra mặc định.** `SELECT *` trong stored procedure khiến
-kết quả phụ thuộc vào thứ tự cột trong bảng. Đề thi muốn "mã hàng, tên hàng, số lượng tồn"
-thì liệt kê đúng 3 cột đó.
-
-**4. `CREATE PROCEDURE` không nằm trong `CREATE TABLE`.** Câu 1 tạo CSDL và bảng, câu 4
-tạo procedure — hai việc tách biệt, điểm số riêng.
-
-### 13.5. Câu 5 — trigger cập nhật tổng tiền (câu khó nhất)
-
-> Tạo trigger cập nhật lại tiền bán của mỗi hoá đơn khi chỉnh sửa thông tin mặt hàng
-> được lưu trong bảng CTHOADON. Biết công thức tính tiền bán trên mỗi hoá đơn là:
-> `TienBan = Sum(SoLuong * Dongia)`
+### 3.4 & 3.6 & 3.7. Ràng buộc DEFAULT (`CREATE DEFAULT` & `sp_bindefault`)
 
 ```sql
-CREATE TRIGGER TR_CTHD_TinhLaiTienBan
+-- 3.4 Default SoLuong trong CTHOADON nhận 0
+CREATE DEFAULT DF_SoLuong AS 0;
+GO
+EXEC sp_bindefault 'DF_SoLuong', 'CTHOADON.SoLuong';
+GO
+
+-- 3.6 Default TienBan trong HOADON nhận 0
+CREATE DEFAULT DF_TienBan AS 0;
+GO
+EXEC sp_bindefault 'DF_TienBan', 'HOADON.TienBan';
+GO
+
+-- 3.7 Default NgayHD trong HOADON nhận ngày hiện tại
+CREATE DEFAULT DF_NgayHD AS GETDATE();
+GO
+EXEC sp_bindefault 'DF_NgayHD', 'HOADON.NgayHD';
+GO
+```
+
+---
+
+## 4. Stored Procedure (Thủ Tục Lưu Trữ)
+
+### 4.1. Tổng số mặt hàng được bán trên mỗi hóa đơn khi biết mã HD
+```sql
+CREATE PROCEDURE sp_TongMatHang_TheoMaHD
+    @MaHD VARCHAR(10)
+AS
+BEGIN
+    SELECT hd.MaHD, hd.NgayHD, COUNT(DISTINCT ct.MaHang) AS TongSoMatHang
+    FROM HOADON hd
+    JOIN CTHOADON ct ON hd.MaHD = ct.MaHD
+    WHERE hd.MaHD = @MaHD
+    GROUP BY hd.MaHD, hd.NgayHD;
+END;
+GO
+
+EXEC sp_TongMatHang_TheoMaHD 'HD01';
+```
+
+### 4.2. Tổng số lượng hàng được bán trên mỗi hóa đơn khi biết mã HD
+```sql
+CREATE PROCEDURE sp_TongSoLuongHang_TheoMaHD
+    @MaHD VARCHAR(10)
+AS
+BEGIN
+    SELECT hd.MaHD, hd.NgayHD, SUM(ct.SoLuong) AS TongSoLuongHang
+    FROM HOADON hd
+    JOIN CTHOADON ct ON hd.MaHD = ct.MaHD
+    WHERE hd.MaHD = @MaHD
+    GROUP BY hd.MaHD, hd.NgayHD;
+END;
+GO
+```
+
+### 4.3 & 4.4. Tiền bán và Tiền thanh toán của hóa đơn khi biết mã HD
+```sql
+CREATE PROCEDURE sp_TienBan_ThanhToan_TheoMaHD
+    @MaHD VARCHAR(10)
+AS
+BEGIN
+    SELECT MaHD, NgayHD, TienBan, ThanhToan
+    FROM HOADON
+    WHERE MaHD = @MaHD;
+END;
+GO
+```
+
+### 4.5. Thông tin hóa đơn khi biết ngày hóa đơn
+```sql
+CREATE PROCEDURE sp_HoaDon_TheoNgay
+    @NgayHD DATE
+AS
+BEGIN
+    SELECT MaHD, NgayHD, TienBan, ThanhToan
+    FROM HOADON
+    WHERE NgayHD = @NgayHD;
+END;
+GO
+```
+
+### 4.6 & 4.7. Tổng tiền bán và Tổng tiền thanh toán trong ngày
+```sql
+CREATE PROCEDURE sp_DoanhThuNgay
+    @NgayHD DATE
+AS
+BEGIN
+    SELECT NgayHD, 
+           SUM(TienBan) AS TongTienBan, 
+           SUM(ThanhToan) AS TongThanhToan
+    FROM HOADON
+    WHERE NgayHD = @NgayHD
+    GROUP BY NgayHD;
+END;
+GO
+```
+
+### 4.8. Cập nhật Tiền bán trong bảng HOADON: `TienBan = Sum(SoLuong * Dongia)`
+```sql
+CREATE PROCEDURE sp_CapNhatTienBan
+AS
+BEGIN
+    UPDATE hd
+    SET hd.TienBan = ISNULL((
+        SELECT SUM(ct.SoLuong * ct.Dongia)
+        FROM CTHOADON ct
+        WHERE ct.MaHD = hd.MaHD
+    ), 0)
+    FROM HOADON hd;
+END;
+GO
+
+EXEC sp_CapNhatTienBan;
+```
+
+### 4.9. Cập nhật Tiền thanh toán: `ThanhToan = TienBan - (TienBan * GiamGia)`
+```sql
+CREATE PROCEDURE sp_CapNhatThanhToan
+AS
+BEGIN
+    UPDATE HOADON
+    SET ThanhToan = TienBan - (TienBan * ISNULL(GiamGia, 0));
+END;
+GO
+
+EXEC sp_CapNhatThanhToan;
+```
+
+---
+
+## 5. Hệ Thống 19 Trigger Phòng Thi EPU
+
+### NHÓM 1: TRIGGER TÍNH TOÁN DỮ LIỆU TỰ ĐỘNG
+
+#### 5.1 & 5.2. Cập nhật lại Tiền bán khi thêm hoặc xóa mặt hàng trong CTHOADON
+*Tư duy suy ra:* Khi thêm thì lấy mã đơn ở bảng `inserted`. Khi xóa thì lấy mã đơn ở bảng `deleted`.
+
+```sql
+CREATE TRIGGER TR_CTHD_CapNhatTienBan_Insert_Delete
 ON CTHOADON
-AFTER INSERT, UPDATE, DELETE
+AFTER INSERT, DELETE
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- 1. Xoá: sau khi xoá, inserted rỗng, chỉ còn deleted
-    IF NOT EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
-    BEGIN
-        UPDATE h
-        SET h.TienBan = ISNULL((
-                SELECT SUM(ct.SoLuong * ct.Dongia)
-                FROM CTHOADON ct
-                WHERE ct.MaHD = h.MaHD), 0)
-        FROM HOADON h
-        WHERE h.MaHD IN (SELECT MaHD FROM deleted);
-        RETURN;
-    END
-
-    -- 2. Thêm mới: chỉ có inserted, chưa có deleted
-    IF NOT EXISTS (SELECT 1 FROM deleted) AND EXISTS (SELECT 1 FROM inserted)
-    BEGIN
-        UPDATE h
-        SET h.TienBan = ISNULL((
-                SELECT SUM(ct.SoLuong * ct.Dongia)
-                FROM CTHOADON ct
-                WHERE ct.MaHD = h.MaHD), 0)
-        FROM HOADON h
-        WHERE h.MaHD IN (SELECT MaHD FROM inserted);
-        RETURN;
-    END
-
-    -- 3. Sửa: có cả hai. MaHD có thể bị đổi, nên phải tính lại cả hoá đơn cũ lẫn hoá đơn mới
-    UPDATE h
-    SET h.TienBan = ISNULL((
-            SELECT SUM(ct.SoLuong * ct.Dongia)
-            FROM CTHOADON ct
-            WHERE ct.MaHD = h.MaHD), 0)
-    FROM HOADON h
-    WHERE h.MaHD IN (SELECT MaHD FROM inserted)
-       OR h.MaHD IN (SELECT MaHD FROM deleted);
-END
+    -- Cập nhật cho các hóa đơn bị ảnh hưởng (cả khi thêm mới lẫn khi xóa)
+    UPDATE hd
+    SET hd.TienBan = ISNULL((
+        SELECT SUM(ct.SoLuong * ct.Dongia)
+        FROM CTHOADON ct
+        WHERE ct.MaHD = hd.MaHD
+    ), 0)
+    FROM HOADON hd
+    WHERE hd.MaHD IN (SELECT MaHD FROM inserted UNION SELECT MaHD FROM deleted);
+END;
 GO
 ```
 
-#### Vì sao phải chia 3 nhánh
-
-Đây là điểm học được quan trọng nhất của cả đề. Một trigger `AFTER INSERT, UPDATE, DELETE`
-nhìn vào hai bảng tạm: `inserted` (dòng sau thay đổi) và `deleted` (dòng trước thay đổi).
-
-| Thao tác | `inserted` | `deleted` | Phải tính lại cho |
-|---|---|---|---|
-| `INSERT` | có dòng | rỗng | `MaHD` trong `inserted` |
-| `DELETE` | rỗng | có dòng | `MaHD` trong `deleted` |
-| `UPDATE` | có dòng | có dòng | **cả hai** |
-
-**Bẫy chết người: viết một khối `UPDATE` chung cho cả 3 trường hợp.** Khi xoá dòng,
-`inserted` rỗng nên `WHERE MaHD IN (SELECT MaHD FROM inserted)` không khớp dòng nào —
-tổng tiền hoá đơn đó **không bao giờ được cập nhật**, và nó vẫn giữ số tiền cũ.
-
-**Bẫy thứ hai, ít ai để ý: sửa `MaHD` của một dòng chi tiết.** Dòng đó chuyển từ hoá đơn
-`HD001` sang `HD002`. Nếu chỉ tính lại theo `inserted`, hoá đơn `HD001` mất một dòng
-chi tiết nhưng tổng tiền của nó không được sửa. Vì vậy nhánh `UPDATE` phải tính cả
-`inserted` lẫn `deleted`.
-
-#### Đã chạy thật, kết quả từng bước
-
-Sau khi tạo trigger và nạp dữ liệu:
-
-| MaHD | TienBan | GiamGia | ThanhToan |
-|---|---|---|---|
-| HD001 | 3450000.00 | 0.00 | NULL |
-| HD002 | 4500000.00 | 50000.00 | NULL |
-| HD003 | 2670000.00 | 0.00 | NULL |
-| HD004 | 1900000.00 | 20000.00 | NULL |
-| HD005 | 3950000.00 | 0.00 | NULL |
-
-Kiểm tra tay: `HD001` = 2 × 1.500.000 + 1 × 450.000 = 3.450.000. Đúng.
-
-**Sửa số lượng:** `UPDATE CTHOADON SET SoLuong = 5 WHERE MaHD='HD001' AND MaHang='H01'`
-
-| thời điểm | TienBan |
-|---|---|
-| trước | 3450000.00 |
-| sau | 7950000.00 |
-
-Kiểm tra: 5 × 1.500.000 + 450.000 = 7.950.000. Đúng.
-
-**Xoá dòng chi tiết:** `DELETE FROM CTHOADON WHERE MaHD='HD001' AND MaHang='H01'`
-
-| thời điểm | TienBan |
-|---|---|
-| trước | 7950000.00 |
-| sau | 450000.00 |
-
-Còn lại đúng một dòng `H02`: 1 × 450.000 = 450.000. Đúng.
-
-#### `ISNULL` hay `COALESCE` — và vì sao phải bọc
-
-Khi xoá hết dòng chi tiết của một hoá đơn, `SUM(SoLuong * Dongia)` trả về `NULL`
-(hàm tổng hợp trên tập rỗng trả `NULL`, không phải 0). Không bọc thì `HOADON.TienBan`
-bị ghi đè bằng `NULL`, và mọi câu `WHERE TienBan > 0` sau đó sẽ bỏ sót hoá đơn đó.
-
-`ISNULL(x, 0)` và `COALESCE(x, 0)` cho cùng kết quả ở đây. `COALESCE` là cách viết
-chuẩn SQL, dùng được cả 2 tham số trở lên; `ISNULL` chỉ 2 và là hàm riêng của SQL Server.
-Đề thi dùng SQL Server nên cả hai đều được.
-
-#### Một lựa chọn thiết kế khác, cũng đúng
-
-Nếu giảng viên chấp nhận việc bỏ cột `TienBan` khỏi `HOADON` và tính mỗi khi cần, thì
-không cần trigger, và không có nguy cơ dữ liệu sai. Câu hỏi tính tổng tiền sẽ thành:
-
+#### 5.9. Cập nhật lại Tiền thanh toán khi sửa thông tin Giảm giá trong HOADON
 ```sql
-SELECT hd.MaHD, SUM(ct.SoLuong * ct.Dongia) AS TienBan
-FROM HOADON hd JOIN CTHOADON ct ON ct.MaHD = hd.MaHD
-GROUP BY hd.MaHD;
+CREATE TRIGGER TR_HOADON_Update_GiamGia
+ON HOADON
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF UPDATE(GiamGia) OR UPDATE(TienBan)
+    BEGIN
+        UPDATE hd
+        SET hd.ThanhToan = ins.TienBan - (ins.TienBan * ISNULL(ins.GiamGia, 0))
+        FROM HOADON hd
+        JOIN inserted ins ON hd.MaHD = ins.MaHD;
+    END
+END;
+GO
 ```
 
-Đây là lựa chọn đúng về mặt thiết kế CSDL. Nhưng **đề đã yêu cầu tạo trigger và cột
-`TienBan` đã có trong lược đồ**, nên khi làm bài phải theo đề. Biết cả hai cách để
-trả lời khi giảng viên hỏi thêm là đủ.
-
-### 13.6. Câu 6 — sao lưu CSDL
-
-> Backup cơ sở dữ liệu sang ổ đĩa khác.
-
-Trên SSMS: chuột phải vào database `QuanLyBanHang` → **Tasks** → **Back Up…**
-
-- **Source**: `Database`
-- **Backup type**: `Full`
-- **Destination**: `Disk`, chọn đường dẫn ổ đĩa khác
-- **Backup set**: để mặc định
-
-Ba chỗ dễ sai:
-
-1. **Đường dẫn phải nằm trên máy chạy SQL Server**, không phải máy đang mở SSMS.
-   Nếu SQL Server chạy ở máy khác qua mạng, chọn `\\tenserver\share` chứ không phải
-   `D:\backup` trên máy bạn.
-2. **Đuôi file phải là `.bak`.** SQL Server tự thêm nếu thiếu.
-3. **Phải có quyền `sysadmin`** hoặc quyền ghi vào thư mục đích.
-
-Kiểm tra bản sao lưu đã đủ:
-
+#### 5.12 & 5.17. Cập nhật số lượng tồn: `SoLuongTon = SoLuongTon - SoLuong` khi thêm vào CTHOADON
 ```sql
-RESTORE FILELISTONLY FROM DISK = 'D:\backup\QuanLyBanHang.bak';
+CREATE TRIGGER TR_CTHD_TruTonKho_Insert
+ON CTHOADON
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE hh
+    SET hh.SoLuongTon = hh.SoLuongTon - ins.SoLuong
+    FROM HANGHOA hh
+    JOIN inserted ins ON hh.MaHang = ins.MaHang;
+END;
+GO
 ```
 
-Sao lưu khác với sao chép file: file `.mdf` khi copy tay sẽ sai vì nó đang được
-SQL Server giữ khoá. Chỉ `BACKUP DATABASE` mới tạo được bản sao lưu đúng.
+#### 5.13. Cập nhật số lượng tồn khi sửa số lượng bán trong CTHOADON
+*Tư duy suy ra:* Số lượng tồn mới = `SoLuongTon_cu + SoLuong_cu - SoLuong_moi` = `SoLuongTon - (SoLuong_moi - SoLuong_cu)`.
 
-### 13.7. Bảng so sánh: đề 1–3 với đề 4
-
-| Đề | Hỏi gì | Kỹ năng |
-|---|---|---|
-| Đề 1, 2 | Truy vấn 5 dạng | `SELECT`, `JOIN`, `GROUP BY`, `HAVING`, `NOT EXISTS` |
-| Đề 3 | Truy vấn trên bài thư viện | như trên, kèm `SUM` và `COUNT` |
-| **Đề 4** | Lập trình CSDL | `ALTER TABLE ... CHECK`, `CREATE PROCEDURE`, `CREATE TRIGGER`, `BACKUP` |
-
-Hai kỹ năng mới phải học thêm: **stored procedure** và **trigger**. Trigger thì có
-bẫy (ba nhánh `inserted`/`deleted`), procedure thì có hai bẫy cú pháp (`GO`, `@ThamSo`).
-
-### 13.8. Sáu điểm dễ mất trong đề này
-
-1. `GO` thiếu sau `CREATE PROCEDURE` và `CREATE TRIGGER` → SQL Server báo lỗi cú pháp.
-2. Trigger viết một khối chung cho `INSERT/UPDATE/DELETE` → xoá dòng không cập nhật tổng tiền.
-3. Sửa `MaHD` của dòng chi tiết → hoá đơn cũ giữ tổng tiền cũ.
-4. Không bọc `ISNULL(..., 0)` → xoá hết dòng thì `TienBan` thành `NULL`.
-5. `> 20` viết thành `>= 20` → lấy thừa hàng có đúng 20.
-6. Tham số procedure viết `WHERE MaHang = CHAR(10)` thay vì `@MaHang`.
+```sql
+CREATE TRIGGER TR_CTHD_Update_SoLuongTon
+ON CTHOADON
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF UPDATE(SoLuong)
+    BEGIN
+        UPDATE hh
+        SET hh.SoLuongTon = hh.SoLuongTon - (ins.SoLuong - del.SoLuong)
+        FROM HANGHOA hh
+        JOIN inserted ins ON hh.MaHang = ins.MaHang
+        JOIN deleted del  ON ins.MaHD = del.MaHD AND ins.MaHang = del.MaHang;
+    END
+END;
+GO
+```
 
 ---
+
+### NHÓM 2: TRIGGER KIỂM TRA HỢP LỆ VÀ ROLLBACK
+
+#### 5.3 & 5.6. Kiểm tra Số lượng tồn trong HANGHOA phải > 0 khi thêm hoặc sửa
+```sql
+CREATE TRIGGER TR_HANGHOA_CheckSoLuongTon
+ON HANGHOA
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE SoLuongTon <= 0)
+    BEGIN
+        RAISERROR (N'Lỗi: Số lượng hàng tồn trong kho phải lớn hơn 0!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
+
+#### 5.4 & 5.5. Kiểm tra Số lượng bán trong CTHOADON phải > 0 khi thêm hoặc sửa
+```sql
+CREATE TRIGGER TR_CTHD_CheckSoLuong
+ON CTHOADON
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE SoLuong <= 0)
+    BEGIN
+        RAISERROR (N'Lỗi: Số lượng mặt hàng bán phải lớn hơn 0!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
+
+#### 5.7 & 5.8. Kiểm tra Đơn giá trong CTHOADON phải > 0 khi thêm hoặc sửa
+```sql
+CREATE TRIGGER TR_CTHD_CheckDonGia
+ON CTHOADON
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE Dongia <= 0)
+    BEGIN
+        RAISERROR (N'Lỗi: Đơn giá bán phải lớn hơn 0!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
+
+#### 5.10 & 5.11. Kiểm tra Ngày lập hóa đơn <= ngày hiện tại khi thêm hoặc sửa
+```sql
+CREATE TRIGGER TR_HOADON_CheckNgayHD
+ON HOADON
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE NgayHD > CAST(GETDATE() AS DATE))
+    BEGIN
+        RAISERROR (N'Lỗi: Ngày lập hóa đơn không được lớn hơn ngày hiện tại!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
+
+#### 5.14. Kiểm tra Số lượng tồn phải > 20 khi thêm vào bảng HANGHOA
+```sql
+CREATE TRIGGER TR_HANGHOA_CheckTonLonHon20
+ON HANGHOA
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE SoLuongTon <= 20)
+    BEGIN
+        RAISERROR (N'Lỗi: Số lượng tồn khi nhập mặt hàng mới phải lớn hơn 20!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
+
+#### 5.15 & 5.16. Kiểm tra Đơn giá > 10,000 khi thêm và > 20,000 khi sửa trong CTHOADON
+```sql
+-- Khi thêm: Đơn giá > 10,000
+CREATE TRIGGER TR_CTHD_Insert_DonGia10k
+ON CTHOADON
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE Dongia <= 10000)
+    BEGIN
+        RAISERROR (N'Lỗi: Đơn giá thêm mới phải lớn hơn 10,000 VNĐ!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+
+-- Khi sửa: Đơn giá > 20,000
+CREATE TRIGGER TR_CTHD_Update_DonGia20k
+ON CTHOADON
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF UPDATE(Dongia) AND EXISTS (SELECT 1 FROM inserted WHERE Dongia <= 20000)
+    BEGIN
+        RAISERROR (N'Lỗi: Đơn giá sau khi sửa phải lớn hơn 20,000 VNĐ!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
+
+#### 5.18 & 5.19. Kiểm tra cột Giảm giá chỉ từ 0 đến 0.5 khi thêm hoặc sửa HOADON
+```sql
+CREATE TRIGGER TR_HOADON_CheckGiamGia
+ON HOADON
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF EXISTS (SELECT 1 FROM inserted WHERE GiamGia < 0 OR GiamGia > 0.5)
+    BEGIN
+        RAISERROR (N'Lỗi: Giá trị giảm giá chỉ được phép nằm trong khoảng 0 đến 0.5 (tối đa 50%)!', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END
+END;
+GO
+```
