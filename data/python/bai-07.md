@@ -11,7 +11,7 @@ Hãy tưởng tượng bạn đang quản lý một hàng người xếp hàng m
    - Bạn có tên là "Nam" bị mời ra khỏi hàng (`ds.remove("Nam")`).
 4. **Sắp xếp theo chiều cao (`sort`):** Cả hàng tự di chuyển để người thấp đứng trước, người cao đứng sau.
 
-![](assets/media/python/N7-HANG-XEP-LIST-MUTATION.svg)
+![](assets/media/python/minh_bit/bai07_lineup_by_height.jpg)
 
 ### Bài học sống còn: Photo sổ lớp (Bảo toàn danh sách gốc)
 Trong đề thi, hãy đọc thật kỹ từng chữ:

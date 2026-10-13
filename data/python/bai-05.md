@@ -6,7 +6,7 @@
 
 Lúc này, Python mang đến cho bạn một **Danh sách (List)** — giống như một **đoàn tàu hỏa có nhiều toa nối tiếp nhau**:
 
-![](assets/media/python/N5-DOAN-TAU-HOA-LIST.svg)
+![](assets/media/python/minh_bit/bai05_cinema_seats_index.jpg)
 
 1. **Các toa tàu (Phần tử):** Cả đoàn tàu mang chung một cái tên là `ds`. Mỗi toa tàu chứa một con số hoặc một mẩu dữ liệu.
 2. **Số hiệu toa tàu (Chỉ số Index):** 

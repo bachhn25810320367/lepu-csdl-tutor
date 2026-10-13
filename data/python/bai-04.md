@@ -11,7 +11,7 @@ Hãy tưởng tượng trong căn bếp nhà bạn có một chiếc **máy xay 
    - Bạn có thể cất nó vào tủ lạnh.
    - Hoặc bạn có thể đổ nó vào một nồi thạch rau câu để nấu món mới (dùng kết quả này để tính toán việc khác).
 
-![](assets/media/python/N4-HAM-MAY-XAY-SINH-TO.svg)
+![](assets/media/python/minh_bit/bai04_bit_handing_glass.jpg)
 
 ### Phân biệt sống còn giữa `return` và `print`:
 Rất nhiều học sinh trượt thực hành chỉ vì nhầm lẫn giữa hai lệnh này:

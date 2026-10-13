@@ -4,7 +4,7 @@
 
 Hãy tưởng tượng bạn đang cầm trên tay một **chuỗi hạt cườm** được xâu sẵn trên một sợi cước kim loại:
 
-![](assets/media/python/N8-CHUOI-HAT-CUOM-STRING.svg)
+![](assets/media/python/minh_bit/bai08_beads_string.jpg)
 
 1. **Mỗi hạt là một ký tự:** Ký tự đầu tiên ở vị trí số `0`, ký tự cuối cùng ở vị trí `-1`. Bạn có thể dùng thước đo xem chuỗi dài bao nhiêu hạt bằng `len(s)`.
 2. **ĐẶC ĐIỂM SỐNG CÒN — Chuỗi không thể bị đập vỡ để sửa:**

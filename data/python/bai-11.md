@@ -4,7 +4,7 @@
 
 Hãy tưởng tượng bạn đang mở ứng dụng **Danh bạ điện thoại** trên máy bay:
 
-![](assets/media/python/N11-DANH-BA-DICTIONARY.svg)
+![](assets/media/python/minh_bit/bai11_contact_book_dict.jpg)
 
 1. **Khóa (Key) - Cái tên bạn cần tìm:** 
    Trong danh bạ có hàng nghìn số điện thoại, bạn không thể nhớ số của mẹ bạn nằm ở vị trí thứ `15` hay thứ `300` như cách đánh chỉ số của List. Thay vào đó, bạn chỉ cần gõ đúng cái tên: `"Me"`.

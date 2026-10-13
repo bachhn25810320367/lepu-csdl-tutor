@@ -6,7 +6,7 @@ Hãy tưởng tượng bạn đang dọn phòng học và chuẩn bị một chi
 
 Bất cứ khi nào bạn nhặt được một viên bi hoặc một con số, bạn thả nó vào trong hộp. Khi bạn nói: *"Cho tôi xem trong hộp `so` có gì"*, bạn chỉ việc mở nắp hộp đó ra.
 
-![](assets/media/python/N1-BIEN-HOP-DAN-NHAN.svg)
+![](assets/media/python/minh_bit/bai01_label_boxes.jpg)
 
 Trong máy tính cũng y hệt như vậy:
 - **Biến (Variable)**: Chính là chiếc hộp có dán nhãn tên (`so`, `tong`, `kq`). Máy tính không có trí nhớ tự nhiên như con người; nếu bạn tính toán xong mà không cất vào chiếc hộp nào, kết quả đó sẽ biến mất ngay lập tức khỏi bộ nhớ RAM.

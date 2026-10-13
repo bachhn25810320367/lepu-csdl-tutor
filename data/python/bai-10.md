@@ -4,7 +4,7 @@
 
 Ở các bài trước, ta đã làm việc rất nhiều với Danh sách (`list`). Hãy cùng so sánh nó với một người anh em sinh đôi mang tên **Tuple**:
 
-![](assets/media/python/N10-THE-CCCD-TUPLE.svg)
+![](assets/media/python/minh_bit/bai10_keychain_tuple.jpg)
 
 1. **Danh sách (`list`) - Chiếc ba lô đi học:**
    Bạn có thể mở khóa ba lô để nhét thêm sách (`append`), vứt bớt bút cũ đi (`remove`), hoặc thay cuốn vở rách bằng cuốn vở mới (`ds[0] = ...`).

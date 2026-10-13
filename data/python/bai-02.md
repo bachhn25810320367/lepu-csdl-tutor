@@ -10,7 +10,7 @@ Hãy tưởng tượng bạn đang đi bộ đến một ngã ba đường để
    - Nếu **ĐÚNG**: Bạn rẽ vào lối đi tiêu chuẩn.
 3. Nếu vẫn **SAI** (bạn không có cả vé VIP lẫn vé tiêu chuẩn): Bác sẽ chỉ bạn sang lối đi cuối cùng dành cho khách vãng lai mua vé tại cổng.
 
-![](assets/media/python/N2-NGA-BA-DUONG-IF-ELSE.svg)
+![](assets/media/python/minh_bit/bai02_road_junction.jpg)
 
 Trong lập trình, cấu trúc rẽ nhánh hoạt động chính xác như vậy:
 - `if` (Nếu): Lối rẽ đầu tiên được kiểm tra.

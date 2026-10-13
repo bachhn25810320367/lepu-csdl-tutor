@@ -15,7 +15,7 @@ Hãy tưởng tượng bạn đang tập thể dục trên đường chạy quan
 4. **Lệnh `continue` (Bỏ qua lượt hiện tại):**
    Đang chạy ở vòng thứ 3, bạn thấy phía trước có một vũng bùn bẩn. Bạn nhảy tránh qua vũng bùn đó (bỏ qua đoạn đường xấu của vòng này) rồi **tiếp tục chạy sang vòng thứ 4 bình thường**.
 
-![](assets/media/python/N3-VONG-LAP-SAN-VAN-DONG.svg)
+![](assets/media/python/minh_bit/bai03_conveyor_belt.jpg)
 
 ---
 
