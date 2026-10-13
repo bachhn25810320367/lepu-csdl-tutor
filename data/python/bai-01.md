@@ -50,6 +50,8 @@ kq = so + so
 print(kq)
 ```
 
+![](assets/media/python/minh_bit/trap_str_concat_55.jpg)
+
 Nếu bạn gõ vào số `5` rồi ấn phím Enter, màn hình sẽ in ra `10` hay `55`?
 
 <details>
@@ -109,6 +111,9 @@ except ValueError:
 ---
 
 ### Lỗi 3: `ZeroDivisionError: division by zero`
+
+![](assets/media/python/minh_bit/err_zero_division.jpg)
+
 - **Nguyên văn thông báo:**
 ```text
 ZeroDivisionError: division by zero

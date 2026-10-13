@@ -9,7 +9,9 @@ Hãy tưởng tượng bạn đang cầm trên tay một **chuỗi hạt cườm
 1. **Mỗi hạt là một ký tự:** Ký tự đầu tiên ở vị trí số `0`, ký tự cuối cùng ở vị trí `-1`. Bạn có thể dùng thước đo xem chuỗi dài bao nhiêu hạt bằng `len(s)`.
 2. **ĐẶC ĐIỂM SỐNG CÒN — Chuỗi không thể bị đập vỡ để sửa:**
    Chuỗi hạt cườm này đã được đúc đặc bằng thủy tinh. Bạn **KHÔNG THỂ gỡ một hạt ra để nhét hạt khác vào** (lệnh gán `s[0] = 'A'` sẽ lập tức làm vỡ tan và báo lỗi sập chương trình!).
-3. **Cách duy nhất để sửa chữ:** Bạn phải xâu một chuỗi hạt mới toanh. Mọi thao tác như viết hoa, cắt tỉa khoảng trắng hay thay thế chữ đều sẽ **tạo ra một chuỗi mới**, trong khi chuỗi ban đầu vẫn nằm nguyên vẹn.
+3. **Cách duy nhất để sửa chữ:** Bạn phải xâu một chuỗi hạt mới toanh.
+
+![](assets/media/python/minh_bit/game_forge_immutable_sword.jpg) Mọi thao tác như viết hoa, cắt tỉa khoảng trắng hay thay thế chữ đều sẽ **tạo ra một chuỗi mới**, trong khi chuỗi ban đầu vẫn nằm nguyên vẹn.
 
 ---
 

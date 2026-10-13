@@ -304,6 +304,8 @@ print("[Y 14] Ho so thi sinh dong goi:", ho_so)
 
 ---
 
+![](assets/media/python/minh_bit/bai15_submit_checklist.jpg)
+
 ## 5. Quy trình 5 bước kiểm tra trước khi nộp bài
 
 1. **Kiểm tra tên thư mục và tên file:** Đúng `thuvien.py` và `main.py` nằm chung trong thư mục cá nhân.

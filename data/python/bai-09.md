@@ -4,7 +4,7 @@
 
 Trong đời sống và trong đề thi Tin học, bạn sẽ gặp hai bài toán xử lý văn bản cực kỳ thú vị:
 
-![](assets/media/python/N9-SOI-GUONG-PALINDROME.svg)
+![](assets/media/python/minh_bit/bai09_normalize_name.jpg)
 
 1. **Tấm gương soi (Chuỗi đối xứng - Palindrome):**
    Hãy nhìn dòng chữ `"radar"` hoặc `"madam"`. Khi bạn đọc từ trái qua phải hay đọc ngược từ phải qua trái, nó đều giống hệt nhau như soi gương. Nhưng nếu bạn viết `"Radar"` (chữ R đầu viết hoa) mà không đổi sang chữ thường trước khi soi gương, máy tính sẽ bảo là sai ngay!

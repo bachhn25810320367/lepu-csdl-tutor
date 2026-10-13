@@ -17,6 +17,8 @@ Hãy tưởng tượng bạn đang tập thể dục trên đường chạy quan
 
 ![](assets/media/python/minh_bit/bai03_conveyor_belt.jpg)
 
+![](assets/media/python/minh_bit/game_boss_fight_loops.jpg)
+
 ---
 
 ## 2. Ví dụ nhỏ nhất (3–5 dòng code)
@@ -49,6 +51,8 @@ Quan sát kỹ đoạn code dưới đây và suy đoán kết quả:
 for so in range(1, 5):
     print(so)
 ```
+
+![](assets/media/python/minh_bit/trap_range_hopscotch.jpg)
 
 Màn hình sẽ in ra các số từ `1` đến `5`, hay chỉ in từ `1` đến `4`?
 
@@ -165,6 +169,8 @@ Tong cac so chan: 30
 ---
 
 ### Khuôn mẫu 2: Thuật toán kiểm tra số nguyên tố (Xuất hiện liên tục trong đề thi)
+
+![](assets/media/python/minh_bit/algo_prime_scanner.jpg)
 Một số nguyên dương `so >= 2` được gọi là số nguyên tố nếu nó chỉ có đúng 2 ước là 1 và chính nó.
 
 ```python

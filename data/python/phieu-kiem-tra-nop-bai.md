@@ -4,6 +4,8 @@ Trước khi bấm "Nộp bài" hoặc báo giám thị thu bài, hãy dành đ�
 
 ---
 
+![](assets/media/python/minh_bit/bai15_submit_checklist.jpg)
+
 ## BẢNG CHECKLIST 12 BƯỚC
 
 ### Nhóm 1: Cấu trúc File & Đặt tên (Tránh 0 điểm do không tìm thấy file)

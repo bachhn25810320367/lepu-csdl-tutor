@@ -72,6 +72,10 @@ Màn hình sẽ in ra những giá trị nào?
 ## 4. Lỗi thường gặp: Thông báo lỗi nguyên văn và cách sửa
 
 ### Lỗi 1: `IndexError: list index out of range` (Vượt quá số toa tàu)
+
+![](assets/media/python/minh_bit/err_index_error_gap.jpg)
+
+![](assets/media/python/minh_bit/game_hotbar_index_error.jpg)
 - **Nguyên văn thông báo:**
 ```text
 IndexError: list index out of range

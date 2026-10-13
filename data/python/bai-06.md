@@ -8,7 +8,7 @@ Hãy tưởng tượng bạn có một chiếc rổ chứa các quả cam với 
 2. **Tìm quả to nhất và vị trí:** Bạn duyệt mắt từ quả đầu tiên đến quả cuối cùng. Quả to nhất nằm ở đâu? Nếu có 2 quả to nhất bằng nhau, đề thi hỏi **vị trí đầu tiên** hay **vị trí cuối cùng**? Bạn phải nhớ kỹ vị trí của nó trên kệ.
 3. **Lọc cam (Không làm dập nát rổ gốc):** Bạn lấy một chiếc rổ mới toanh (`kq = []`), chỉ nhặt những quả cam chín vàng bỏ vào rổ mới. Chiếc rổ ban đầu vẫn giữ nguyên vẹn không suy suyển.
 
-![](assets/media/python/N6-RO-CAM-THONG-KE.svg)
+![](assets/media/python/minh_bit/bai06_fruit_basket_sort.jpg)
 
 ---
 

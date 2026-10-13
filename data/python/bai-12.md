@@ -4,7 +4,9 @@
 
 Hãy tưởng tượng bạn là lớp trưởng và trên bàn bạn có một **tập hồ sơ học bạ** của lớp:
 
-![](assets/media/python/N12-CAP-HO-SO-LIST-DICT.svg)
+![](assets/media/python/minh_bit/bai12_student_dossier.jpg)
+
+![](assets/media/python/minh_bit/game_dungeon_compendium.jpg)
 
 1. **Mỗi tờ học bạ (Một Dictionary):** 
    Mỗi bạn học sinh có một tờ giấy ghi đầy đủ thông tin: `{"ten": "Nguyen Van A", "diem": 8.5, "que": "Ha Noi"}`.

@@ -11,6 +11,10 @@ Hãy tưởng tượng trong căn bếp nhà bạn có một chiếc **máy xay 
    - Bạn có thể cất nó vào tủ lạnh.
    - Hoặc bạn có thể đổ nó vào một nồi thạch rau câu để nấu món mới (dùng kết quả này để tính toán việc khác).
 
+![](assets/media/python/minh_bit/bai04_blender.jpg)
+
+![](assets/media/python/minh_bit/trap_return_vs_print.jpg)
+
 ![](assets/media/python/minh_bit/bai04_bit_handing_glass.jpg)
 
 ### Phân biệt sống còn giữa `return` và `print`:
@@ -143,6 +147,8 @@ Mọi đề thi thực hành luôn có cấu trúc:
 ---
 
 ### Cấu trúc bài thi chuẩn gồm 2 file:
+
+![](assets/media/python/minh_bit/bai04_toolbox_room.jpg)
 
 #### File 1: `thuvien.py` (Lưu trữ toàn bộ các hàm)
 ```python

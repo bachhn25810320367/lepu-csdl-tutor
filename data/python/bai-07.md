@@ -53,6 +53,8 @@ print("Gia tri cua kq:", kq)
 print("Gia tri cua ds:", ds)
 ```
 
+![](assets/media/python/minh_bit/trap_sort_returns_none.jpg)
+
 Biến `kq` sẽ nhận giá trị danh sách đã sắp xếp `[1, 2, 5, 9]` hay nhận giá trị gì khác?
 
 <details>
@@ -153,6 +155,10 @@ def sap_xep_danh_sach(ds, giam_dan=False):
     kq = sorted(ds, reverse=giam_dan)
     return kq
 
+
+![](assets/media/python/minh_bit/algo_insert_sorted.jpg)
+
+![](assets/media/python/minh_bit/game_pvp_rank_insert.jpg)
 
 def chen_x_giu_tang_dan(ds_goc, x):
     # Y 10 - De 1: Chen x vao danh sach sao cho day so van tang dan

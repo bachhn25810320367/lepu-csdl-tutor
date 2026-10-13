@@ -22,6 +22,8 @@
 
 ---
 
+![](assets/media/python/minh_bit/bai13_timer_computer.jpg)
+
 ## 2. Chiến thuật phân bổ thời gian bấm giờ (Tổng thời gian: 90 phút)
 
 | Giai đoạn | Thời gian | Nhiệm vụ cụ thể |
@@ -175,6 +177,8 @@ def y11_loc_so_chinh_phuong(ds):
             kq.append(x)
     return kq
 
+
+![](assets/media/python/minh_bit/algo_alternating_bridge.jpg)
 
 def y12_phan_tu_dan_dau_dai_nhat(ds):
     # Y 12: So luong phan tu dan dau dai nhat

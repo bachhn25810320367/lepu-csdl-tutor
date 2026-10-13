@@ -68,6 +68,8 @@ Hai dòng lệnh `print` trên sẽ in ra kết quả như thế nào?
 ## 4. Lỗi thường gặp: Thông báo lỗi nguyên văn và cách sửa
 
 ### Lỗi 1: `KeyError: 'khoa_khong_ton_tai'`
+
+![](assets/media/python/minh_bit/err_key_error.jpg)
 - **Nguyên văn thông báo:**
 ```text
 KeyError: 'diem'
@@ -97,6 +99,8 @@ Lúc này giá trị sau (`5`) sẽ ghi đè và xóa sổ hoàn toàn giá tr�
 ---
 
 ## 5. Khuôn mẫu cho đề thi: Đoạn code "Copy – Hiểu – Sửa"
+
+![](assets/media/python/minh_bit/game_rpg_stats_dict.jpg)
 
 Trong đề thi thực hành, ứng dụng mạnh nhất của Dictionary là: **Đếm tần suất xuất hiện của các phần tử** (mỗi phần tử xuất hiện bao nhiêu lần, phần tử nào xuất hiện nhiều nhất).
 

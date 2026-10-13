@@ -12,6 +12,8 @@ Hãy tưởng tượng bạn đang đi bộ đến một ngã ba đường để
 
 ![](assets/media/python/minh_bit/bai02_road_junction.jpg)
 
+![](assets/media/python/minh_bit/bai02_security_guard.jpg)
+
 Trong lập trình, cấu trúc rẽ nhánh hoạt động chính xác như vậy:
 - `if` (Nếu): Lối rẽ đầu tiên được kiểm tra.
 - `elif` (Nếu không thì xét tiếp... - viết tắt của *else if*): Các lối rẽ phụ tiếp theo.
@@ -133,6 +135,8 @@ SyntaxError: expected ':'
 ---
 
 ## 5. Khuôn mẫu cho đề thi: Đoạn code "Copy – Hiểu – Sửa"
+
+![](assets/media/python/minh_bit/game_stone_monster_skill_tree.jpg)
 
 Trong ngân hàng đề thi thực hành, cấu trúc rẽ nhánh xuất hiện ở hầu hết các bài toán:
 - Kiểm tra số chẵn hay lẻ: dùng `so % 2 == 0`.
