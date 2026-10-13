@@ -3,15 +3,18 @@
    Design tokens + layout cho LEPU CSDL Tutor
    ========================================================================== */
 :root {
-  --bg: #141316;
-  --surface: #1d1b22;
-  --surface-subtle: #26242c;
-  --surface-hover: #2e2b36;
-  --surface-elevated: #24212b;
+  --bg: #0b0b0f;
+  --bg-ambient: radial-gradient(circle at 50% -20%, rgba(56, 48, 86, 0.28) 0%, transparent 65%);
+  --surface: rgba(20, 19, 26, 0.76);
+  --surface-subtle: rgba(28, 26, 36, 0.65);
+  --surface-hover: rgba(38, 35, 48, 0.78);
+  --surface-elevated: rgba(26, 24, 34, 0.88);
+  --glass-blur: blur(16px) saturate(160%);
 
-  --border: #2e2b36;
-  --border-hover: #504c5e;
-  --border-focus: #f5f2eb;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
+  --border-focus: rgba(16, 185, 129, 0.6);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   --ink: #f5f2eb;
   --ink-secondary: #cdc7be;
@@ -30,7 +33,7 @@
   --danger-bg: rgba(239, 68, 68, 0.12);
   --danger-border: rgba(239, 68, 68, 0.3);
 
-  --header-bg: rgba(20, 19, 22, 0.92);
+  --header-bg: rgba(11, 11, 15, 0.82);
   --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.35);
   --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.5);
 
@@ -40,8 +43,8 @@
   --radius-xl: 16px;
   --radius-full: 9999px;
 
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
   --side-w: 264px;
@@ -70,7 +73,9 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: var(--bg-ambient);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 15px;
@@ -88,9 +93,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 0 16px;
+  padding: 0 18px;
   background: var(--header-bg);
-  backdrop-filter: blur(12px);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-bottom: 1px solid var(--border);
   position: relative;
   z-index: 30;
@@ -203,6 +209,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 /* ---------- sidebar: muc luc + cac che do on tap ---------- */
 .sidebar {
   background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-right: 1px solid var(--border);
   display: grid;
   /* head | modes | scroll */
@@ -219,7 +227,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .side-label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -254,15 +262,14 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   align-items: center;
   gap: 9px;
   width: 100%;
-  padding: 7px 10px;
+  padding: 8px 12px;
   font-family: var(--font-body);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--ink-secondary);
   background: transparent;
-  border: 0;
-  border-left: 2px solid transparent;
-  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   cursor: pointer;
   text-align: left;
   transition: color .14s, background .14s, border-color .14s;
@@ -272,7 +279,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .smode em {
   font-family: var(--font-mono);
   font-style: normal;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--ink-muted);
   background: var(--surface-subtle);
   border-radius: var(--radius-full);
@@ -282,8 +289,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .smode:hover { color: var(--ink); background: var(--surface-subtle); }
 .smode.on {
   color: var(--ink);
-  background: var(--surface-hover);
-  border-left-color: var(--border-focus);
+  background: var(--surface-subtle);
+  border-color: var(--border-hover);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   font-weight: 600;
 }
 .smode.on em { color: var(--ink-secondary); }
@@ -375,7 +383,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 .q-num {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   color: var(--ink-muted);
   display: block;
@@ -424,18 +432,18 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 .q-why {
   margin-top: 11px;
-  padding: 11px 14px;
+  padding: 12px 16px;
   font-size: 13px;
   line-height: 1.65;
   color: var(--ink-secondary);
   background: var(--surface-subtle);
-  border-left: 2px solid var(--border-hover);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 .q-why b { color: var(--ink); font-weight: 600; }
 .q-sec {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--ink-muted);
   margin-left: 6px;
 }
@@ -486,7 +494,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 }
 .fc-hint {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--ink-muted);
   margin-top: 14px;
   text-align: center;
@@ -552,15 +560,15 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   font-size: 13.5px;
   line-height: 1.72;
   color: var(--ink-secondary);
-  padding: 13px 15px;
+  padding: 13px 16px;
   background: var(--surface-subtle);
-  border-left: 2px solid var(--border-hover);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 .w-answer.hidden { display: none; }
 .w-toggle {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -590,7 +598,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 }
 .n-tag {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.06em;
   color: var(--ink-muted);
   border: 1px solid var(--border);
@@ -631,7 +639,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 }
 .n-composer textarea:focus { outline: none; border-color: var(--border-focus); }
 .n-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 9px; }
-.n-hint { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-muted); }
+.n-hint { font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
 
 
 /* Hang tien do trong sidebar khi dang o che do on tap */
@@ -657,7 +665,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .sp-l { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sp-v {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   color: var(--ink-muted);
   flex-shrink: 0;
 }
@@ -771,10 +779,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 .md blockquote {
   margin: 0 0 18px;
-  padding: 13px 17px;
-  background: var(--surface);
-  border-left: 2px solid var(--border-hover);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  padding: 14px 18px;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
   color: var(--ink-secondary);
 }
 .md blockquote p:last-child { margin-bottom: 0; }
@@ -890,7 +898,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .code-wrap .copy-code {
   position: absolute; top: 8px; right: 8px;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11px;
   letter-spacing: 0.04em;
   color: var(--ink-muted);
   background: var(--surface-elevated);
@@ -915,7 +923,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .suggests-wrap { margin-top: 4px; }
 .suggests-h {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -976,7 +984,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 }
 .ai-head .model {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--ink-muted);
   margin-left: auto;
   white-space: nowrap;
@@ -1023,7 +1031,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .msg { display: flex; flex-direction: column; gap: 5px; max-width: 100%; }
 .msg .role {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -1065,16 +1073,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .msg.ai .bubble pre code { background: none; border: 0; padding: 0; font-size: 12px; white-space: pre; }
 .msg.ai .bubble table { width: 100%; border-collapse: collapse; margin: 0 0 11px; font-size: 12.5px; }
 .msg.ai .bubble th, .msg.ai .bubble td { border: 1px solid var(--border); padding: 6px 9px; text-align: left; }
-.msg.ai .bubble th { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; color: var(--ink-muted); }
+.msg.ai .bubble th { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--ink-muted); }
 .msg.ai .bubble blockquote {
-  border-left: 2px solid var(--border-hover); padding-left: 11px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px;
   margin: 0 0 11px; color: var(--ink-secondary);
 }
 .msg.ai .bubble blockquote p:last-child { margin-bottom: 0; }
 .msg.ai .bubble hr { border: 0; border-top: 1px solid var(--border); margin: 13px 0; }
 
 .msg .jump {
-  font-family: var(--font-mono); font-size: 10px;
+  font-family: var(--font-mono); font-size: 11px;
   color: var(--ink-muted); background: none; border: 0;
   padding: 2px 0; cursor: pointer; align-self: flex-start;
   text-decoration: underline; text-underline-offset: 2px;
@@ -1088,10 +1096,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 .thinking { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted); }
 .thinking .bars { display: flex; gap: 2.5px; align-items: flex-end; height: 12px; }
-.thinking .bars i { width: 2.5px; background: var(--ink-muted); animation: bounce .9s ease-in-out infinite; }
-.thinking .bars i:nth-child(2) { animation-delay: .12s; }
-.thinking .bars i:nth-child(3) { animation-delay: .24s; }
-@keyframes bounce { 0%,100% { height: 4px; opacity: .5; } 50% { height: 12px; opacity: 1; } }
+.thinking .bars i { width: 2.5px; background: var(--ink-muted); animation: pulseBar 1s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+.thinking .bars i:nth-child(2) { animation-delay: .14s; }
+.thinking .bars i:nth-child(3) { animation-delay: .28s; }
+@keyframes pulseBar { 0%,100% { height: 4px; opacity: .4; } 50% { height: 12px; opacity: 1; } }
 
 /* ---------- composer ---------- */
 .ai-composer {
@@ -1123,7 +1131,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 .ai-actions { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .ai-actions .hint {
-  font-family: var(--font-mono); font-size: 10px; color: var(--ink-muted);
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
   margin-right: auto;
 }
 .btn-send {
@@ -1140,7 +1148,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .btn-send svg { width: 13px; height: 13px; }
 
 .btn-clear {
-  font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-muted);
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-muted);
   background: transparent; border: 1px solid var(--border);
   border-radius: var(--radius-md); padding: 7px 10px; cursor: pointer;
 }
@@ -1210,7 +1218,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   .chat-btn { padding: 8px 10px; }
 
   .doc-meta { display: none; }
-  .status-chip { font-size: 10px; padding: 4px 8px; }
+  .status-chip { font-size: 11px; padding: 4px 8px; }
   .crumb { max-width: 46vw; }
 
   .md h1 { font-size: 23px; }
