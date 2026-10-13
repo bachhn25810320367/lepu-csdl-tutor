@@ -113,6 +113,29 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   min-width: 0;
   font-size: 13px;
 }
+
+.crumb.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all .16s var(--ease-expo);
+}
+.crumb.logo-badge:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  color: var(--ink);
+  text-decoration: none;
+}
+.crumb.logo-badge svg { color: var(--success); }
+
 .crumb {
   color: var(--ink-secondary);
   text-decoration: none;
@@ -379,7 +402,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 /* moi cau deu gioi han 760px nhu cot doc, de doc deu voi bai hoc */
 .q-wrap { max-width: 760px; margin: 0 auto; }
-.q-item { margin-bottom: 26px; }
+.q-item {
+  margin-bottom: 24px;
+  padding: 20px 22px;
+  background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+}
 
 .q-num {
   font-family: var(--font-mono);
@@ -521,10 +553,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 /* --- dien cho trong --- */
 .f-item {
   margin-bottom: 22px;
-  padding: 15px 17px;
+  padding: 20px 22px;
   background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
 }
 .f-b { font-size: 14px; line-height: 1.7; color: var(--ink); margin: 0 0 11px; }
 .f-blank {
@@ -583,10 +618,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 /* --- ghi chu --- */
 .n-grid { display: flex; flex-direction: column; gap: 13px; }
 .n-card {
-  padding: 14px 16px;
+  padding: 18px 20px;
   background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 .n-card.on-doc { border-color: var(--border-focus); }
 .n-meta {
@@ -654,8 +692,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   font-size: 12px;
   color: var(--ink-secondary);
   background: transparent;
-  border: 0;
-  border-left: 2px solid transparent;
+  border: 1px solid transparent;
   border-radius: var(--radius-sm);
   cursor: pointer;
   text-align: left;
@@ -1219,7 +1256,30 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
   .doc-meta { display: none; }
   .status-chip { font-size: 11px; padding: 4px 8px; }
-  .crumb { max-width: 46vw; }
+  
+.crumb.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all .16s var(--ease-expo);
+}
+.crumb.logo-badge:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  color: var(--ink);
+  text-decoration: none;
+}
+.crumb.logo-badge svg { color: var(--success); }
+
+.crumb { max-width: 46vw; }
 
   .md h1 { font-size: 23px; }
   .md h2 { font-size: 19px; margin: 32px 0 12px; }
