@@ -72,15 +72,21 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  background-color: var(--bg);
-  background-image: var(--bg-ambient);
+  height: 100vh;
+  background-color: #08080c;
+  background-image: 
+    radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.12) 0%, transparent 38%),
+    radial-gradient(circle at 50% 85%, rgba(139, 92, 246, 0.12) 0%, transparent 45%);
   background-attachment: fixed;
+  background-size: cover;
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
 }
 
 body { overflow: hidden; }
@@ -89,17 +95,20 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 /* ---------- header ---------- */
 .topbar {
-  height: 56px;
+  height: 52px;
+  margin: 12px 16px 0;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 0 18px;
-  background: var(--header-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--border);
+  background: rgba(18, 18, 26, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.14);
   position: relative;
-  z-index: 30;
+  z-index: 40;
   flex-shrink: 0;
 }
 
@@ -162,17 +171,27 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .chat-btn {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   font-family: var(--font-body);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--ink);
-  background: var(--surface-subtle);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 7px 12px;
+  color: #fff;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(16, 185, 129, 0.22));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 7px 14px;
   cursor: pointer;
-  transition: border-color .15s, background .15s;
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.chat-btn:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.42), rgba(16, 185, 129, 0.35));
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+.chat-btn.on {
+  background: linear-gradient(135deg, #6366f1, #10b981);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 .chat-btn:hover { border-color: var(--border-hover); background: var(--surface-hover); }
 .chat-btn svg { width: 16px; height: 16px; }
@@ -220,23 +239,27 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .shell {
   display: grid;
   grid-template-columns: var(--side-w) minmax(0, 1fr);
-  height: calc(100vh - 56px);
+  gap: 14px;
+  padding: 12px 16px 14px;
+  height: calc(100vh - 64px);
   overflow: hidden;
-  transition: padding-right .22s ease;
+  box-sizing: border-box;
+  transition: padding-right .26s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Khi panel AI mo, noi dung lui sang trai de khong bi panel che.
    padding-right tren .shell dung cho ca luoi, sidebar cuon doc lap. */
-.shell.ai-open { padding-right: var(--ai-w); }
+.shell.ai-open { padding-right: calc(var(--ai-w) + 28px); }
 
 /* ---------- sidebar: muc luc + cac che do on tap ---------- */
 .sidebar {
-  background: var(--surface);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--border);
+  background: rgba(18, 18, 26, 0.68);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
   display: grid;
-  /* head | modes | scroll */
   grid-template-rows: auto auto minmax(0, 1fr);
   overflow: hidden;
   min-width: 0;
@@ -273,29 +296,43 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 /* ---------- 6 che do on tap (doc, mcq, cards, fill, written, notes) ---------- */
 .side-modes {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding: 7px;
-  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
 }
 .smode {
   display: flex;
   align-items: center;
-  gap: 9px;
+  justify-content: space-between;
+  gap: 6px;
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px 10px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--ink-secondary);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
   cursor: pointer;
   text-align: left;
-  transition: color .14s, background .14s, border-color .14s;
+  transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smode:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.smode.on {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.38) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  font-weight: 600;
 }
 .smode svg { width: 15px; height: 15px; flex-shrink: 0; }
 .smode span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -323,10 +360,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 
 /* ---------- panel on tap (mcq / cards / fill / written / notes) ---------- */
 .mode-pane {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   overflow: hidden;
-  background: var(--bg);
+  background: transparent;
   min-width: 0;
 }
 /* Thuộc tính `hidden` chỉ đặt display:none ở mức UA stylesheet, nên bị
@@ -757,7 +796,22 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   min-width: 0;
 }
 
+.doc-pane {
+  background: rgba(18, 18, 26, 0.58);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 .doc-scroll {
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   padding: 34px 44px 120px;
   /* KHONG dat scroll-behavior: smooth ở đây. Thuộc tính này ghi đè cả
@@ -1212,7 +1266,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 /* ---------- responsive ---------- */
 @media (max-width: 1100px) {
   :root { --side-w: 232px; --ai-w: 340px; }
-  .doc-scroll { padding: 28px 30px 110px; }
+.doc-scroll { padding: 28px 30px 110px; }
 }
 
 /* Tablet/mobile: sidebar thu vao drawer, panel AI phu toan man hinh.
@@ -1242,7 +1296,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   /* Khi panel AI mo, doc pane lui cho it nhat; sidebar van off-canvas */
   .shell.ai-open { padding-right: 0; }
 
-  .doc-scroll { padding: 20px 18px 46px; }
+.doc-scroll { padding: 20px 18px 46px; }
 
   /* Panel AI phu man hinh */
   .ai-panel {
