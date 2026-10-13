@@ -17,7 +17,9 @@ Hãy tưởng tượng bạn đang mở ứng dụng **Danh bạ điện thoại
 
 ## 2. Ví dụ nhỏ nhất (3–5 dòng code)
 
-Tạo một từ điển lưu thông tin điểm thi của học sinh và tra cứu điểm:
+![](assets/media/python/minh_bit/app_shopee_coupon_dict.jpg)
+
+Tạo một từ điển kho mã giảm giá hoặc bảng tra cứu và tìm kiếm theo Key:
 
 ```python
 # Tao tu dien va tra cuu diem

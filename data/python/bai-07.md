@@ -260,7 +260,10 @@ Danh sach dao nguoc: [5, 4, 3, 2, 1]
 ---
 
 ### Mức 2: Sửa lại (Tìm và vá lỗi đoạn code hỏng)
-**Đề bài:** Đề thi yêu cầu thay thế toàn bộ các số âm trong danh sách thành số 0 (Đề 2 ý 11). Một bạn học sinh viết hàm như sau nhưng danh sách sau khi gọi hàm không hề bị thay đổi. Hãy sửa lại cho đúng:
+
+![](assets/media/python/minh_bit/app_momo_refund_zero.jpg)
+
+**Đề bài:** Đề thi yêu cầu thay thế toàn bộ các số âm trong danh sách thành số 0 (giống như tính năng hoàn tiền / bảo hiểm giao dịch chi tiêu trên ví điện tử). Một bạn học sinh viết hàm như sau nhưng danh sách sau khi gọi hàm không hề bị thay đổi. Hãy sửa lại cho đúng:
 
 ```python
 # Doan code loi:
@@ -302,6 +305,8 @@ Ket qua sau khi thay the: [10, 0, 20, 0, 30]
 ---
 
 ### Mức 3: Tự viết (Ý khó của Đề 1: Dãy đan dấu dài nhất)
+
+![](assets/media/python/minh_bit/app_momo_alternating_flow.jpg)
 **Đề bài:** Hai số liên tiếp được gọi là "đan dấu" nếu tích của chúng nhỏ hơn 0 (một số âm và một số dương, ví dụ `[-3, 4]` hoặc `[5, -2]`, số 0 không đan dấu).
 Viết hàm `tim_day_dan_dau_dai_nhat(ds)` trả về độ dài (số lượng phần tử) của chuỗi con đan dấu liên tiếp dài nhất trong danh sách.
 

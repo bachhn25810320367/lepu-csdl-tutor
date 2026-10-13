@@ -18,7 +18,9 @@ Lúc này, Python mang đến cho bạn một **Danh sách (List)** — giống 
 
 ## 2. Ví dụ nhỏ nhất (3–5 dòng code)
 
-Chuyển một chuỗi các số cách nhau bởi dấu phẩy thành một danh sách số nguyên (đây chính là **Ý số 1 của Đề thi số 1**):
+![](assets/media/python/minh_bit/app_momo_balance_history.jpg)
+
+Chuyển một chuỗi các số cách nhau bởi dấu phẩy thành một danh sách số nguyên (giống như danh sách biến động số dư tài khoản ngân hàng / ví MoMo):
 
 ```python
 # Chuyen chuoi nhap vao thanh danh sach so nguyen

@@ -859,7 +859,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v26';
+const VER = 'v27';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;

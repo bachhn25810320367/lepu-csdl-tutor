@@ -138,7 +138,9 @@ SyntaxError: expected ':'
 
 ![](assets/media/python/minh_bit/game_stone_monster_skill_tree.jpg)
 
-Trong ngân hàng đề thi thực hành, cấu trúc rẽ nhánh xuất hiện ở hầu hết các bài toán:
+![](assets/media/python/minh_bit/app_shopee_voucher_conditions.jpg)
+
+Trong ngân hàng đề thi thực hành và các ứng dụng như Shopee, cấu trúc rẽ nhánh xuất hiện ở hầu hết các bài toán tính bậc thang voucher và phân loại:
 - Kiểm tra số chẵn hay lẻ: dùng `so % 2 == 0`.
 - Kiểm tra số chia hết cho 3, cho 5: dùng toán tử logic `and`.
 - Phân loại giá trị (điểm số, số âm / dương / số chính phương).

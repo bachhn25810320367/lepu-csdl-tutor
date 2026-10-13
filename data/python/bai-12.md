@@ -145,6 +145,8 @@ def tim_hoc_sinh_theo_ten(ds_hs, tu_khoa):
 def lay_diem_hs(hs):
     return hs.get("diem", 0)
 
+![](assets/media/python/minh_bit/app_shopee_flash_sale_sort.jpg)
+
 def sap_xep_theo_diem_giam_dan(ds_hs):
     # Sap xep danh sach hoc sinh co diem tu cao xuong thap
     kq = sorted(ds_hs, key=lay_diem_hs, reverse=True)
@@ -212,7 +214,10 @@ Bang xep hang diem tu cao xuong thap:
 ## 6. Bài tập 3 mức (Làm theo – Sửa lại – Tự viết)
 
 ### Mức 1: Làm theo (Gõ lại chính xác để quen tay)
-**Đề bài:** Cho sẵn danh sách sản phẩm gồm tên và giá:
+
+![](assets/media/python/minh_bit/app_shopee_cart_list_dicts.jpg)
+
+**Đề bài:** Cho sẵn danh sách sản phẩm giỏ hàng gồm tên và giá:
 ```python
 ds_sp = [
     {"ten": "But bi", "gia": 5000},

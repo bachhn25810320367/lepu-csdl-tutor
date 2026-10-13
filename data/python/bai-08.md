@@ -17,7 +17,9 @@ Hãy tưởng tượng bạn đang cầm trên tay một **chuỗi hạt cườm
 
 ## 2. Ví dụ nhỏ nhất (3–5 dòng code)
 
-Dọn dẹp khoảng trắng thừa và chuyển toàn bộ văn bản về chữ in hoa:
+![](assets/media/python/minh_bit/app_shopee_coupon_clean.jpg)
+
+Dọn dẹp khoảng trắng thừa và chuyển toàn bộ mã voucher về chữ in hoa chuẩn:
 
 ```python
 # Don sach khoang trang va chuyen thanh chu in hoa
