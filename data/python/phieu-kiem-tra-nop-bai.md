@@ -1,8 +1,3 @@
----
-title: "Phiếu Tự Kiểm Tra 12 Bước Trước Khi Nộp Bài Thi Thực Hành Python"
-tags: [python, checklist, kiem-tra, nop-bai, phong-thi, tranh-diem-0]
----
-
 # Phiếu Tự Kiểm Tra 12 Bước Trước Khi Nộp Bài Thi Thực Hành Python
 
 Trước khi bấm "Nộp bài" hoặc báo giám thị thu bài, hãy dành đúng **5 phút cuối cùng** tích đủ 12 mục trong phiếu này. Đây là 12 điểm quyết định bài thi của bạn được **10 điểm tuyệt đối hay rơi vào bẫy 0 điểm**!

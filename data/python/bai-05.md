@@ -1,9 +1,3 @@
----
-title: "Bài 5: Danh sách (List) Phần 1: Khởi tạo, Nhập dãy số, Chỉ số Index và Cắt lát Slice"
-day: 5
-tags: [python, list, danh-sach, index, slice, split]
----
-
 # Bài 5: Danh sách (List) Phần 1: Khởi tạo, Nhập dãy số, Chỉ số Index và Cắt lát Slice
 
 ## 1. Câu chuyện đời sống: Đoàn tàu hỏa nhiều toa chở hàng

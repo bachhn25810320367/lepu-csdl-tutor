@@ -1,9 +1,3 @@
----
-title: "Bài 14: Luyện đề bấm giờ 2 — Đề thi thực hành số 2 (Vòng lặp nhập dữ liệu & Thao tác mảng số)"
-day: 14
-tags: [python, luyen-de, de-2, bam-gio, while-true, tbc-dieu-kien, xoa-phan-tu]
----
-
 # Bài 14: Luyện đề bấm giờ 2 — Đề thi thực hành số 2 (Vòng lặp nhập dữ liệu & Thao tác mảng số)
 
 ## 1. Đề bài gốc và Làm sạch các điểm mơ hồ

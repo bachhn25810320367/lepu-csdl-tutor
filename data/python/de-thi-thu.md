@@ -1,8 +1,3 @@
----
-title: "Bộ 4 Đề Thi Thử Python Thực Hành Chuẩn Phòng Thi (Có Thang Điểm & Test Cases)"
-tags: [python, de-thi-thu, barem-diem, test-case, luyen-thi]
----
-
 # Bộ 4 Đề Thi Thử Python Thực Hành Chuẩn Phòng Thi (Có Thang Điểm & Test Cases)
 
 Bộ đề thi thử được biên soạn bám sát 100% cấu trúc đề thi thực hành của Trường Đại Học Điện Lực (EPU):

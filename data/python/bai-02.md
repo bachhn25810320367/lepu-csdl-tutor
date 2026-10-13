@@ -1,9 +1,3 @@
----
-title: "Bài 2: Cấu trúc rẽ nhánh điều kiện (if - elif - else)"
-day: 2
-tags: [python, if-else, dieu-kien, logic, re-nhanh]
----
-
 # Bài 2: Cấu trúc rẽ nhánh điều kiện (if - elif - else)
 
 ## 1. Câu chuyện đời sống: Ngã ba đường và Người gác cổng soát vé

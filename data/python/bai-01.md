@@ -1,9 +1,3 @@
----
-title: "Bài 1: Môi trường, Biến, Nhập xuất và Toán tử cơ bản"
-day: 1
-tags: [python, co-ban, bien, input, print, toan-tu]
----
-
 # Bài 1: Môi trường, Biến, Nhập xuất và Toán tử cơ bản
 
 ## 1. Câu chuyện đời sống: Chiếc hộp dán nhãn và Cửa nhận hàng

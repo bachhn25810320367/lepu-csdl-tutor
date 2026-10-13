@@ -1,9 +1,3 @@
----
-title: "Bài 11: Từ điển (Dictionary): Cặp Khóa - Giá trị và Đếm tần suất xuất hiện"
-day: 11
-tags: [python, dict, dictionary, tu-dien, key-value, tan-suat, dem]
----
-
 # Bài 11: Từ điển (Dictionary): Cặp Khóa - Giá trị và Đếm tần suất xuất hiện
 
 ## 1. Câu chuyện đời sống: Danh bạ điện thoại và Quyển từ điển Anh - Việt

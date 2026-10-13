@@ -1,9 +1,3 @@
----
-title: "Bài 10: Bộ giá trị cố định (Tuple) và Kỹ thuật mở gói dữ liệu"
-day: 10
-tags: [python, tuple, bat-bien, packing, unpacking, hoan-vi, return-nhieu-gia-tri]
----
-
 # Bài 10: Bộ giá trị cố định (Tuple) và Kỹ thuật mở gói dữ liệu
 
 ## 1. Câu chuyện đời sống: Tấm thẻ Căn cước công dân và Hộp quà mở nắp

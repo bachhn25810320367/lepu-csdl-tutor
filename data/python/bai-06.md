@@ -1,9 +1,3 @@
----
-title: "Bài 6: Danh sách (List) Phần 2: Thống kê, Tìm kiếm và Lọc phần tử"
-day: 6
-tags: [python, list, tong, tbc, max-min, vi-tri-index, loc-chan-le, so-chinh-phuong]
----
-
 # Bài 6: Danh sách (List) Phần 2: Thống kê, Tìm kiếm và Lọc phần tử
 
 ## 1. Câu chuyện đời sống: Rổ cam của người đi chợ

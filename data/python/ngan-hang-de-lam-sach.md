@@ -1,8 +1,3 @@
----
-title: "Ngân hàng Đề thi Python Thực hành EPU (Đã làm sạch & Chuẩn hóa Đề 1 – 28)"
-tags: [python, de-thi, epu, lam-sach, chuan-hoa, test-case, dap-an]
----
-
 # Ngân hàng Đề thi Python Thực hành EPU (Đã làm sạch & Chuẩn hóa Đề 1 – 28)
 
 Tài liệu này chuẩn hóa toàn bộ ngân hàng đề thi thực hành Lập trình Python (Trường Đại Học Điện Lực), sửa các lỗi in ấn trùng lặp, giải nghĩa rõ ràng các câu hỏi mơ hồ và cung cấp hướng dẫn giải chuẩn format 2 file (`thuvien.py` và `main.py`).

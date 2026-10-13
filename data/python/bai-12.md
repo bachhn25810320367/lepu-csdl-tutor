@@ -1,9 +1,3 @@
----
-title: "Bài 12: Danh sách Từ điển (List of Dicts): Quản lý hồ sơ học sinh và Bảng điểm"
-day: 12
-tags: [python, list-of-dict, quan-ly-du-lieu, bang-diem, hoc-sinh, sap-xep-doi-tuong]
----
-
 # Bài 12: Danh sách Từ điển (List of Dicts): Quản lý hồ sơ học sinh và Bảng điểm
 
 ## 1. Câu chuyện đời sống: Tập hồ sơ học bạ của lớp học

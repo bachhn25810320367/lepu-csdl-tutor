@@ -1,8 +1,3 @@
----
-title: "Sổ tay Khuôn mẫu 25 Hàm Cốt lõi cho Kỳ thi Thực hành Python"
-tags: [python, so-tay, cheatsheet, snippets, ham-chuan, phong-thi]
----
-
 # Sổ tay Khuôn mẫu 25 Hàm Cốt lõi cho Kỳ thi Thực hành Python
 
 Tập hợp đầy đủ các khuôn mẫu hàm được chuẩn hóa theo đúng format đề thi máy EPU:

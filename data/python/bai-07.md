@@ -1,9 +1,3 @@
----
-title: "Bài 7: Danh sách (List) Phần 3: Thêm, Xóa, Sắp xếp và Bảo toàn danh sách gốc"
-day: 7
-tags: [python, list, append, insert, remove, pop, sort, sorted, reverse, bao-toan-list-goc]
----
-
 # Bài 7: Danh sách (List) Phần 3: Thêm, Xóa, Sắp xếp và Bảo toàn danh sách gốc
 
 ## 1. Câu chuyện đời sống: Hàng xếp mua trà sữa và Bản photo sổ lớp

@@ -1,9 +1,3 @@
----
-title: "Bài 13: Luyện đề bấm giờ 1 — Đề thi thực hành số 1 (Đầy đủ 20 ý)"
-day: 13
-tags: [python, luyen-de, de-1, bam-gio, thuvien, main, thang-diem]
----
-
 # Bài 13: Luyện đề bấm giờ 1 — Đề thi thực hành số 1 (Đầy đủ 20 ý)
 
 ## 1. Đề bài gốc và Làm sạch các điểm mơ hồ

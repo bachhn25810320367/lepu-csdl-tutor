@@ -1,9 +1,3 @@
----
-title: "Bài 3: Vòng lặp (for, while, range, break và continue)"
-day: 3
-tags: [python, vong-lap, for, while, range, break, continue]
----
-
 # Bài 3: Vòng lặp (for, while, range, break và continue)
 
 ## 1. Câu chuyện đời sống: Chạy bộ quanh sân vận động

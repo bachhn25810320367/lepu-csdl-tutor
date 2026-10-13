@@ -1,9 +1,3 @@
----
-title: "Bài 9: Chuỗi ký tự (String) Phần 2: Các bài toán thực chiến phòng thi"
-day: 9
-tags: [python, string, chuoi, palindrome, doi-xung, chuan-hoa-ten, trich-xuat-so, tu-dai-nhat]
----
-
 # Bài 9: Chuỗi ký tự (String) Phần 2: Các bài toán thực chiến phòng thi
 
 ## 1. Câu chuyện đời sống: Tấm gương soi và Người biên tập bản thảo

@@ -1,9 +1,3 @@
----
-title: "Bài 15: Thi thử toàn diện — Đề tổng hợp chuẩn phòng thi & Barem chấm điểm"
-day: 15
-tags: [python, thi-thu, tong-hop, barem-diem, test-case, thuvien, main]
----
-
 # Bài 15: Thi thử toàn diện — Đề tổng hợp chuẩn phòng thi & Barem chấm điểm
 
 ## 1. Quy chế phòng thi & Hướng dẫn làm bài trên máy

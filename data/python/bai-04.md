@@ -1,9 +1,3 @@
----
-title: "Bài 4: Hàm (def), Thư viện (module) và Cấu trúc chương trình chính"
-day: 4
-tags: [python, ham, def, return, module, thu-vien, main]
----
-
 # Bài 4: Hàm (def), Thư viện (module) và Cấu trúc chương trình chính
 
 ## 1. Câu chuyện đời sống: Chiếc máy xay sinh tố và Hộp đồ nghề

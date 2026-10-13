@@ -1,9 +1,3 @@
----
-title: "Bài 8: Chuỗi ký tự (String) Phần 1: Chỉ số, Cắt lát và Các phương thức xử lý văn bản cốt lõi"
-day: 8
-tags: [python, string, chuoi, split, join, strip, lower, upper, replace, find]
----
-
 # Bài 8: Chuỗi ký tự (String) Phần 1: Chỉ số, Cắt lát và Các phương thức xử lý văn bản cốt lõi
 
 ## 1. Câu chuyện đời sống: Chuỗi hạt cườm khắc chữ và Kéo cắt băng dính
