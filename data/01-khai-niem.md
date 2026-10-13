@@ -27,6 +27,10 @@
 ## 1. Vì sao cần CSDL
 
 
+> **Tình huống chiến trường:** Tại Tổng hành dinh Bình Nguyên Vô Tận, **Valhein** (Thợ Săn Ác Quỷ) ôm trên tay xấp sổ da ghi chép chiến tích và quân lương. Khi quân số tăng lên hàng vạn chiến binh và vũ khí thay đổi từng giây, xấp sổ tay rách toạc, các dòng số liệu bị ghi đè lẫn lộn.
+> 
+> **Violet** (Tay Súng Quả Cảm) bước tới mỉm cười: *"Thời đại nào rồi mà còn ghi sổ tay hả anh Valhein? Để quản lý hàng vạn anh hùng và trang bị mà không bị nghẽn mạng hay nhầm lẫn số liệu, anh phải dùng Hệ Cơ Sở Dữ Liệu!"*
+
 ![Hình 1.1: Valhein ôm sổ tay ghi chép quá tải rách toạc vs Violet điều khiển Khối Pha Lê CSDL ngăn nắp](assets/media/csdl/valhein_violet/b01_01.jpg)
 Cùng một việc — lưu danh sách điểm — có ba cách làm.
 
@@ -82,6 +86,11 @@ Cách trả lời an toàn khi đề hỏi *"phân biệt CSDL với hệ quản
 ## 3. Kiến trúc 3 mức
 
 
+> **Khám phá Tháp Thần 3 tầng:** Violet chỉ cho Valhein cấu trúc kiến trúc ANSI/SPARC độc lập:
+> - **Tầng đáy (Mức Vật lý):** Chôn sâu trong lòng đất, lưu từng byte dữ liệu thô trên ổ cứng đĩa từ.
+> - **Tầng giữa (Mức Khái niệm / Logic):** Sa bàn chiến thuật mô tả toàn bộ cấu trúc bảng và các mối quan hệ ràng buộc.
+> - **Tầng trên cùng (Mức Khung nhìn / Ngoại):** Giao diện chiến đấu của từng tướng; Xạ thủ chỉ thấy chỉ số sát thương, Đấu sĩ chỉ thấy chỉ số chống chịu!
+
 ![Hình 1.2: Violet khám phá Tháp Thần 3 tầng kiến trúc ANSI/SPARC (Vật lý, Logic, Khung nhìn)](assets/media/csdl/valhein_violet/b01_02.jpg)
 
 ```
@@ -116,6 +125,12 @@ Nếu đề hỏi *"độc lập dữ liệu ở mức nào"*:
 ### 4.1. Những tên gọi chuẩn
 
 
+
+> **Tủ Quân Trang ngăn nắp:** Valhein và Violet cùng phân loại:
+> - Cả chiếc tủ lớn là **Bảng (Table / Quan hệ)**.
+> - Mỗi ngăn kéo hàng ngang là một **Chiến binh (Dòng / Bộ / Tuple)**.
+> - Từng ngăn đứng dọc là một **Chỉ số (Cột / Thuộc tính / Attribute)**.
+> - Giao điểm giữa dòng và cột là một **Ô chứa giá trị dữ liệu**.
 
 ![Hình 1.3: Valhein và Violet cùng sắp xếp Tủ Quân Trang Chia Ngăn: Bảng, Dòng, Cột và Ô](assets/media/csdl/valhein_violet/b01_03.jpg)
 | Hình chữ nhật | Tên gọi chuẩn | Ví dụ trong bảng `SINHVIEN` |
@@ -179,6 +194,8 @@ KETQUA   (MASV + MAMH ← PK gộp, DIEM)
 ## 5. Bốn tính chất của bảng quan hệ
 
 
+> **Đội hình tự do:** Violet cho các tân binh hoán đổi vị trí đứng trước sau. Dù lính đứng theo thứ tự nào, danh sách quân đội vẫn y nguyên vì trong bảng quan hệ, thứ tự dòng không quan trọng!
+
 ![Hình 1.5: Violet điều khiển tiểu đội lính đổi chỗ đứng trước sau: Thứ tự dòng không làm đổi bản chất bảng](assets/media/csdl/valhein_violet/b01_05.jpg)
 ### 5.1. Mỗi dòng là duy nhất
 
@@ -188,6 +205,8 @@ Hai dòng giống hệt nhau trong một bảng là điều không được phé
 
 ### 5.2. Mỗi ô chỉ chứa một giá trị đơn
 
+
+> **Bẫy tham lam (Vi phạm 1NF):** Valhein cố nhét cả 3 món vũ khí (Kiếm, Giáp, Giày) vào chung một ô túi đồ khiến túi phát nổ khói đen sì! Violet nghiêm giọng: *"Trong thế giới CSDL quan hệ, mỗi ô chỉ được phép chứa đúng MỘT giá trị nguyên tử. Muốn chứa nhiều món, anh phải tạo dòng mới hoặc tách bảng!"*
 
 ![Hình 1.4: Valhein nhét 3 món nổ túi trang bị vs Violet chuẩn 1NF mỗi ô chỉ chứa đúng một món](assets/media/csdl/valhein_violet/b01_04.jpg)
 Không nhét cả danh sách vào một ô.
@@ -279,6 +298,8 @@ Bảng này có **đúng một khóa dự tuyển**: `MASV`. Chọn nó làm kh�
 ### 6.3. Tính chất của khóa ngoại
 
 
+> **Xích Năng Lượng (Khóa ngoại - FK):** Súng của Violet có sợi xích năng lượng trói chặt vào Kho Bách Hóa. Muốn trang bị khẩu súng này, mã súng bắt buộc phải tồn tại sẵn trong danh mục của Kho. Cấm trang bị món đồ không rõ nguồn gốc!
+
 ![Hình 1.7: Khẩu súng của Violet nối Xích Năng Lượng Khóa Ngoại FK khóa chặt vào Kho Trang Bị](assets/media/csdl/valhein_violet/b01_07.jpg)
 1. Giá trị phải **tồn tại** trong bảng được trỏ tới, **hoặc** là NULL.
 2. Một bảng có thể có nhiều khóa ngoại trỏ tới cùng một bảng khác.
@@ -289,6 +310,8 @@ Bảng này có **đúng một khóa dự tuyển**: `MASV`. Chọn nó làm kh�
 ### 6.4. Vì sao `KETQUA` phải dùng khóa chính gộp
 
 ```
+
+> **Ổ khóa đôi (Khóa chính gộp):** Để mở chiếc rương Điểm Thi trong bảng `KETQUA`, Valhein và Violet phải tra khớp cả hai mảnh chìa khóa: Mảnh mã chiến binh `MaSV` và Mảnh mã môn học `MaMH`. Cặp đôi này là duy nhất, không bao giờ trùng lặp!
 
 ![Hình 1.8: Valhein và Violet ghép hai mảnh chìa khóa đôi tạo thành Khóa Chính Gộp cho bảng KETQUA](assets/media/csdl/valhein_violet/b01_08.jpg)
 MASV  | MAMH | DIEM
@@ -310,7 +333,11 @@ Không tìm được một cột đơn nào làm khóa thì ghép nhiều cột 
 ## 7. Quan hệ 1-N và N-N: vì sao có bảng cầu nối
 
 
+> **Quan hệ 1-N:** Violet làm Chỉ Huy Doanh Trại che chở cho cả một tiểu đội tân binh. Một phòng ban (1) chứa nhiều nhân viên (N).
+
 ![Hình 1.9: Violet làm Chỉ Huy Doanh Trại che chở cho cả tiểu đội lính nhỏ: Quan hệ 1-N](assets/media/csdl/valhein_violet/b01_09.jpg)
+
+> **Quan hệ N-N & Sàn Giao Dịch:** Một Tướng dùng nhiều Trang Bị, một Trang Bị được nhiều Tướng mua. Phải qua Quầy Giao Dịch Chợ Đen trung gian (`CTHOADON`) để kết nối!
 
 ![Hình 1.10: Valhein và Violet điều hành Quầy Giao Dịch Chợ Đen trung gian kết nối Tướng và Trang Bị: Quan hệ N-N](assets/media/csdl/valhein_violet/b01_10.jpg)
 ### 7.1. Quan hệ 1-N
@@ -360,6 +387,8 @@ Ngược lại, bảng `KETQUA` là bảng cầu nối — nó không phải dan
 
 
 
+> **Cổng an ninh (Ràng buộc CHECK / RULE):** Valhein kích hoạt cổng từ trường. Quái vật mang điểm máu âm (-5) bước vào lập tức bị giáng sấm sét đẩy lùi. Dữ liệu nạp vào phải luôn dương và nằm trong miền hợp lệ!
+
 ![Hình 1.11: Valhein gác Cổng quét an ninh Ràng buộc CHECK giáng sét đuổi quái chỉ số âm](assets/media/csdl/valhein_violet/b01_11.jpg)
 ### 8.1. Ràng buộc khóa
 
@@ -402,6 +431,8 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 ### 8.4. Sáu ràng buộc trong câu `CREATE TABLE`
 
 
+> **Thẻ Bài Bản Mệnh (Khóa chính - PK):** Valhein giơ cao thẻ bài phát sáng rực rỡ mang mã UID độc nhất. Một bóng ma vô danh cố tình trà trộn vào doanh trại nhưng không có thẻ bài liền bị từ trường khóa chính hất văng ra ngoài!
+
 ![Hình 1.6: Valhein giơ cao Thẻ Bài Bản Mệnh Khóa Chính PK đẩy lùi bóng ma vô danh](assets/media/csdl/valhein_violet/b01_06.jpg)
 | Ràng buộc | Cú pháp | Tác dụng |
 |---|---|---|
@@ -419,6 +450,8 @@ INSERT INTO SINHVIEN VALUES (N'SV004', N'Lê Thị Dung', N'Nữ', NULL);
 ---
 
 ## 9. NULL: ba logic, không phải hai
+
+> **Bí ẩn Tam Trị:** Violet mở 3 chiếc rương: Rương 1 chứa 0 vàng, Rương 2 trống rỗng `''`, còn Rương 3 chứa Màn Sương Ma Thuật `NULL` — sự vô định chưa xác định!
 
 ![Hình 1.12: Violet mở 3 rương báu: Chứa 0 vàng vs Rương trống vs Màn sương ma thuật NULL](assets/media/csdl/valhein_violet/b01_12.jpg)
 
@@ -441,6 +474,8 @@ Phải dùng `IS NULL` / `IS NOT NULL`.
 ### 9.2. Ba logic thay vì hai
 
 
+
+> **Bẫy bắn hụt bóng ma:** Valhein dùng phép so sánh `= NULL`, đạn bay xuyên qua bóng ma mất hút. Violet bật Kính Thần `IS NULL` mới bắt gọn bóng ma hiện hình!
 
 ![Hình 1.13: Valhein bắn phi tiêu xuyên bóng ma = NULL vs Violet dùng kính soi IS NULL bắt gọn](assets/media/csdl/valhein_violet/b01_13.jpg)
 Với dữ liệu không NULL, kết quả của một điều kiện là **Đúng** hoặc **Sai**. Có NULL thì xuất hiện thêm trạng thái thứ ba: **Không xác định**.

@@ -1,5 +1,7 @@
 # LỜI GIẢI CHI TIẾT 43 CÂU — ĐỀ 1, ĐỀ 2, ĐỀ 3
 
+> **Chiến dịch tiến công 43 ải:** Valhein và Violet cùng trải tấm sa bàn quân sự trải dài 43 cứ điểm phòng thi thực hành EPU. Mỗi câu hỏi là một cạm bẫy phục kích (từ bẫy mất dòng, bẫy đếm trùng đến bẫy subquery tự biến). Hai chiến binh phối hợp nhuần nhuyễn giải mã từng ải một cách triệt để!
+
 ![Hình 4.1: Valhein và Violet bàn chiến thuật trước sa bàn 43 cứ điểm phòng thi EPU](assets/media/csdl/valhein_violet/b04_01.jpg)
 
 Mọi bảng kết quả dưới đây **đã chạy thật** trên dữ liệu mẫu của đề, không phải
@@ -541,6 +543,8 @@ nên `NOT LIKE` trả `UNKNOWN`, dòng đó bị loại **không có báo lỗi 
 Thiếu chữ `N` ở `N'Nhà xuất bản Giáo dục'` là lỗi hay gặp nhất ở câu này.
 
 ---
+
+> **Vinh quang Dũng Sĩ:** Sau khi giải mã thành công toàn bộ 43 câu hỏi hóc búa, Valhein và Violet cùng nâng cao chiếc Cúp Quán Quân SQL Server trên đỉnh thành lũy!
 
 ![Hình 4.8: Valhein và Violet nâng cúp vô địch Dũng Sĩ SQL Server vượt trọn 43 ải phòng thi](assets/media/csdl/valhein_violet/b04_08.jpg)
 

@@ -11,6 +11,8 @@
 
 ### 1.1. Lược đồ 3 bảng
 
+> **Quầy Shop Quân Nhu:** Violet đóng vai trò thu ngân trưởng quản lý sổ cái đơn hàng (`HOADON`), Valhein chịu trách nhiệm thủ kho bốc vác kiện hàng (`HANGHOA`), còn chiếc bàn giao dịch ở giữa ghi nhận từng dòng trang bị được xuất bán (`CTHOADON`).
+
 ![Hình 3.1: Violet đứng quầy Shop Vũ Khí & Valhein khiêng thùng hàng: 3 bảng HANGHOA, HOADON, CTHOADON](assets/media/csdl/valhein_violet/b03_01.jpg)
 
 - **`HANGHOA`** (`MaHang`, `TenHang`, `DonViTinh`, `SoLuongTon`)
@@ -368,6 +370,11 @@ EXEC sp_CapNhatThanhToan;
 ---
 
 ## 5. Hệ Thống 19 Trigger Phòng Thi EPU
+
+> **Bí mật hai khay năng lượng ảo:** Khi một thao tác dữ liệu xảy ra, SQL Server tự động tạo ra hai bảng tạm thời trong bộ nhớ RAM:
+> - **Khay Xanh `inserted` (Violet giữ):** Chứa các dòng dữ liệu vừa được thêm mới hoặc dữ liệu mới sau khi sửa.
+> - **Khay Đỏ `deleted` (Valhein giữ):** Chứa các dòng dữ liệu vừa bị xóa hoặc dữ liệu cũ trước khi sửa.
+> Nắm chắc hai khay này là chìa khóa vàng làm chủ toàn bộ 19 bài toán Trigger!
 
 ![Hình 3.6: Violet cầm Khay Xanh inserted (vừa nhập) & Valhein cầm Khay Đỏ deleted (vừa bỏ ra) — Bản chất Trigger](assets/media/csdl/valhein_violet/b03_06.jpg)
 

@@ -39,6 +39,8 @@ CREATE TABLE <Tên_bảng> (
 
 ### 1.3. Sửa đổi cấu trúc bảng (`ALTER TABLE`) — Bẫy thi thường gặp
 
+> **Lò rèn cấu trúc:** Violet khoác tạp dề thợ rèn, tay cầm búa đục thêm khe ngọc (`ADD column`), tháo dỡ mảnh giáp hỏng (`DROP COLUMN`) và tôi luyện lại độ bền của giáp trụ (`ALTER COLUMN`). Bảng đã có dữ liệu vẫn có thể nâng cấp linh hoạt nhờ câu lệnh `ALTER TABLE`!
+
 ![Hình 6.1: Violet làm thợ rèn: Đục thêm ô ngọc ADD, gỡ mảnh giáp hỏng DROP, tôi rèn lại giáp ALTER COLUMN](assets/media/csdl/valhein_violet/b06_01.jpg)
 
 Giảng viên EPU thường yêu cầu sửa đổi bảng đã có dữ liệu bằng lệnh `ALTER TABLE`:
@@ -108,6 +110,8 @@ FROM <Danh sách các bảng>
 ```
 
 ### 3.2. Thứ tự thực thi logic của SQL Server
+
+> **Băng chuyền 7 trạm:** Violet đứng giám sát dây chuyền ma thuật xử lý dữ liệu theo thứ tự nghiêm ngặt: `FROM ➔ WHERE ➔ GROUP BY ➔ HAVING ➔ SELECT ➔ DISTINCT ➔ ORDER BY`. Hiểu được thứ tự này giúp các chiến binh không bao giờ nhầm lẫn giữa điều kiện lọc dòng và điều kiện lọc nhóm!
 
 ![Hình 6.3: Violet giám sát băng chuyền ma thuật 7 trạm thực thi SQL (FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> DISTINCT -> ORDER BY)](assets/media/csdl/valhein_violet/b06_03.jpg)
 
@@ -319,5 +323,7 @@ WHERE mh.TENMH = N'CSDL'
 GROUP BY mh.MAMH, mh.TENMH;
 ```
 
+
+> **Tự tin vào phòng thi:** Valhein và Violet cùng giơ cao Cuốn Bí Kíp Vàng CSDL EPU, hoàn toàn làm chủ mọi câu lệnh từ DDL, DML đến DQL phức tạp!
 
 ![Hình 6.8: Valhein và Violet giơ cao Cuốn Bí Kíp Vàng CSDL EPU tự tin bước vào phòng thi thực hành máy](assets/media/csdl/valhein_violet/b06_08.jpg)

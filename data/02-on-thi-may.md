@@ -773,7 +773,9 @@ Nếu cần một subquery cố ý tự biến (ví dụ "lấy tất cả sách
 
 ---
 
-## 7. Dạng 4 — So sánh với giá trị lớn nhất
+## 7. Dạng 4 — So sánh với giá trị lớn nhất (Bục vô địch đồng hạng)
+
+> Trong trận chung kết, Valhein và một xạ thủ đồng đội cùng đạt kỷ lục bắn trúng 100 điểm. Nếu dùng lệnh `TOP 1` đơn thuần, người bạn kia sẽ bị đẩy ngã khỏi bục vô địch một cách oan uổng. Cú pháp `TOP 1 WITH TIES` giúp cả hai người cùng hiên ngang đứng trên đỉnh vinh quang!
 
 ![Hình 2.12: Valhein cùng xạ thủ đồng hạng chia sẻ cúp vàng trên đỉnh bục vô địch (TOP 1 WITH TIES)](assets/media/csdl/valhein_violet/b02_12.jpg)
 
@@ -863,7 +865,9 @@ Số `1` trong `LIMIT` / `TOP` chỉ có nghĩa khi đề thật sự hỏi "m�
 
 ## 8. Dạng 5 — Loại trừ
 
-### 8.1. `NOT EXISTS` — cách an toàn
+### 8.1. `NOT EXISTS` — Kính chiếu yêu trừ tà an toàn tuyệt đối
+
+> Violet dùng Đèn Thần rà soát kho thư viện: Tìm ra những cuốn cổ thư nằm phủ bụi mà trong bảng mượn sách không hề tồn tại bất kỳ dòng ghi nhận nào (`NOT EXISTS`). Đây là kỹ thuật loại trừ an toàn số 1 trong phòng thi.
 
 ![Hình 2.13: Violet soi đèn cổ thư tìm cuốn sách chưa từng ai mượn (NOT EXISTS)](assets/media/csdl/valhein_violet/b02_13.jpg)
 
@@ -878,7 +882,9 @@ ORDER BY s.MASACH;
 |---|---|---|
 | S07 | Mạng máy tính | Nhà xuất bản Bách khoa |
 
-### 8.2. Bẫy `NOT IN` — chỉ hỏng khi subquery có NULL
+### 8.2. Bẫy `NOT IN` — Chiếc lưới thần vỡ nát khi dính NULL
+
+> **Bẫy hủy diệt kết quả:** Valhein tung lưới thần `NOT IN` để bắt quái. Thế nhưng chỉ cần trong danh sách subquery có lọt một giá trị `NULL`, toàn bộ chiếc lưới lập tức tan rã thành bọt xà phòng và câu truy vấn trả về 0 dòng! Bài học xương máu: Muốn dùng `NOT IN`, subquery bắt buộc phải kèm `WHERE cot IS NOT NULL`.
 
 ![Hình 2.14: Valhein cầm chiếc lưới thần vỡ nát vì dính phải một giọt ma thuật NULL (Bẫy chết người NOT IN)](assets/media/csdl/valhein_violet/b02_14.jpg)
 Câu hỏi này **không phải** "NOT IN khi không có kết quả thì ra NULL":
@@ -2311,6 +2317,8 @@ Mỗi bảng chỉ còn một phụ thuộc hàm với vế phải là khóa →
 
 ## Phụ lục C — Sai khác SQL Server so với MySQL/PostgreSQL
 
+
+> **Khải hoàn môn:** Sau khi vượt qua toàn bộ 5 dạng bẫy truy vấn, Valhein và Violet cùng nhau cắm lá cờ chiến thắng 10.0 rực rỡ trên đỉnh Tháp Cơ Sở Dữ Liệu EPU!
 
 ![Hình 2.15: Valhein và Violet cùng cắm cờ chiến thắng 10.0 trên đỉnh Tháp Cơ Sở Dữ Liệu EPU](assets/media/csdl/valhein_violet/b02_15.jpg)
 Thi bằng SQL Server thì dùng cột bên trái. Biết cột bên phải để tránh viết SQL của công cụ khác rồi nộp.

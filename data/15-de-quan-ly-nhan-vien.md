@@ -10,6 +10,8 @@
 
 ### 1.1. Lược đồ 3 bảng
 
+> **Tổ chức Doanh trại:** Violet nghiên cứu sa bàn căn cứ quân sự gồm 3 tòa phân khu Nhà A, Nhà B, Nhà M (`PHONG`). Valhein thiết lập bảng phân cấp chức vị quân hàm (`CHUCVU`), và hệ thống bảng quản lý hồ sơ của từng chiến sĩ binh lính (`NHANVIEN`).
+
 ![Hình 5.1: Violet xem xét mô hình 3 căn cứ Nhà A, Nhà B, Nhà M và bảng phân cấp chức vụ (CHUCVU, PHONG, NHANVIEN)](assets/media/csdl/valhein_violet/b05_01.jpg)
 
 - **`CHUCVU`** (`Macv`, `Tencv`, `Hesopc`): Bảng danh mục chức vụ và hệ số phụ cấp tương ứng (VD: Trưởng phòng `0.4`, Phó phòng `0.3`).
@@ -611,6 +613,8 @@ GO
 ```
 
 ---
+
+> **Thành tựu quản trị:** Nhờ hệ thống Trigger và Ràng buộc chặt chẽ, doanh trại quân đội EPU vận hành hoàn toàn tự động, tiền lương minh bạch và chuẩn xác tuyệt đối!
 
 ![Hình 5.10: Valhein và Violet đứng trên tường thành duyệt doanh trại vận hành hoàn hảo](assets/media/csdl/valhein_violet/b05_10.jpg)
 
