@@ -2,11 +2,11 @@
 
 ## 1. Câu chuyện đời sống: Chiếc hộp dán nhãn và Cửa nhận hàng
 
-Hãy tưởng tượng bạn đang dọn phòng học và chuẩn bị một chiếc hộp nhựa. Bạn lấy bút lông dán lên mặt ngoài chiếc hộp một mẩu giấy ghi chữ: **"so"**. 
+Hãy tưởng tượng bạn học sinh **Minh** và chú robot phụ tá **Bit** đang sắp xếp lại góc học tập. Bit đưa cho Minh một chiếc hộp nhựa trong suốt và lấy bút lông dán lên mặt ngoài mẩu giấy ghi chữ: **"so"**. 
 
-Bất cứ khi nào bạn nhặt được một viên bi hoặc một con số, bạn thả nó vào trong hộp. Khi bạn nói: *"Cho tôi xem trong hộp `so` có gì"*, bạn chỉ việc mở nắp hộp đó ra.
+Bất cứ khi nào Minh nhặt được một viên bi hay một con số, Minh thả nó vào trong hộp. Khi Minh hỏi: *"Trong hộp `so` đang có gì?"*, Bit chỉ việc mở nắp hộp đó ra đọc số.
 
-![](assets/media/python/minh_bit/bai01_label_boxes.jpg)
+![Hình 1.1: Minh và Bit chuẩn bị những chiếc hộp dán nhãn biến trong bộ nhớ RAM](assets/media/python/minh_bit/bai01_label_boxes.jpg)
 
 Trong máy tính cũng y hệt như vậy:
 - **Biến (Variable)**: Chính là chiếc hộp có dán nhãn tên (`so`, `tong`, `kq`). Máy tính không có trí nhớ tự nhiên như con người; nếu bạn tính toán xong mà không cất vào chiếc hộp nào, kết quả đó sẽ biến mất ngay lập tức khỏi bộ nhớ RAM.
@@ -50,7 +50,7 @@ kq = so + so
 print(kq)
 ```
 
-![](assets/media/python/minh_bit/trap_str_concat_55.jpg)
+![Hình 1.2: Bẫy nhập liệu — Dán dính hai chuỗi chữ cái "5" + "5" = "55" vs Phép toán cộng số 5 + 5 = 10](assets/media/python/minh_bit/trap_str_concat_55.jpg)
 
 Nếu bạn gõ vào số `5` rồi ấn phím Enter, màn hình sẽ in ra `10` hay `55`?
 
@@ -112,7 +112,7 @@ except ValueError:
 
 ### Lỗi 3: `ZeroDivisionError: division by zero`
 
-![](assets/media/python/minh_bit/err_zero_division.jpg)
+![Hình 1.3: Robot Bit bốc khói chập mạch khi chia kẹo cho một chiếc bàn 0 người (ZeroDivisionError)](assets/media/python/minh_bit/err_zero_division.jpg)
 
 - **Nguyên văn thông báo:**
 ```text

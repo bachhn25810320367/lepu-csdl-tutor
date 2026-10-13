@@ -6,7 +6,7 @@
 
 Lúc này, Python mang đến cho bạn một **Danh sách (List)** — giống như một **đoàn tàu hỏa có nhiều toa nối tiếp nhau**:
 
-![](assets/media/python/minh_bit/bai05_cinema_seats_index.jpg)
+![Hình 5.1: Danh sách List — Hàng ghế rạp chiếu phim đánh số ghế bắt đầu từ 0 đến n-1, ghế cuối cùng là -1](assets/media/python/minh_bit/bai05_cinema_seats_index.jpg)
 
 1. **Các toa tàu (Phần tử):** Cả đoàn tàu mang chung một cái tên là `ds`. Mỗi toa tàu chứa một con số hoặc một mẩu dữ liệu.
 2. **Số hiệu toa tàu (Chỉ số Index):** 
@@ -18,7 +18,7 @@ Lúc này, Python mang đến cho bạn một **Danh sách (List)** — giống 
 
 ## 2. Ví dụ nhỏ nhất (3–5 dòng code)
 
-![](assets/media/python/minh_bit/app_momo_balance_history.jpg)
+![Hình 5.2: Ứng dụng MoMo — Lịch sử biến động số dư gồm các số dương (tiền vào) và số âm (tiền tiêu)](assets/media/python/minh_bit/app_momo_balance_history.jpg)
 
 Chuyển một chuỗi các số cách nhau bởi dấu phẩy thành một danh sách số nguyên (giống như danh sách biến động số dư tài khoản ngân hàng / ví MoMo):
 
@@ -75,9 +75,9 @@ Màn hình sẽ in ra những giá trị nào?
 
 ### Lỗi 1: `IndexError: list index out of range` (Vượt quá số toa tàu)
 
-![](assets/media/python/minh_bit/err_index_error_gap.jpg)
+![Hình 5.3: Lỗi IndexError — Minh bước hụt chân xuống khoảng trống khi cố truy cập ghế nằm ngoài danh sách](assets/media/python/minh_bit/err_index_error_gap.jpg)
 
-![](assets/media/python/minh_bit/game_hotbar_index_error.jpg)
+![Hình 5.4: Góc nhìn Game — Thanh Hotbar chỉ có 9 ô (0..8), bấm phím 9 lập tức văng lỗi IndexError](assets/media/python/minh_bit/game_hotbar_index_error.jpg)
 - **Nguyên văn thông báo:**
 ```text
 IndexError: list index out of range

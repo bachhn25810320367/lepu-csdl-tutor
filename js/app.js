@@ -105,10 +105,11 @@ function mediaTag(u, alt, isVideo) {
   if (isVideo) {
     return `<figure class="md-fig"><video controls preload="metadata" playsinline`
       + ` src="${escAttr(src)}"></video>`
-      + `<figcaption class="md-cap">▶ ${a}</figcaption></figure>`;
+      + (a ? `<figcaption class="md-cap">▶ ${a}</figcaption>` : '') + `</figure>`;
   }
   return `<figure class="md-fig"><img loading="lazy" decoding="async"`
-    + ` src="${escAttr(src)}" alt="${a}"></figure>`;
+    + ` src="${escAttr(src)}" alt="${a}">`
+    + (a ? `<figcaption class="md-cap">${a}</figcaption>` : '') + `</figure>`;
 }
 
 /* ================================================================ markdown
@@ -859,7 +860,7 @@ function toast(msg) {
 }
 
 /* ================================================================ init */
-const VER = 'v27';
+const VER = 'v28';
 
 function setTheme(t) {
   document.documentElement.dataset.theme = t;

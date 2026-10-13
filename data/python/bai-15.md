@@ -304,7 +304,7 @@ print("[Y 14] Ho so thi sinh dong goi:", ho_so)
 
 ---
 
-![](assets/media/python/minh_bit/bai15_submit_checklist.jpg)
+![Hình 15.1: Minh và Bit rạng rỡ cầm phiếu checklist 12 bước tích xanh trước khi nhấn nộp bài thi](assets/media/python/minh_bit/bai15_submit_checklist.jpg)
 
 ## 5. Quy trình 5 bước kiểm tra trước khi nộp bài
 

@@ -2,7 +2,7 @@
 
 ## 1. Câu chuyện đời sống: Ngã ba đường và Người gác cổng soát vé
 
-Hãy tưởng tượng bạn đang đi bộ đến một ngã ba đường để vào một khu vui chơi. Đứng trước các ngả rẽ là một bác bảo vệ soát vé:
+Hãy tưởng tượng bạn học sinh **Minh** và chú robot **Bit** đang đi đến một ngã ba đường để vào khu vui chơi. Đứng gác trước các ngả rẽ là bác bảo vệ soát vé:
 
 1. Bác nhìn vào tấm vé trên tay bạn và hỏi: *"Vé của bạn có phải là vé VIP không?"*
    - Nếu **ĐÚNG (True)**: Bác chỉ bạn rẽ sang lối đi VIP trải thảm đỏ. Bạn đi vào luôn và bỏ qua tất cả các lối đi khác.
@@ -10,9 +10,9 @@ Hãy tưởng tượng bạn đang đi bộ đến một ngã ba đường để
    - Nếu **ĐÚNG**: Bạn rẽ vào lối đi tiêu chuẩn.
 3. Nếu vẫn **SAI** (bạn không có cả vé VIP lẫn vé tiêu chuẩn): Bác sẽ chỉ bạn sang lối đi cuối cùng dành cho khách vãng lai mua vé tại cổng.
 
-![](assets/media/python/minh_bit/bai02_road_junction.jpg)
+![Hình 2.1: Minh đứng trước ngã ba đường lựa chọn hướng đi thỏa mãn điều kiện](assets/media/python/minh_bit/bai02_road_junction.jpg)
 
-![](assets/media/python/minh_bit/bai02_security_guard.jpg)
+![Hình 2.2: Bác bảo vệ soát vé kiểm tra từng điều kiện — Chỉ cho phép đi vào lối đầu tiên hợp lệ](assets/media/python/minh_bit/bai02_security_guard.jpg)
 
 Trong lập trình, cấu trúc rẽ nhánh hoạt động chính xác như vậy:
 - `if` (Nếu): Lối rẽ đầu tiên được kiểm tra.
@@ -136,9 +136,9 @@ SyntaxError: expected ':'
 
 ## 5. Khuôn mẫu cho đề thi: Đoạn code "Copy – Hiểu – Sửa"
 
-![](assets/media/python/minh_bit/game_stone_monster_skill_tree.jpg)
+![Hình 2.3: Góc nhìn Game RPG — Minh đối đầu Quái vật Đá, chọn chiêu thức theo cây kỹ năng if - elif - else](assets/media/python/minh_bit/game_stone_monster_skill_tree.jpg)
 
-![](assets/media/python/minh_bit/app_shopee_voucher_conditions.jpg)
+![Hình 2.4: Ứng dụng Shopee — Bậc thang voucher giảm giá theo giá trị đơn hàng](assets/media/python/minh_bit/app_shopee_voucher_conditions.jpg)
 
 Trong ngân hàng đề thi thực hành và các ứng dụng như Shopee, cấu trúc rẽ nhánh xuất hiện ở hầu hết các bài toán tính bậc thang voucher và phân loại:
 - Kiểm tra số chẵn hay lẻ: dùng `so % 2 == 0`.

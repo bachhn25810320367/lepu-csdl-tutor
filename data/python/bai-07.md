@@ -2,7 +2,7 @@
 
 ## 1. Câu chuyện đời sống: Hàng xếp mua trà sữa và Bản photo sổ lớp
 
-Hãy tưởng tượng bạn đang quản lý một hàng người xếp hàng mua trà sữa:
+Hãy tưởng tượng **Minh** và các bạn đang xếp hàng trật tự để vào rạp chiếu phim và mua vé:
 
 1. **Thêm vào cuối (`append`):** Một bạn mới đến ngoan ngoãn xếp vào vị trí cuối cùng của hàng (`ds.append(ten)`).
 2. **Chen vào giữa (`insert`):** Bạn nhỏ được ưu tiên chen vào đúng vị trí số 2 trong hàng (`ds.insert(2, ten)`). Các bạn phía sau tự động lùi lại 1 bước.
@@ -11,7 +11,7 @@ Hãy tưởng tượng bạn đang quản lý một hàng người xếp hàng m
    - Bạn có tên là "Nam" bị mời ra khỏi hàng (`ds.remove("Nam")`).
 4. **Sắp xếp theo chiều cao (`sort`):** Cả hàng tự di chuyển để người thấp đứng trước, người cao đứng sau.
 
-![](assets/media/python/minh_bit/bai07_lineup_by_height.jpg)
+![Hình 7.1: Mọi người tự giác xếp hàng theo chiều cao — Mô phỏng thuật toán sắp xếp sorted(ds)](assets/media/python/minh_bit/bai07_lineup_by_height.jpg)
 
 ### Bài học sống còn: Photo sổ lớp (Bảo toàn danh sách gốc)
 Trong đề thi, hãy đọc thật kỹ từng chữ:
@@ -53,7 +53,7 @@ print("Gia tri cua kq:", kq)
 print("Gia tri cua ds:", ds)
 ```
 
-![](assets/media/python/minh_bit/trap_sort_returns_none.jpg)
+![Hình 7.2: Bẫy phòng thi — Minh mở chiếc hộp kq = ds.sort() thì thấy trống rỗng và bay ra chữ None](assets/media/python/minh_bit/trap_sort_returns_none.jpg)
 
 Biến `kq` sẽ nhận giá trị danh sách đã sắp xếp `[1, 2, 5, 9]` hay nhận giá trị gì khác?
 
@@ -156,9 +156,9 @@ def sap_xep_danh_sach(ds, giam_dan=False):
     return kq
 
 
-![](assets/media/python/minh_bit/algo_insert_sorted.jpg)
+![Hình 7.3: Thuật toán chèn phần tử — Bạn học sinh mới đến tìm đúng vị trí thích hợp để bước vào hàng](assets/media/python/minh_bit/algo_insert_sorted.jpg)
 
-![](assets/media/python/minh_bit/game_pvp_rank_insert.jpg)
+![Hình 7.4: Góc nhìn Game PvP — Đấu sĩ đạt điểm cao lướt vào chen bậc xếp hạng Rank trên Leaderboard](assets/media/python/minh_bit/game_pvp_rank_insert.jpg)
 
 def chen_x_giu_tang_dan(ds_goc, x):
     # Y 10 - De 1: Chen x vao danh sach sao cho day so van tang dan
@@ -261,7 +261,7 @@ Danh sach dao nguoc: [5, 4, 3, 2, 1]
 
 ### Mức 2: Sửa lại (Tìm và vá lỗi đoạn code hỏng)
 
-![](assets/media/python/minh_bit/app_momo_refund_zero.jpg)
+![Hình 7.5: Ứng dụng MoMo — Tính năng hoàn tiền / bảo hiểm giao dịch biến các số âm thành 0](assets/media/python/minh_bit/app_momo_refund_zero.jpg)
 
 **Đề bài:** Đề thi yêu cầu thay thế toàn bộ các số âm trong danh sách thành số 0 (giống như tính năng hoàn tiền / bảo hiểm giao dịch chi tiêu trên ví điện tử). Một bạn học sinh viết hàm như sau nhưng danh sách sau khi gọi hàm không hề bị thay đổi. Hãy sửa lại cho đúng:
 
@@ -306,7 +306,7 @@ Ket qua sau khi thay the: [10, 0, 20, 0, 30]
 
 ### Mức 3: Tự viết (Ý khó của Đề 1: Dãy đan dấu dài nhất)
 
-![](assets/media/python/minh_bit/app_momo_alternating_flow.jpg)
+![Hình 7.6: Dòng thời gian biến động số dư đan dấu liên tiếp — Cứ nhận tiền vào (dương) là tiêu ngay (âm)](assets/media/python/minh_bit/app_momo_alternating_flow.jpg)
 **Đề bài:** Hai số liên tiếp được gọi là "đan dấu" nếu tích của chúng nhỏ hơn 0 (một số âm và một số dương, ví dụ `[-3, 4]` hoặc `[5, -2]`, số 0 không đan dấu).
 Viết hàm `tim_day_dan_dau_dai_nhat(ds)` trả về độ dài (số lượng phần tử) của chuỗi con đan dấu liên tiếp dài nhất trong danh sách.
 

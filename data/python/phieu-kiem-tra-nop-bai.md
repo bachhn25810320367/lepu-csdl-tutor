@@ -4,7 +4,7 @@ Trước khi bấm "Nộp bài" hoặc báo giám thị thu bài, hãy dành đ�
 
 ---
 
-![](assets/media/python/minh_bit/bai15_submit_checklist.jpg)
+![Phiếu kiểm tra 12 bước cứu mạng trước khi nộp bài thi thực hành Python](assets/media/python/minh_bit/bai15_submit_checklist.jpg)
 
 ## BẢNG CHECKLIST 12 BƯỚC
 

@@ -22,7 +22,7 @@
 
 ---
 
-![](assets/media/python/minh_bit/bai13_timer_computer.jpg)
+![Hình 13.1: Minh ngồi tập trung giải đề trước màn hình máy tính bên đồng hồ bấm giờ 90 phút](assets/media/python/minh_bit/bai13_timer_computer.jpg)
 
 ## 2. Chiến thuật phân bổ thời gian bấm giờ (Tổng thời gian: 90 phút)
 
@@ -178,7 +178,7 @@ def y11_loc_so_chinh_phuong(ds):
     return kq
 
 
-![](assets/media/python/minh_bit/algo_alternating_bridge.jpg)
+![Hình 13.2: Cầu đan dấu đứt nhịp — Hai nhịp cùng màu dương/âm đứng cạnh nhau sẽ làm đứt chuỗi đan dấu](assets/media/python/minh_bit/algo_alternating_bridge.jpg)
 
 def y12_phan_tu_dan_dau_dai_nhat(ds):
     # Y 12: So luong phan tu dan dau dai nhat

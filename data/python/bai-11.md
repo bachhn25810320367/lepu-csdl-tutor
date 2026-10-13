@@ -2,9 +2,9 @@
 
 ## 1. Câu chuyện đời sống: Danh bạ điện thoại và Quyển từ điển Anh - Việt
 
-Hãy tưởng tượng bạn đang mở ứng dụng **Danh bạ điện thoại** trên máy bay:
+Hãy tưởng tượng **Minh** và **Bit** đang tra cứu danh bạ và các ngăn tủ khóa thông minh:
 
-![](assets/media/python/minh_bit/bai11_contact_book_dict.jpg)
+![Hình 11.1: Từ điển (Dictionary) — Tra cứu thông tin theo nhãn tên Khóa (Key) ra ngay Giá trị (Value)](assets/media/python/minh_bit/bai11_contact_book_dict.jpg)
 
 1. **Khóa (Key) - Cái tên bạn cần tìm:** 
    Trong danh bạ có hàng nghìn số điện thoại, bạn không thể nhớ số của mẹ bạn nằm ở vị trí thứ `15` hay thứ `300` như cách đánh chỉ số của List. Thay vào đó, bạn chỉ cần gõ đúng cái tên: `"Me"`.
@@ -17,7 +17,7 @@ Hãy tưởng tượng bạn đang mở ứng dụng **Danh bạ điện thoại
 
 ## 2. Ví dụ nhỏ nhất (3–5 dòng code)
 
-![](assets/media/python/minh_bit/app_shopee_coupon_dict.jpg)
+![Hình 11.2: Ứng dụng Shopee — Két sắt kho voucher tra cứu theo mã Key mở ra số tiền giảm giá Value](assets/media/python/minh_bit/app_shopee_coupon_dict.jpg)
 
 Tạo một từ điển kho mã giảm giá hoặc bảng tra cứu và tìm kiếm theo Key:
 
@@ -71,7 +71,7 @@ Hai dòng lệnh `print` trên sẽ in ra kết quả như thế nào?
 
 ### Lỗi 1: `KeyError: 'khoa_khong_ton_tai'`
 
-![](assets/media/python/minh_bit/err_key_error.jpg)
+![Hình 11.3: Lỗi KeyError — Minh lật tìm một cái tên không hề tồn tại trong danh bạ](assets/media/python/minh_bit/err_key_error.jpg)
 - **Nguyên văn thông báo:**
 ```text
 KeyError: 'diem'
@@ -102,7 +102,7 @@ Lúc này giá trị sau (`5`) sẽ ghi đè và xóa sổ hoàn toàn giá tr�
 
 ## 5. Khuôn mẫu cho đề thi: Đoạn code "Copy – Hiểu – Sửa"
 
-![](assets/media/python/minh_bit/game_rpg_stats_dict.jpg)
+![Hình 11.4: Góc nhìn Game RPG — Bảng chỉ số nhân vật {ATK, DEF, HP} truy cập trực tiếp bằng Key](assets/media/python/minh_bit/game_rpg_stats_dict.jpg)
 
 Trong đề thi thực hành, ứng dụng mạnh nhất của Dictionary là: **Đếm tần suất xuất hiện của các phần tử** (mỗi phần tử xuất hiện bao nhiêu lần, phần tử nào xuất hiện nhiều nhất).
 

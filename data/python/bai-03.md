@@ -2,7 +2,7 @@
 
 ## 1. Câu chuyện đời sống: Chạy bộ quanh sân vận động
 
-Hãy tưởng tượng bạn đang tập thể dục trên đường chạy quanh sân vận động:
+Hãy tưởng tượng **Minh** và chú robot **Bit** đang rèn luyện thể lực và quan sát các cỗ máy tự động:
 
 1. **Vòng lặp `for` (Biết trước số vòng chạy):**
    Huấn luyện viên bảo bạn: *"Hãy chạy đúng 5 vòng quanh sân rồi nghỉ"*.
@@ -15,9 +15,9 @@ Hãy tưởng tượng bạn đang tập thể dục trên đường chạy quan
 4. **Lệnh `continue` (Bỏ qua lượt hiện tại):**
    Đang chạy ở vòng thứ 3, bạn thấy phía trước có một vũng bùn bẩn. Bạn nhảy tránh qua vũng bùn đó (bỏ qua đoạn đường xấu của vòng này) rồi **tiếp tục chạy sang vòng thứ 4 bình thường**.
 
-![](assets/media/python/minh_bit/bai03_conveyor_belt.jpg)
+![Hình 3.1: Vòng lặp for — Băng chuyền nhà máy lặp lại kiểm tra đúng số lượng sản phẩm quy định](assets/media/python/minh_bit/bai03_conveyor_belt.jpg)
 
-![](assets/media/python/minh_bit/game_boss_fight_loops.jpg)
+![Hình 3.2: Góc nhìn Game RPG — Đánh Boss liên tục while boss_hp > 0 và tung combo 5 đòn chém for](assets/media/python/minh_bit/game_boss_fight_loops.jpg)
 
 ---
 
@@ -52,7 +52,7 @@ for so in range(1, 5):
     print(so)
 ```
 
-![](assets/media/python/minh_bit/trap_range_hopscotch.jpg)
+![Hình 3.3: Bẫy range(1, 5) — Minh nhảy lò cò 1..4 bị rào chắn dừng ngay trước ô số 5 (chỉ dừng ở n - 1)](assets/media/python/minh_bit/trap_range_hopscotch.jpg)
 
 Màn hình sẽ in ra các số từ `1` đến `5`, hay chỉ in từ `1` đến `4`?
 
@@ -170,7 +170,7 @@ Tong cac so chan: 30
 
 ### Khuôn mẫu 2: Thuật toán kiểm tra số nguyên tố (Xuất hiện liên tục trong đề thi)
 
-![](assets/media/python/minh_bit/algo_prime_scanner.jpg)
+![Hình 3.4: Thuật toán kiểm tra số nguyên tố — Máy quét laser của Bit rà soát ước số từ 2 đến căn bậc hai](assets/media/python/minh_bit/algo_prime_scanner.jpg)
 Một số nguyên dương `so >= 2` được gọi là số nguyên tố nếu nó chỉ có đúng 2 ước là 1 và chính nó.
 
 ```python

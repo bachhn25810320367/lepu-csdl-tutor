@@ -2,11 +2,11 @@
 
 ## 1. Câu chuyện đời sống: Tập hồ sơ học bạ của lớp học
 
-Hãy tưởng tượng bạn là lớp trưởng và trên bàn bạn có một **tập hồ sơ học bạ** của lớp:
+Hãy tưởng tượng **Minh** là lớp trưởng và cùng **Bit** quản lý một **tập hồ sơ học bạ** của cả lớp:
 
-![](assets/media/python/minh_bit/bai12_student_dossier.jpg)
+![Hình 12.1: Danh sách Từ điển — Chiếc cặp lớn là List [], bên trong chứa từng tờ hồ sơ học sinh {}](assets/media/python/minh_bit/bai12_student_dossier.jpg)
 
-![](assets/media/python/minh_bit/game_dungeon_compendium.jpg)
+![Hình 12.2: Góc nhìn Game RPG — Sổ tay quái thú Dungeon Compendium chứa danh sách thẻ bài quái vật](assets/media/python/minh_bit/game_dungeon_compendium.jpg)
 
 1. **Mỗi tờ học bạ (Một Dictionary):** 
    Mỗi bạn học sinh có một tờ giấy ghi đầy đủ thông tin: `{"ten": "Nguyen Van A", "diem": 8.5, "que": "Ha Noi"}`.
@@ -145,7 +145,7 @@ def tim_hoc_sinh_theo_ten(ds_hs, tu_khoa):
 def lay_diem_hs(hs):
     return hs.get("diem", 0)
 
-![](assets/media/python/minh_bit/app_shopee_flash_sale_sort.jpg)
+![Hình 12.4: Ứng dụng Shopee — Bảng xếp hạng Flash Sale tự động sắp xếp theo giá rẻ nhất](assets/media/python/minh_bit/app_shopee_flash_sale_sort.jpg)
 
 def sap_xep_theo_diem_giam_dan(ds_hs):
     # Sap xep danh sach hoc sinh co diem tu cao xuong thap
@@ -215,7 +215,7 @@ Bang xep hang diem tu cao xuong thap:
 
 ### Mức 1: Làm theo (Gõ lại chính xác để quen tay)
 
-![](assets/media/python/minh_bit/app_shopee_cart_list_dicts.jpg)
+![Hình 12.3: Ứng dụng Shopee — Xe đẩy giỏ hàng siêu thị thông minh chứa từng món hàng kèm giá](assets/media/python/minh_bit/app_shopee_cart_list_dicts.jpg)
 
 **Đề bài:** Cho sẵn danh sách sản phẩm giỏ hàng gồm tên và giá:
 ```python

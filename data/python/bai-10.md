@@ -4,7 +4,7 @@
 
 Ở các bài trước, ta đã làm việc rất nhiều với Danh sách (`list`). Hãy cùng so sánh nó với một người anh em sinh đôi mang tên **Tuple**:
 
-![](assets/media/python/minh_bit/bai10_keychain_tuple.jpg)
+![Hình 10.1: Bộ giá trị Tuple — Chiếc móc khóa đôi gắn kết cố định, bất biến không thể tách rời](assets/media/python/minh_bit/bai10_keychain_tuple.jpg)
 
 1. **Danh sách (`list`) - Chiếc ba lô đi học:**
    Bạn có thể mở khóa ba lô để nhét thêm sách (`append`), vứt bớt bút cũ đi (`remove`), hoặc thay cuốn vở rách bằng cuốn vở mới (`ds[0] = ...`).
@@ -27,7 +27,7 @@ a = 5
 b = 10
 a, b = b, a # Trao doi gia tri cua a va b
 
-![](assets/media/python/minh_bit/game_teleport_swap_tuple.jpg)
+![Hình 10.2: Góc nhìn Game RPG — Cổng dịch chuyển ma thuật hoán đổi vị trí chớp mắt a, b = b, a](assets/media/python/minh_bit/game_teleport_swap_tuple.jpg)
 print("a =", a, "- b =", b)
 ```
 
@@ -232,7 +232,7 @@ Thong tin sau khi sua: ('Nguyen Van A', 8.5)
 
 ### Mức 3: Tự viết (Thuật toán Sắp xếp nổi bọt - Bubble Sort dùng hoán vị Tuple)
 
-![](assets/media/python/minh_bit/algo_bubble_sort.jpg)
+![Hình 10.3: Thuật toán Sắp xếp nổi bọt (Bubble Sort) — Các bong bóng nước so sánh độ nặng và hoán vị](assets/media/python/minh_bit/algo_bubble_sort.jpg)
 **Đề bài:** Viết hàm `sap_xep_noi_bot(ds_goc)` sắp xếp danh sách các số nguyên theo thứ tự tăng dần bằng thuật toán nổi bọt (so sánh 2 phần tử liền kề, nếu phần tử trước lớn hơn phần tử sau thì hoán vị bằng cú pháp `ds[j], ds[j+1] = ds[j+1], ds[j]`). Không dùng `sort()` hay `sorted()`.
 
 <details>

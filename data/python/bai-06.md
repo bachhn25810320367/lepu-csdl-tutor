@@ -2,13 +2,13 @@
 
 ## 1. Câu chuyện đời sống: Rổ cam của người đi chợ
 
-Hãy tưởng tượng bạn có một chiếc rổ chứa các quả cam với nhiều kích thước khác nhau (đây là danh sách `ds`):
+Hãy tưởng tượng **Minh** và chú robot **Bit** đang phân loại và thống kê một rổ cam với nhiều kích thước khác nhau (đây là danh sách `ds`):
 
 1. **Tính tổng và trung bình:** Bạn đem cả rổ lên cân để biết tổng cân nặng (`tong`), rồi chia cho số quả trong rổ (`len(ds)`) để biết cân nặng trung bình. Nhưng hãy cẩn thận: nếu rổ không có quả cam nào (rổ rỗng), việc lấy cân nặng chia cho 0 quả sẽ làm hỏng cân (lỗi `ZeroDivisionError`)!
 2. **Tìm quả to nhất và vị trí:** Bạn duyệt mắt từ quả đầu tiên đến quả cuối cùng. Quả to nhất nằm ở đâu? Nếu có 2 quả to nhất bằng nhau, đề thi hỏi **vị trí đầu tiên** hay **vị trí cuối cùng**? Bạn phải nhớ kỹ vị trí của nó trên kệ.
 3. **Lọc cam (Không làm dập nát rổ gốc):** Bạn lấy một chiếc rổ mới toanh (`kq = []`), chỉ nhặt những quả cam chín vàng bỏ vào rổ mới. Chiếc rổ ban đầu vẫn giữ nguyên vẹn không suy suyển.
 
-![](assets/media/python/minh_bit/bai06_fruit_basket_sort.jpg)
+![Hình 6.1: Robot Bit nhặt cam chín sang chiếc rổ mới (kq = []) mà không làm dập nát rổ cam ban đầu](assets/media/python/minh_bit/bai06_fruit_basket_sort.jpg)
 
 ---
 

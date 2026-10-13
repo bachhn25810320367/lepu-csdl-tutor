@@ -2,7 +2,7 @@
 
 ## 1. Câu chuyện đời sống: Chiếc máy xay sinh tố và Hộp đồ nghề
 
-Hãy tưởng tượng trong căn bếp nhà bạn có một chiếc **máy xay sinh tố**:
+Hãy tưởng tượng trong phòng thực hành của **Minh** và **Bit** có một chiếc **máy xay sinh tố** ma thuật:
 
 1. **Tham số đầu vào (Arguments):** Bạn mở nắp, bỏ vào 2 quả cam và một ít đá (đây là dữ liệu bạn đưa vào cho máy xử lý).
 2. **Thân hàm (Logic xử lý):** Bạn nhấn nút, dao xay quay tròn nhuyễn mịn bên trong thân máy.
@@ -11,11 +11,11 @@ Hãy tưởng tượng trong căn bếp nhà bạn có một chiếc **máy xay 
    - Bạn có thể cất nó vào tủ lạnh.
    - Hoặc bạn có thể đổ nó vào một nồi thạch rau câu để nấu món mới (dùng kết quả này để tính toán việc khác).
 
-![](assets/media/python/minh_bit/bai04_blender.jpg)
+![Hình 4.1: Máy xay sinh tố — Nhận tham số nguyên liệu đầu vào và thân hàm bắt đầu xay nhuyễn](assets/media/python/minh_bit/bai04_blender.jpg)
 
-![](assets/media/python/minh_bit/trap_return_vs_print.jpg)
+![Hình 4.2: So sánh cốt lõi — Return trao sản phẩm tận tay vs Print chỉ giơ lên ngắm rồi cất đi](assets/media/python/minh_bit/trap_return_vs_print.jpg)
 
-![](assets/media/python/minh_bit/bai04_bit_handing_glass.jpg)
+![Hình 4.3: Bit rót ly nước sinh tố bàn giao tận tay Minh (return) để Minh sử dụng cho các việc tiếp theo](assets/media/python/minh_bit/bai04_bit_handing_glass.jpg)
 
 ### Phân biệt sống còn giữa `return` và `print`:
 Rất nhiều học sinh trượt thực hành chỉ vì nhầm lẫn giữa hai lệnh này:
@@ -148,7 +148,7 @@ Mọi đề thi thực hành luôn có cấu trúc:
 
 ### Cấu trúc bài thi chuẩn gồm 2 file:
 
-![](assets/media/python/minh_bit/bai04_toolbox_room.jpg)
+![Hình 4.4: Minh bước vào phòng hộp đồ nghề thuvien.py để lấy dụng cụ sang bàn làm việc main.py](assets/media/python/minh_bit/bai04_toolbox_room.jpg)
 
 #### File 1: `thuvien.py` (Lưu trữ toàn bộ các hàm)
 ```python
