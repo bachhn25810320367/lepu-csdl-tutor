@@ -3,38 +3,42 @@
    Design tokens + layout cho LEPU CSDL Tutor
    ========================================================================== */
 :root {
-  --bg: #09090b;
-  --bg-deep: #000000;
-  --surface: #121214;
-  --surface-subtle: #18181b;
-  --surface-hover: #27272a;
-  --surface-elevated: #18181b;
+  --bg: #151413;
+  --bg-deep: #121110;
+  --surface: #1a1918;
+  --surface-subtle: #22201e;
+  --surface-hover: #2b2826;
+  --surface-elevated: #22201e;
 
-  --border: #27272a;
-  --border-hover: #3f3f46;
-  --border-focus: #10b981;
+  --border: #2b2826;
+  --border-hover: #3d3936;
+  --border-focus: #e06c53;
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
-  --ink: #f4f4f5;
-  --ink-secondary: #d4d4d8;
-  --ink-muted: #a1a1aa;
-  --ink-inverse: #000000;
+  --ink: #f0ede6;
+  --ink-secondary: #c4c0b6;
+  --ink-muted: #999388;
+  --ink-inverse: #121110;
 
-  --success: #10b981;
-  --success-bg: rgba(16, 185, 129, 0.1);
-  --success-border: rgba(16, 185, 129, 0.3);
+  --accent: #e06c53;
+  --accent-subtle: rgba(224, 108, 83, 0.12);
+  --accent-border: rgba(224, 108, 83, 0.28);
 
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, 0.1);
-  --warning-border: rgba(245, 158, 11, 0.3);
+  --success: #52a373;
+  --success-bg: rgba(82, 163, 115, 0.12);
+  --success-border: rgba(82, 163, 115, 0.3);
 
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, 0.1);
-  --danger-border: rgba(239, 68, 68, 0.3);
+  --warning: #e59b4c;
+  --warning-bg: rgba(229, 155, 76, 0.12);
+  --warning-border: rgba(229, 155, 76, 0.3);
 
-  --header-bg: #09090b;
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.5);
-  --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.7);
+  --danger: #dc5a50;
+  --danger-bg: rgba(220, 90, 80, 0.12);
+  --danger-border: rgba(220, 90, 80, 0.3);
+
+  --header-bg: #151413;
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 12px 40px rgba(0, 0, 0, 0.6);
 
   --radius-sm: 6px;
   --radius-md: 8px;
@@ -50,27 +54,31 @@
   --ai-w: 380px;
 }
 
-[data-theme="light"] {
-  --bg: #f9f8f5;
+[data-theme=light] {
+  --bg: #f5f2eb;
+  --bg-deep: #faf8f5;
   --surface: #ffffff;
-  --surface-subtle: #f3efe6;
-  --surface-hover: #eae5dc;
-  --surface-elevated: #fcfbfa;
-  --border: #e2ddd2;
-  --border-hover: #cdc6b8;
-  --border-focus: #09090b;
-  --ink: #09090b;
-  --ink-secondary: #4a463f;
-  --ink-muted: #6f6a61;
-  --ink-inverse: #f9f8f5;
-  --header-bg: rgba(249, 248, 245, 0.92);
+  --surface-subtle: #eeeadf;
+  --surface-hover: #e5dfd2;
+  --surface-elevated: #ffffff;
+  --border: #dfd8cb;
+  --border-hover: #cfc6b5;
+  --border-focus: #c9563e;
+  --ink: #201e1c;
+  --ink-secondary: #4a453f;
+  --ink-muted: #736d64;
+  --ink-inverse: #f5f2eb;
+  --accent: #c9563e;
+  --accent-subtle: rgba(201, 86, 62, 0.1);
+  --accent-border: rgba(201, 86, 62, 0.25);
+  --header-bg: #f5f2eb;
 }
 
 * { box-sizing: border-box; }
 
 ::selection {
-  background: #10b981;
-  color: #000000;
+  background: #e06c53;
+  color: #ffffff;
 }
 
 html, body {
@@ -98,7 +106,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   left: 0;
   width: 0%;
   height: 2px;
-  background: var(--accent-emerald, #10b981);
+  background: var(--accent, #e06c53);
   z-index: 50;
   transition: width 0.1s linear;
 }
@@ -148,7 +156,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   border-color: rgba(255, 255, 255, 0.2);
   text-decoration: none;
 }
-.crumb.logo-badge svg { color: #10b981; }
+.crumb.logo-badge svg { color: var(--accent, #e06c53); }
 
 .crumb {
   color: var(--ink-secondary);
@@ -194,9 +202,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   color: #ffffff;
 }
 .chat-btn.on {
-  background: var(--success);
-  border-color: var(--success);
-  color: #000000;
+  background: var(--accent, #e06c53);
+  border-color: var(--accent, #e06c53);
+  color: #ffffff;
   font-weight: 700;
 }
 .chat-btn:hover { border-color: var(--border-hover); background: var(--surface-hover); }
@@ -803,15 +811,15 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 }
 .toc a.lvl3:hover { color: #d4d4d8; }
 .toc a.active {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--ink);
+  background: var(--accent-subtle, rgba(224, 108, 83, 0.12));
+  border-color: var(--accent-border, rgba(224, 108, 83, 0.28));
   font-weight: 600;
 }
 .toc a.lvl3.active {
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.08);
-  border-color: rgba(16, 185, 129, 0.2);
+  color: var(--accent, #e06c53);
+  background: var(--accent-subtle, rgba(224, 108, 83, 0.08));
+  border-color: var(--accent-border, rgba(224, 108, 83, 0.2));
 }
 
 /* ---------- doc pane ---------- */
@@ -844,7 +852,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
      dài và test đọc scrollTop ngay sau đó luôn ra 0. */
 }
 .doc-scroll::-webkit-scrollbar { width: 10px; }
-.doc-scroll::-webkit-scrollbar-thumb { background: var(--surface-hover); border-radius: var(--radius-full); border: 3px solid var(--bg); }
+.doc-scroll::-webkit-scrollbar-thumb { background: #3d3936; border-radius: var(--radius-full); border: 2px solid var(--bg-deep); }
 .doc-scroll::-webkit-scrollbar-track { background: transparent; }
 
 /* noi dung gioi han bề ngang nhu trang bai cua Studley */
@@ -899,10 +907,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .md blockquote {
   margin: 24px 0;
   padding: 16px 20px;
-  background: rgba(16, 185, 129, 0.05);
-  border: 1px solid rgba(16, 185, 129, 0.22);
-  border-radius: 12px;
-  color: #d1d5db;
+  background: rgba(224, 108, 83, 0.06);
+  border: 1px solid rgba(224, 108, 83, 0.22);
+  border-radius: 10px;
+  color: var(--ink);
   font-size: 14.5px;
   line-height: 1.75;
 }
@@ -1037,7 +1045,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: #10b981;
+  color: var(--accent, #e06c53);
 }
 .code-wrap .copy-code {
   font-family: var(--font-mono);
@@ -1398,7 +1406,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   border-color: rgba(255, 255, 255, 0.2);
   text-decoration: none;
 }
-.crumb.logo-badge svg { color: #10b981; }
+.crumb.logo-badge svg { color: var(--accent, #e06c53); }
 
 .crumb { max-width: 46vw; }
 
