@@ -113,8 +113,10 @@ function mdToHtml(src) {
       i++;
       while (i < lines.length && !/^```/.test(lines[i])) { buf.push(lines[i]); i++; }
       i++; // dong fence
+      const langLabel = lang ? lang.toUpperCase() : 'T-SQL / SQL SERVER';
       out.push(
-        '<div class="code-wrap"><button class="copy-code" type="button">SAO CHÉP</button>' +
+        '<div class="code-wrap">' +
+        `<div class="code-head"><span class="code-lang">${esc(langLabel)}</span><button class="copy-code" type="button">SAO CHÉP</button></div>` +
         '<pre><code' + (lang ? ` data-lang="${escAttr(lang)}"` : '') + '>' +
         esc(buf.join('\n')) + '</code></pre></div>'
       );
@@ -127,6 +129,17 @@ function mdToHtml(src) {
       closeList();
       const lvl = h[1].length;
       const text2 = h[2].replace(/\s*#+\s*$/, '').trim();
+
+      // Bỏ qua mục lục thừa trong thân bài (sidebar đã có mục lục sống động)
+      if (lvl === 2 && text2.toUpperCase() === 'MỤC LỤC') {
+        i++;
+        while (i < lines.length && !lines[i].startsWith('#') && !/^\s*([-*_])\s*\1\s*\1/.test(lines[i])) {
+          i++;
+        }
+        if (i < lines.length && /^\s*([-*_])\s*\1\s*\1/.test(lines[i])) i++;
+        continue;
+      }
+
       const id = slugify(text2);
       out.push(`<h${lvl} id="${escAttr(id)}">${inline(text2)}</h${lvl}>`);
       i++; continue;
@@ -346,7 +359,13 @@ function fillSectionNav() {
 }
 
 function markToc(id) {
-  $$('#toc a').forEach(a => a.classList.toggle('active', a.dataset.sec === id));
+  $$('#toc a').forEach(a => {
+    const isAct = a.dataset.sec === id;
+    a.classList.toggle('active', isAct);
+    if (isAct) {
+      a.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  });
 }
 
 function toggleSidebar(force) {
@@ -884,6 +903,16 @@ function init() {
       else if ($('#sidebar').classList.contains('open')) toggleSidebar(false);
     }
   });
+
+  const docScroll = $('#docScroll');
+  if (docScroll) {
+    docScroll.addEventListener('scroll', () => {
+      const max = docScroll.scrollHeight - docScroll.clientHeight;
+      const pct = max > 0 ? (docScroll.scrollTop / max) * 100 : 0;
+      const bar = $('#readProgress');
+      if (bar) bar.style.width = pct + '%';
+    });
+  }
 
   loadDoc(DOCS[0].id);
   setTimeout(startSpy, 200);
