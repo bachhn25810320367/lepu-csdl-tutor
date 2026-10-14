@@ -333,13 +333,13 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   transition: all .15s ease;
 }
 .smode:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
+  background: var(--surface-hover);
+  color: var(--ink);
 }
 .smode.on {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
+  background: var(--surface-subtle);
+  border-color: var(--border-hover);
+  color: var(--ink);
   font-weight: 600;
 }
 .smode svg { width: 16px; height: 16px; flex-shrink: 0; color: inherit; }
@@ -348,15 +348,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   font-family: var(--font-mono);
   font-style: normal;
   font-size: 11px;
-  color: #71717a;
-  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink-muted);
+  background: var(--surface-hover);
   border-radius: 6px;
   padding: 2px 7px;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 .smode.on em {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
+  background: var(--success-bg);
+  color: var(--success);
 }
 .smode svg { width: 15px; height: 15px; flex-shrink: 0; }
 .smode span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -618,17 +619,18 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   gap: 12px;
   margin-top: 16px;
 }
-.fc-dots { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; flex: 1; }
+.fc-dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; flex: 1; align-items: center; }
 .fc-dot {
   width: 6px; height: 6px;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background: var(--surface-hover);
   border: 0;
   padding: 0;
   cursor: pointer;
+  transition: all .25s var(--ease-expo);
 }
-.fc-dot.seen { background: var(--ink-muted); }
-.fc-dot.cur { background: var(--ink); transform: scale(1.4); }
+.fc-dot.seen { background: var(--success); opacity: 0.6; }
+.fc-dot.cur { background: var(--accent, #e06c53); width: 18px; opacity: 1; border-radius: var(--radius-full); }
 
 /* --- dien cho trong --- */
 .f-item {
@@ -882,16 +884,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
   font-size: 28px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--ink);
   margin: 0 0 16px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border);
 }
 .md h2 {
   font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: var(--ink);
   margin: 44px 0 16px;
   padding-top: 16px;
   scroll-margin-top: 24px;
@@ -899,7 +901,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.3; margin: 0; 
 .md h3 {
   font-size: 16.5px;
   font-weight: 600;
-  color: #e4e4e7;
+  color: var(--ink);
   margin: 32px 0 12px;
   scroll-margin-top: 24px;
 }
@@ -1547,4 +1549,86 @@ details.md-details > *:not(summary) {
 .q-opt:hover {
   transform: translateX(4px);
   border-color: rgba(224, 108, 83, 0.4);
+}
+
+/* ==========================================================================
+   POLISH & REFINEMENT PASS (Typeset, Delight, Clarify, Optimize)
+   ========================================================================== */
+
+/* Keyboard badge indicator for sidebar modes */
+.mode-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+.smode.on .mode-kbd {
+  border-color: var(--accent-border);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* Flashcards completion badge */
+.fc-complete-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success);
+  font-size: 12.5px;
+  font-weight: 500;
+  animation: badgePop 0.3s var(--ease-expo) both;
+}
+@keyframes badgePop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* MCQ feedback enhancements */
+.txt-ok { color: var(--success) !important; }
+.txt-bad { color: var(--danger) !important; }
+
+.q-why.correct {
+  border-color: var(--success-border);
+  background: var(--success-bg);
+}
+.q-why.incorrect {
+  border-color: var(--danger-border);
+  background: var(--danger-bg);
+}
+
+/* Tabular numerals for counters, stats and indices */
+.smode em, .qp-sub, .doc-meta, .fc-hint, .fc-ctl, .toc, .status-chip, .crumb {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Performance containment on isolated subtrees */
+.q-item, .fc-stage, .tbl-wrap, .mode-pane {
+  contain: layout style;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

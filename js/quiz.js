@@ -216,8 +216,9 @@ function renderMcq() {
         <span class="t">${inline(o)}</span>
       </button>`;
     }).join('');
+    const isOk = chosen === q.a;
     const why = answered
-      ? `<div class="q-why"><b>${chosen === q.a ? 'Đúng.' : 'Sai.'}</b> ${inline(q.w || '')} <span class="q-sec">mục ${esc(q.s || '')}</span></div>`
+      ? `<div class="q-why ${isOk ? 'correct' : 'incorrect'}"><b class="${isOk ? 'txt-ok' : 'txt-bad'}">${isOk ? '✓ Đúng.' : '✗ Sai.'}</b> ${inline(q.w || '')} <span class="q-sec">mục ${esc(q.s || '')}</span></div>`
       : '';
     return `<div class="q-item" data-qi="${i}">
       <span class="q-num">CÂU ${i + 1}</span>
@@ -299,7 +300,9 @@ function renderCards() {
        }).join('')}</div>
        <button class="btn-ghost" id="fcNext" type="button">Sau →</button>
      </div>
-     <p class="fc-hint" style="margin-top:14px">Lật thẻ rồi bấm "Sau" để tính vào tiến độ</p>
+     ${Q.cardSeen.size === qs.length && qs.length > 0
+       ? `<div style="text-align:center"><span class="fc-complete-badge">✨ Đã xem hết tất cả ${qs.length} thẻ ghi nhớ!</span></div>`
+       : `<p class="fc-hint" style="margin-top:14px">Lật thẻ rồi bấm "Sau" để tính vào tiến độ</p>`}
      ` + '</div>';
 
   // lật

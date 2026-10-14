@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/app.css?v=32">
+  <link rel="stylesheet" href="assets/app.css?v=33">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141316'/%3E%3Crect x='9' y='13' width='14' height='2' fill='%23f5f2eb'/%3E%3Crect x='9' y='18' width='14' height='2' fill='%23f5f2eb'/%3E%3Crect x='9' y='23' width='9' height='2' fill='%23f5f2eb'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -72,33 +72,39 @@
         </div>
 
         <nav class="side-modes" id="sideModes" aria-label="Chế độ ôn tập">
-          <button class="smode on" type="button" data-mode="content" title="Đọc bài học">
+          <button class="smode on" type="button" data-mode="content" title="Đọc bài học (Phím 1)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5"/></svg>
             <span>Đọc bài</span>
+            <kbd class="mode-kbd">1</kbd>
           </button>
-          <button class="smode" type="button" data-mode="mcq" title="Trắc nghiệm">
+          <button class="smode" type="button" data-mode="mcq" title="Trắc nghiệm (Phím 2)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.4a2.9 2.9 0 1 1 4.2 2.4c-.7.5-1.4 1-1.4 2.2"/><path d="M12 17h.01"/></svg>
             <span>Trắc nghiệm</span>
             <em data-n="mcq">0</em>
+            <kbd class="mode-kbd">2</kbd>
           </button>
-          <button class="smode" type="button" data-mode="cards" title="Flashcards">
+          <button class="smode" type="button" data-mode="cards" title="Flashcards (Phím 3)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="13" height="12" rx="2"/><path d="M7 4h11a2 2 0 0 1 2 2v9"/></svg>
             <span>Thẻ bài</span>
             <em data-n="cards">0</em>
+            <kbd class="mode-kbd">3</kbd>
           </button>
-          <button class="smode" type="button" data-mode="fill" title="Điền vào chỗ trống">
+          <button class="smode" type="button" data-mode="fill" title="Điền vào chỗ trống (Phím 4)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h5M13 7h7M4 17h3M11 17h9"/><path d="M10 6.2v1.6M8 16.2v1.6"/></svg>
             <span>Điền chỗ trống</span>
             <em data-n="fill">0</em>
+            <kbd class="mode-kbd">4</kbd>
           </button>
-          <button class="smode" type="button" data-mode="written" title="Tự luận">
+          <button class="smode" type="button" data-mode="written" title="Tự luận (Phím 5)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 16l3.4-4 3 2.4L20 7"/><path d="M16 7h4v4"/></svg>
             <span>Tự luận</span>
             <em data-n="written">0</em>
+            <kbd class="mode-kbd">5</kbd>
           </button>
-          <button class="smode" type="button" data-mode="notes" title="Ghi chú của tôi">
+          <button class="smode" type="button" data-mode="notes" title="Ghi chú của tôi (Phím 6)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>
             <span>Ghi chú</span>
+            <kbd class="mode-kbd">6</kbd>
           </button>
         </nav>
 
@@ -226,7 +232,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/app.js?v=32"></script>
-  <script src="js/quiz.js?v=32"></script>
+  <script src="js/app.js?v=33"></script>
+  <script src="js/quiz.js?v=33"></script>
 </body>
 </html>
