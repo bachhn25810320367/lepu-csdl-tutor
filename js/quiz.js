@@ -129,30 +129,38 @@ function setMode(mode) {
   Q.mode = mode;
   Q.docId = S.docId;
 
-  // nút sidebar
-  $$('.smode').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
+  const updateDOM = () => {
+    // nút sidebar
+    $$('.smode').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
 
-  // ẩn/hiện pane
-  $('#docScroll').hidden = mode !== 'content';
-  $('#paneMcq').hidden = mode !== 'mcq';
-  $('#paneCards').hidden = mode !== 'cards';
-  $('#paneFill').hidden = mode !== 'fill';
-  $('#paneWritten').hidden = mode !== 'written';
-  $('#paneNotes').hidden = mode !== 'notes';
+    // ẩn/hiện pane
+    $('#docScroll').hidden = mode !== 'content';
+    $('#paneMcq').hidden = mode !== 'mcq';
+    $('#paneCards').hidden = mode !== 'cards';
+    $('#paneFill').hidden = mode !== 'fill';
+    $('#paneWritten').hidden = mode !== 'written';
+    $('#paneNotes').hidden = mode !== 'notes';
 
-  // vùng phụ sidebar: mục lục chỉ có ý nghĩa ở chế độ đọc
-  $('#tocZone').hidden = mode !== 'content';
-  $('#progZone').hidden = mode === 'content';
+    // vùng phụ sidebar: mục lục chỉ có ý nghĩa ở chế độ đọc
+    $('#tocZone').hidden = mode !== 'content';
+    $('#progZone').hidden = mode === 'content';
 
-  if (mode === 'content') { startSpy(); return; }
-  if (spy) spy.disconnect();
+    if (mode === 'content') { startSpy(); return; }
+    if (spy) spy.disconnect();
 
-  if (mode === 'mcq') renderMcq();
-  if (mode === 'cards') renderCards();
-  if (mode === 'fill') renderFill();
-  if (mode === 'written') renderWritten();
-  if (mode === 'notes') renderNotes();
-  renderSideProg();
+    if (mode === 'mcq') renderMcq();
+    if (mode === 'cards') renderCards();
+    if (mode === 'fill') renderFill();
+    if (mode === 'written') renderWritten();
+    if (mode === 'notes') renderNotes();
+    renderSideProg();
+  };
+
+  if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.startViewTransition(updateDOM);
+  } else {
+    updateDOM();
+  }
 }
 
 /* Tiến độ nhỏ ở sidebar khi không ở chế độ đọc. */
@@ -296,7 +304,28 @@ function renderCards() {
 
   // lật
   const card = $('#fcCard');
+  let tiltFrame = null;
+  card.onmousemove = (e) => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const rx = (-(y / (rect.height / 2)) * 6.5).toFixed(2);
+    const ry = ((x / (rect.width / 2)) * 6.5).toFixed(2);
+    if (tiltFrame) cancelAnimationFrame(tiltFrame);
+    tiltFrame = requestAnimationFrame(() => {
+      const baseFlip = Q.cardFlip ? 'rotateY(180deg) ' : '';
+      card.style.transform = `${baseFlip}perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+  };
+  card.onmouseleave = () => {
+    if (tiltFrame) cancelAnimationFrame(tiltFrame);
+    card.style.transform = Q.cardFlip ? 'rotateY(180deg)' : '';
+  };
+
   card.onclick = () => {
+    if (tiltFrame) cancelAnimationFrame(tiltFrame);
+    card.style.transform = '';
     Q.cardFlip = !Q.cardFlip;
     card.classList.toggle('flip', Q.cardFlip);
     if (Q.cardFlip) markSeen(pos);
@@ -322,9 +351,28 @@ function markSeen(pos) {
 function cardGo(k) {
   const n = Q.cardOrder.length;
   if (!n) return;
-  Q.cardIdx = (k + n) % n;
-  Q.cardFlip = false;
-  renderCards();
+  const card = $('#fcCard');
+  if (card && card.animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    card.animate([
+      { opacity: 1, transform: 'scale(1)' },
+      { opacity: 0.2, transform: 'scale(0.96) translateY(6px)' }
+    ], { duration: 120, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }).onfinish = () => {
+      Q.cardIdx = (k + n) % n;
+      Q.cardFlip = false;
+      renderCards();
+      const nextCard = $('#fcCard');
+      if (nextCard && nextCard.animate) {
+        nextCard.animate([
+          { opacity: 0.2, transform: 'scale(0.96) translateY(-6px)' },
+          { opacity: 1, transform: 'scale(1) translateY(0)' }
+        ], { duration: 220, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+      }
+    };
+  } else {
+    Q.cardIdx = (k + n) % n;
+    Q.cardFlip = false;
+    renderCards();
+  }
 }
 function cardMove(d) { cardGo(Q.cardIdx + d); }
 
